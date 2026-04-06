@@ -1,0 +1,182 @@
+---
+title: FAQ
+description: Answers to common questions about AffZero.
+---
+
+## Getting Started
+
+<AccordionGroup>
+  <Accordion title="Do I need technical knowledge to use AffZero?">
+    No. If you know how to navigate your tracking platform's reporting section and have basic familiarity with affiliate marketing concepts (affiliates, offers, payouts, conversions), you can build automations in AffZero without any coding.
+
+    The visual automation builder is designed for marketing professionals, not developers.
+  </Accordion>
+
+  <Accordion title="What tracking platforms does AffZero support?">
+    Currently: **Affise**, **Binom**, and **CAKE**. Everflow is coming soon.
+
+    AffZero also includes a built-in **Demo connection** with sample data for testing, which requires no credentials.
+  </Accordion>
+
+  <Accordion title="Can I try AffZero without connecting a real tracker?">
+    Yes. Use the [Demo connection](/connections/demo) to explore the full feature set — build automations, test variables, send test emails — without connecting a real tracker and without entering any credentials.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Connections
+
+<AccordionGroup>
+  <Accordion title="My connection shows an error — what do I do?">
+    First, verify that the API key and base URL are still correct. API keys can expire or be rotated in your tracker. Log into your tracker, find the API settings, and confirm the key matches what is saved in AffZero.
+
+    Also check that your tracker is reachable from the internet — self-hosted Binom instances must be publicly accessible, not behind a VPN or local network.
+  </Accordion>
+
+  <Accordion title="Can I connect multiple accounts from the same platform?">
+    Yes — each connection is independent. If you manage two Affise networks, add two separate connections with different names. Each counts toward your plan's connection limit.
+  </Accordion>
+
+  <Accordion title="Does AffZero store my API keys securely?">
+    Yes. Gmail SMTP credentials are encrypted at rest using AES-256-GCM encryption. Resend and SendGrid API keys are stored in encrypted form in the database. No credentials are ever shown in the application interface after they are saved.
+  </Accordion>
+
+  <Accordion title="Does the Demo connection count against my connection limit?">
+    No. The Demo connection is always free and does not count toward your plan's connection limit.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Stats & Data
+
+<AccordionGroup>
+  <Accordion title="The stats in AffZero don't match what I see in my tracker. Why?">
+    The most common cause is a **timezone mismatch**. Make sure the timezone set in the Pull Stats step (or on the Stats page) matches the timezone your tracker uses for reporting. A difference of even one hour can shift "Yesterday" or "Last Week" to a different calendar period.
+
+    If timezones match and numbers still differ, check whether your tracker applies a data processing delay — some platforms finalize conversion data hours after the event, so very recent data may differ until it settles.
+  </Accordion>
+
+  <Accordion title="Can I pull data for a custom date range?">
+    Yes — both the Stats page and the Pull Stats step support custom start and end dates. However, for **scheduled automations**, always use a preset like "Last 7 Days" rather than a fixed date range. Presets recalculate fresh on every run; a fixed range stays the same and will pull stale historical data indefinitely.
+  </Accordion>
+
+  <Accordion title="How do I export stats to a spreadsheet?">
+    On the Stats page, run your query and click **Download CSV** above the results table. Every row and column is included in the export.
+
+    For automated recurring exports, use the [Write to Google Sheets step](/automations/steps/write-to-google-sheets) in an automation.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Automations & Variables
+
+<AccordionGroup>
+  <Accordion title="My email shows {variable_name} as literal text instead of the real value.">
+    This means the variable was not resolved at runtime. Common causes:
+
+    - **Typo in the variable name** — always copy from the Variables Available panel instead of typing manually. Variable names are case-sensitive.
+    - **Cell not selected in Pull Stats** — variables are only created for cells you explicitly clicked in the test pull. Viewing the table without clicking does not register variables.
+    - **All rows were filtered out** — a Filter Data or Condition Check step may have removed the rows before the variable could be produced.
+
+    Check the step log in [Runs & Logs](/runs-logs) to see which variables were actually resolved during the run.
+  </Accordion>
+
+  <Accordion title="Can I send a different email to each affiliate?">
+    Yes. Each Send Email step targets one recipient or a fixed list. To send individualized emails to multiple affiliates, add one Send Email step per affiliate — each step referencing variables from the corresponding row (row 1 for affiliate 1, row 2 for affiliate 2, and so on).
+  </Accordion>
+
+  <Accordion title="How do I stop an automation from sending if there's no data?">
+    Add a [Condition Check step](/automations/steps/condition-check) immediately after your Pull Stats step. Set the condition to verify that a key metric (like revenue or conversions) is greater than zero. If the data is empty, the condition fails and the automation stops cleanly — no email is sent.
+  </Accordion>
+
+  <Accordion title="Can two automations share data or reference each other?">
+    No — each automation runs independently and variables are scoped to a single run. If you need data from two different queries, add two Pull Stats steps within the same automation. Both datasets are then available to all subsequent steps.
+  </Accordion>
+
+  <Accordion title="What happens if an affiliate isn't in the stats results on a given run?">
+    AffZero stores the affiliate's internal ID (not just their row position) when you select a variable. If that affiliate has no activity in the current date range and doesn't appear in the fresh results, AffZero falls back to the row position from your test pull, then ultimately to the test value you saw when you built the automation. A warning is recorded in the run log when this fallback occurs.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Email
+
+<AccordionGroup>
+  <Accordion title="Which email service should I use?">
+    - **Just starting out or sending low volumes**: Gmail SMTP — no external account needed, sends from your real Gmail address
+    - **Custom branded from address or growing team**: Resend — clean API, good deliverability, free tier available
+    - **High volume or detailed analytics needed**: SendGrid — enterprise-grade, scales to millions of emails
+
+    See [Email Services](/email/email-services) for a full comparison and setup instructions.
+  </Accordion>
+
+  <Accordion title="Why are my emails going to spam?">
+    The most common causes:
+
+    1. **Missing DNS records** — SPF, DKIM, and DMARC records not configured on your sending domain. Set these up in Resend or SendGrid's domain verification flow.
+    2. **Spam trigger words** in subject or body.
+    3. **Low domain reputation** — new domains sending immediately may be flagged. Warm up gradually.
+
+    Gmail SMTP sends from Google's infrastructure, so spam rates are generally low with Gmail SMTP.
+  </Accordion>
+
+  <Accordion title="Can I send to multiple recipients in one step?">
+    Yes — in the Send Email step, enter multiple email addresses separated by commas. All recipients receive the same email with the same variable values substituted. For individualized emails per affiliate, use one Send Email step per affiliate.
+  </Accordion>
+
+  <Accordion title="Can I attach a file to an email?">
+    Yes — if a [Create Invoice step](/automations/steps/create-invoice) runs before the Send Email step, you can attach the generated PDF invoice. Toggle **Attach Invoice** in the Send Email step and select which invoice step's output to use.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Invoices
+
+<AccordionGroup>
+  <Accordion title="What invoice template type should I use?">
+    Use **HTML templates** if you want full design control or have someone comfortable writing HTML and CSS. They offer the most flexibility.
+
+    Use **Google Doc templates** if your team already works in Google Workspace and prefers a word-processor-style experience.
+
+    Both produce PDF output and support the full variable system.
+  </Accordion>
+
+  <Accordion title="Are generated invoices stored anywhere?">
+    Yes — every PDF generated by an automation is stored and viewable under **Invoices → Generated**. You can view, download, or delete them at any time. They can also be saved automatically to a Google Drive folder via the Create Invoice step.
+  </Accordion>
+
+  <Accordion title="Can I preview an invoice template before running an automation?">
+    Yes — click **Preview** on any template in the Invoices → Templates list to see a rendered preview with placeholder values. This lets you check the layout without running a full automation.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Account & Billing
+
+<AccordionGroup>
+  <Accordion title="What happens if I reach my connection or automation limit?">
+    You can still edit existing items, but you won't be able to create new ones until you either delete an existing item (freeing up the slot) or upgrade your plan.
+  </Accordion>
+
+  <Accordion title="Do unused AI calls roll over to the next month?">
+    No — AI calls reset on the 1st of each month and unused calls do not accumulate.
+  </Accordion>
+
+  <Accordion title="Can I pause an automation without deleting it?">
+    Yes — toggle the **Enabled/Disabled switch** on the Automations list page. A disabled automation retains all its configuration and history but will not run on schedule. You can still trigger it manually with Run Now.
+  </Accordion>
+
+  <Accordion title="What happens to my data if I cancel?">
+    Your automations, connections, templates, and logs remain accessible until the end of your billing period. Data is not immediately deleted on cancellation. Contact us if you need a full data export before closing your account.
+  </Accordion>
+
+  <Accordion title="I have a question not answered here.">
+    Use the **AffZero AI chatbot** — the chat icon in the bottom-right corner of the app — to ask questions about how the platform works. For billing or account-specific issues, contact our support team directly.
+  </Accordion>
+</AccordionGroup>

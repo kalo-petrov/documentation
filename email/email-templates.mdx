@@ -1,0 +1,79 @@
+---
+title: Email Templates
+description: Create and manage reusable email designs to use in Send Email automation steps.
+---
+
+## What are Email Templates?
+
+**Email templates** are reusable email designs with a subject, HTML body, and optional default settings. Instead of writing a new email from scratch every time you build a Send Email step, you create a template once and select it in any automation.
+
+Templates support [variables](/automations/variables) — the same `{affiliate_name_1_stats_1}` placeholders that get substituted with live data when the automation runs.
+
+---
+
+## Managing Templates
+
+Go to **Email Templates** in the left sidebar to view, create, edit, and delete your templates.
+
+---
+
+## Creating a Template
+
+1. Go to **Email Templates**
+2. Click **New Template**
+3. Enter a **template name** (for internal reference — not visible to recipients)
+4. Write the **subject line** — you can include variables
+5. Design the **email body** using the rich text editor
+6. Click **Save**
+
+### Using the Rich Text Editor
+
+The email body editor supports:
+- Bold, italic, underline formatting
+- Headings and paragraph styles
+- Bullet and numbered lists
+- Links
+- Tables
+- HTML source editing (for advanced layouts)
+
+### Generate with AI
+
+Click **Generate with AI** to have AffZero write a draft email for you. Describe the purpose and tone:
+
+```
+Write a professional monthly affiliate performance update. 
+Mention their payout and top offer. Friendly but concise.
+```
+
+The AI generates a subject and body with placeholder variable names that you can then adjust.
+
+---
+
+## Using a Template in an Automation
+
+In any [Send Email step](/automations/steps/send-email), click the **Template** dropdown and select your template. The subject and body are loaded into the editor. You can further customize before saving the step.
+
+<Note>
+  Selecting a template copies its content into the step at save time — subsequent edits to the template do not automatically update automations that already use it. Update the step manually if the template changes significantly.
+</Note>
+
+---
+
+## Using Variables in Templates
+
+Include variables anywhere in the subject or body:
+
+```
+Subject: Your payout for {affiliate_name_1_stats_1} is ready
+Body:    Hi {affiliate_name_1_stats_1}, your payout this month is {payout_1_stats_1}.
+```
+
+When you select this template inside an automation step, the Variables Available panel shows you which variables will be available at runtime. Any variable in the template that doesn't exist at runtime will appear as a literal `{variable_name}` in the sent email — so make sure the template variables match what your Pull Stats steps actually produce.
+
+---
+
+## Tips
+
+- **Create one template per communication type** — e.g. "Weekly Performance Email", "Monthly Payout Email", "Invoice Delivery Email"
+- **Keep variable names generic where possible** — `{affiliate_name_1_stats_1}` works if you always structure your Pull Stats step the same way
+- **Test before automating** — use Run Now to confirm the template renders correctly with real data before scheduling

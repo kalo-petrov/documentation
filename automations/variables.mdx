@@ -1,0 +1,186 @@
+---
+title: Variables
+description: Understand how data flows between steps and how to use variables in emails, invoices, and conditions.
+---
+
+## What are Variables?
+
+**Variables** are named placeholders that carry data from one step to the next. When a Pull Stats step fetches your affiliate stats, each cell of data is stored as a variable — for example, `{affiliate_name_1_stats_1}` or `{revenue_2_stats_1}`. You then insert those variables into your email body, invoice template, or condition check, and AffZero replaces them with real values when the automation runs.
+
+---
+
+## Variable Naming Convention
+
+Variables follow a consistent pattern depending on which step produced them:
+
+### Pull Stats Variables
+
+```
+{column_name_row_index_stats_N}
+```
+
+Where:
+- `column_name` — the data column (e.g. `affiliate_name`, `revenue`, `payout`, `clicks`, `conversions`)
+- `row_index` — which row of the results (1-based: first row = 1, second row = 2, etc.)
+- `N` — which Pull Stats step in the automation (first Pull Stats step = 1, second = 2, etc.)
+
+**Examples:**
+
+| Variable | What it contains |
+|---|---|
+| `{affiliate_name_1_stats_1}` | Name of the affiliate in row 1 from the first Pull Stats step |
+| `{revenue_1_stats_1}` | Revenue for row 1, first Pull Stats step |
+| `{payout_2_stats_1}` | Payout for row 2, first Pull Stats step |
+| `{affiliate_name_1_stats_2}` | Affiliate name from row 1 of the **second** Pull Stats step |
+
+### AI Analyze Variables
+
+The AI Analyze step produces **custom named variables** based on your instruction. For example, if you tell the AI to "find the top affiliate by revenue", it might produce:
+
+- `{top_affiliate}` — the name
+- `{top_affiliate_revenue}` — the revenue value
+
+These names are chosen by the AI, so you can copy them from the **Variables Available** panel after running the step.
+
+### Generate Invoice Number Variable
+
+```
+{invoice_number}
+```
+
+The name is user-defined when you configure the step (defaults to `invoice_number`).
+
+### Tracker Action Get Variables
+
+```
+{field_path_action_N}
+```
+
+Where `field_path` is the API response field you selected, and `N` is the step index.
+
+---
+
+## Date Variables
+
+AffZero automatically injects a set of date variables into every automation run. These are available in email bodies, invoice templates, Google Sheets cells, and anywhere else variables are supported — no Pull Stats step required for the "today" and Net date variables.
+
+### Always-available date variables
+
+These are computed fresh at the time the automation runs:
+
+| Variable | Example value | Description |
+|----------|---------------|-------------|
+| `{date_today}` | March 31, 2026 | Today's date in long form |
+| `{date_future_net15}` | April 15, 2026 | 15 calendar days from today (Net 15) |
+| `{date_future_net30}` | April 30, 2026 | 30 calendar days from today (Net 30) |
+
+### Custom NET due dates
+
+You can use any number — not just 15 or 30. Simply write the number directly into the placeholder:
+
+| You type | What it resolves to |
+|----------|---------------------|
+| `{date_future_net7}` | 7 days from today |
+| `{date_future_net45}` | 45 days from today |
+| `{date_future_net60}` | 60 days from today |
+| `{date_future_net90}` | 90 days from today |
+
+**NET terms** are the standard payment convention in affiliate marketing: "Net 30" means the invoice is due 30 days after the invoice date. Use `{date_future_net30}` in your invoice template's due date field and it will always resolve to the correct date for that run.
+
+**Example invoice due date line:**
+```
+Invoice Date: {date_today}
+Payment Due:  {date_future_net30}
+```
+
+### Stats date range variables
+
+These are set when your automation includes a **Pull Stats** step. They reflect the date range of the stats being pulled:
+
+| Variable | Example value | Description |
+|----------|---------------|-------------|
+| `{date_month_year}` | March 2026 | Month and year of the stats period |
+| `{date_long_format}` | March 1, 2026 | Start date in long form |
+| `{date_formatted}` | 03/01/2026 | Start date in your preferred format (MM/DD or DD/MM) |
+| `{date_month}` | March | Month name |
+| `{date_year}` | 2026 | Year |
+| `{date_start_day}` | 01 | Day number of the range start |
+| `{date_end_day}` | 31 | Day number of the range end |
+| `{date_preset}` | Last Month | The date preset label used for the pull |
+
+<Note>
+  All date variables appear in the **Date Variables** section of the Variables Available panel (the blue collapsible block at the bottom of the list).
+</Note>
+
+---
+
+## How to Select Variables (in Pull Stats)
+
+Variables from Pull Stats are only created for the **cells you explicitly select** in the test pull:
+
+1. Run a test pull in the Pull Stats step to fetch a data preview
+2. Click on individual cells in the table to select them
+3. Selected cells are highlighted — they're now registered as variables
+4. You can see all registered variables in the **Variables Available** panel
+
+<Note>
+  Only selected cells become variables. If you don't click a cell, that data won't be available downstream — even if it appears in the test pull table.
+</Note>
+
+---
+
+## Entity Matching — Why Row 1 Stays Row 1
+
+When the automation runs for real (not a test pull), the stats data may come back in a different order depending on how the tracker API returns results on that day. AffZero handles this by **tracking the entity ID** (e.g. the affiliate's internal ID) instead of just the row position.
+
+When AffZero fetches fresh data during a run:
+1. It looks up the entity ID you selected (e.g. Affiliate ID 123)
+2. Finds that entity in the fresh results — regardless of which row it's in
+3. Extracts the variable values from that matched row
+
+This means `{affiliate_name_1_stats_1}` always refers to the same affiliate, not just whoever happens to be in row 1 on that particular day.
+
+<Warning>
+  If an affiliate is not present in the fresh stats (e.g. they had no activity that week), AffZero falls back to the row position from your test pull, and ultimately to the test value you saw when you selected the cell. You'll see a warning in the run log if this happens.
+</Warning>
+
+---
+
+## How to Insert Variables
+
+Variables can be used in:
+
+- **Email subject line** — type `{` to start or use the Variables panel to copy and paste
+- **Email body** — click the variable name in the Variables Available panel to insert it at the cursor position
+- **Invoice HTML template** — type the variable name directly in the HTML
+- **Invoice filename** — include variables like `{affiliate_name_1_stats_1}` in the filename field
+- **Condition Check** — reference variables in condition rules (e.g. `{revenue_1_stats_1}` is greater than `5000`)
+- **Google Sheets** — map variable values to specific columns
+
+---
+
+## Variables Available Panel
+
+Every step that consumes variables (Send Email, Condition Check, Create Invoice, etc.) shows a **Variables Available** panel on the left side of the step editor. This panel lists every variable from all previous data-producing steps.
+
+- Click a variable name to copy it
+- Use the **Insert** button to place it at the current cursor position in the editor
+- Variables from multiple Pull Stats steps are grouped by step for clarity
+
+---
+
+## Multi-Step Variable Example
+
+```
+Step 1: Pull Stats (Affise, By Affiliate, Last 7 Days)
+  → {affiliate_name_1_stats_1}, {revenue_1_stats_1}, {payout_1_stats_1}
+  → {affiliate_name_2_stats_1}, {revenue_2_stats_1}, {payout_2_stats_1}
+
+Step 2: AI Analyze ("Identify top performer and flag any payout < $100")
+  → {top_affiliate}, {low_payout_count}, {low_payout_affiliates}
+
+Step 3: Send Email
+  → Can use ANY variable from Step 1 and Step 2
+  → Subject: "Weekly report — top performer: {top_affiliate}"
+  → Body: "Revenue leader: {top_affiliate} | {affiliate_name_1_stats_1}: {payout_1_stats_1}"
+```

@@ -1,0 +1,94 @@
+---
+title: Get Actions
+description: Retrieve offers, conversions, and other records from your tracking platform by ID or with filters.
+---
+
+## Overview
+
+**Get actions** read data from your tracker and display it inside AffZero. Use them to look up individual records, verify settings, or pull information you need before running an Edit or Add action.
+
+Get actions are available for both **Affise Admin Portal** and **Affise Affiliate Portal** connections, as well as **Binom** (see [Binom Actions](/actions/binom-actions)).
+
+---
+
+## Affise: Get Offers List
+
+Retrieve a paginated list of offers from your Affise network.
+
+**Useful for:**
+- Browsing your full offer catalog
+- Finding offer IDs before editing them
+- Verifying which offers are active
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| Page | No | Page number for pagination (default: 1) |
+| Limit | No | Number of offers per page (default: 25, max: 100) |
+| Status | No | Filter by status: `active`, `stopped`, `suspended` |
+| Search | No | Filter by offer title (partial match) |
+
+**Result:** A table of offers with ID, title, status, advertiser, and payout information.
+
+---
+
+## Affise: Get Offer By ID
+
+Retrieve full details for a single offer using its numeric Affise offer ID.
+
+**Useful for:**
+- Verifying all settings on a specific offer before editing
+- Looking up payout rules, caps, and tracking URLs
+- Finding the offer ID to use as a model for Bulk Offer Upload
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| Offer ID | Yes | The numeric Affise offer ID (e.g. `1234`) |
+
+**Result:** Full offer detail including title, status, tracking URL, advertiser, privacy setting, payout rules, caps, traffic restrictions, and all other configured fields.
+
+<Tip>
+  The full offer detail from Get Offer By ID is used as the **model offer** in [Bulk Offer Upload](/actions/bulk-offer-upload). Load the model offer first to use its settings as defaults for all new offers you create.
+</Tip>
+
+---
+
+## Affise: Get Conversion By ID
+
+Retrieve full details for a single conversion using its action ID, click ID, or conversion ID.
+
+**Useful for:**
+- Investigating a specific conversion before editing its status
+- Verifying conversion data before fraud review
+- Looking up the exact field values you'll need to edit
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| Conversion ID | Yes | The action ID, click ID, or conversion ID from Affise |
+
+**Result:** Full conversion record including offer, affiliate, status, payout, revenue, custom fields, and timestamps.
+
+---
+
+## Affise Affiliate Portal: Get Offers
+
+Affiliate Portal connections have access to two read actions:
+
+### Get Offers List
+Browse the offers available to this affiliate account. Returns the same offer catalog the affiliate sees in their portal — only offers they're enabled on and approved for.
+
+### Get Offer By ID
+Retrieve full details for a specific offer using its ID.
+
+---
+
+## Tips
+
+- **Use Get before Edit** — always retrieve the current state of a record before editing it, so you know the exact field values and can verify your changes went through afterward
+- **Copy offer IDs** — the results panel shows offer IDs prominently; copy them for use in Add, Edit, or Bulk Upload actions
+- **Pagination** — for large networks, use the Page and Limit parameters to page through results rather than loading everything at once

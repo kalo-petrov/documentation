@@ -1,0 +1,83 @@
+---
+title: Add Actions
+description: Create new offers and import conversions into your Affise network directly from AffZero.
+---
+
+## Overview
+
+**Add actions** create new records in your tracking platform. For Affise Admin Portal connections, this means creating new offers and importing conversions — without logging into Affise directly.
+
+<Note>
+  Add actions require an **Affise Admin Portal** connection. They are not available on Affiliate Portal connections. For creating multiple offers at once, use the dedicated [Bulk Offer Upload](/actions/bulk-offer-upload) feature.
+</Note>
+
+---
+
+## Add Offer
+
+Create a single new offer in your Affise network.
+
+**Useful for:**
+- Adding a new advertiser offer to your network
+- Quickly creating a test or internal offer
+- Creating an offer with specific settings not easily copied from an existing one
+
+### Required fields
+
+| Field | Description |
+|---|---|
+| **Title** | The offer name as it will appear in Affise |
+| **Tracking URL** | The destination URL with Affise macros, e.g. `https://track.example.com?aff_id={affiliate_id}&offer_id={offer_id}` |
+| **Advertiser ID** | The numeric ID of the advertiser in your Affise network |
+
+### Optional fields
+
+Additional fields let you configure status, privacy, payout rules, traffic restrictions, tracking settings, and more. All optional fields default to Affise's standard defaults if left blank.
+
+| Section | Fields |
+|---|---|
+| **Basic** | Status, Privacy, Is Top, External ID, Tags, Notes, Affiliate Note |
+| **URLs & Tracking** | Preview URL, Trafficback URL, Tracking Domain, Redirect Type, Cross-Postback URL, Parallel URL |
+| **Traffic Restrictions** | Country, OS, Device type, Connection type |
+| **Schedule & Caps** | Stop Date, Hold Period |
+| **Descriptions** | English description, KPI |
+
+### After creation
+
+Once the offer is created, Affise returns the new offer's ID. You can then:
+- Use **Enable Affiliate on Offer** to connect specific affiliates
+- Use **Generate Tracking Link** to produce affiliate-specific tracking URLs
+- Use **Get Offer By ID** to verify all settings were saved correctly
+
+---
+
+## Import Conversions
+
+Import one or multiple conversions manually into your Affise network. This is useful when conversions were recorded outside Affise (e.g. in a CRM or payment system) and need to be added to the network retroactively.
+
+### When to use
+
+- Manually crediting a conversion that was missed by a postback
+- Importing offline conversions
+- Adding conversions from a partner who uses a different tracking system
+
+### Parameters
+
+| Field | Required | Description |
+|---|---|
+| **Offer ID** | Yes | The Affise offer ID to associate this conversion with |
+| **Affiliate ID (PID)** | Yes | The affiliate who should receive credit |
+| **Click ID** | No | The Affise click ID if available (links to the original click) |
+| **Action ID** | No | A custom conversion identifier |
+| **Goal** | No | The conversion goal (e.g. `1` for the default goal) |
+| **IP** | No | The IP address of the converting user |
+| **Status** | No | `confirmed`, `pending`, or `declined` |
+| **Payout** | No | Override the default payout amount |
+| **Custom Fields** | No | Custom field 1, 2, 3 for additional metadata |
+| **Created At** | No | Timestamp for the conversion (defaults to now) |
+
+You can import multiple conversions in a single request by adding rows in the form.
+
+<Warning>
+  Imported conversions cannot be undone through AffZero. If you import a conversion by mistake, you'll need to edit or delete it directly in Affise. Always double-check offer ID and affiliate ID before executing.
+</Warning>

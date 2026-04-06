@@ -1,0 +1,88 @@
+---
+title: Generate Invoice Number Step
+description: Use AI to automatically identify the next invoice number in your series.
+---
+
+## What it does
+
+The **Generate Invoice Number** step uses AI to analyze your existing invoice number pattern and generate the next number in the sequence. It understands common formats — sequential numbers, year-based prefixes, zero-padded series, alphanumeric formats — and continues the pattern automatically.
+
+This step produces **one variable** (the next invoice number) that you can use in Create Invoice steps, email bodies, or any downstream step.
+
+Each run of this step consumes **one AI call**.
+
+<Info>
+  **Global sequence available.** For most users, the better option is to configure the [global Invoice Numbering setting](/invoices/invoice-numbering) under Invoices → Invoice Numbering. That makes `{invoice_number}` available automatically in **every** automation without needing this step. Use this step when you need a **secondary** or **automation-specific** sequence alongside the global one.
+</Info>
+
+---
+
+## When to use it
+
+- You need a **separate** invoice sequence for a specific automation (e.g. a different prefix for different advertisers)
+- You want the sequence to be self-contained within one automation, independent of the global sequence
+- You haven't configured the global Invoice Numbering setting yet
+
+---
+
+## Configuration
+
+### Examples
+
+Paste **2 to 4 recent invoice numbers** from your own records. The AI analyzes the pattern from these examples.
+
+**Example inputs:**
+
+| If your format is... | Enter examples like... |
+|---|---|
+| Simple sequential | `INV-001`, `INV-002`, `INV-003` |
+| Year + sequence | `INV-2026-001`, `INV-2026-002` |
+| Year + zero-padded | `2026-0045`, `2026-0046`, `2026-0047` |
+| Custom prefix | `ACME/2026/0010`, `ACME/2026/0011` |
+
+### Pattern Description (optional)
+
+Add a plain-English description of the pattern for extra clarity, especially for complex formats:
+
+```
+Year followed by a 4-digit zero-padded sequence. Resets to 0001 on January 1st each year.
+```
+
+### Regex (optional)
+
+If you need the generated number to match a specific format exactly, enter a regex pattern:
+
+```
+INV-\d{4}-\d{3}
+```
+
+The AI will ensure its output matches this regex.
+
+### Variable Name
+
+The name to use for the generated number variable. Defaults to `invoice_number`. You can customize it if you have multiple Generate Invoice Number steps in one automation (e.g. `invoice_number_a`, `invoice_number_b`).
+
+The variable will be available as `{invoice_number}` (or your custom name) in all subsequent steps.
+
+---
+
+## Example Output
+
+Given examples `INV-2026-044`, `INV-2026-045`, `INV-2026-046`:
+
+```
+{invoice_number} → "INV-2026-047"
+```
+
+---
+
+## Tips
+
+- **Always provide at least 2 examples** — the AI needs a pattern to follow, not just one number
+- **Include context about year resets** in the Pattern Description if your series resets annually
+- **Test before scheduling** — run the step manually first to confirm it produces the expected output
+- If you have an existing "last used" invoice number that isn't in the examples, mention it in the Pattern Description: "Last used number was INV-2026-046"
+
+<Note>
+  The AI generates the *next logical* number based on the pattern — it doesn't check your records or database to ensure uniqueness. Make sure you're feeding it the most recent example numbers each time, or that your automation runs sequentially (not in parallel) to avoid duplicate numbers.
+</Note>

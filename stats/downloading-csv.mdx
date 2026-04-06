@@ -1,0 +1,34 @@
+---
+title: Downloading CSV
+description: Export your stats results to a spreadsheet with one click.
+---
+
+## How to Export Stats as CSV
+
+After pulling stats on the **Stats** page:
+
+1. Run your query (select connection, stat type, date range, and click **Pull Stats**)
+2. Once results appear, click the **Download CSV** button above the results table
+3. Your browser will download a `.csv` file containing all rows and columns from the table
+
+---
+
+## What's Included in the Export
+
+The CSV includes every column returned by your tracking platform for the selected stat type and date range. This matches exactly what's visible in the on-screen table — no data is added or removed.
+
+Column headers use the platform's native field names (e.g. `affiliate_name`, `revenue`, `payout`, `clicks`, `conversions`).
+
+---
+
+## Tips for Working with the Export
+
+- **Open in Excel or Google Sheets** — the file uses standard comma-separated formatting and opens cleanly in any spreadsheet application
+- **All rows are included** — the download is not paginated; you always get the full result set
+- **Decimal formatting** — revenue and payout values use period (`.`) as the decimal separator regardless of your locale settings
+
+---
+
+<Tip>
+  Need to send this data to affiliates automatically? Use a [Pull Stats step](/automations/steps/pull-stats) in an automation to pull the same data on a schedule and insert it into personalized emails — no manual exporting required.
+</Tip>

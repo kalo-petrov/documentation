@@ -1,0 +1,82 @@
+---
+title: Filter Data Step
+description: Remove rows from a dataset based on rules before passing data to later steps.
+---
+
+## What it does
+
+The **Filter Data** step takes the output of a Pull Stats step and removes rows that don't match your criteria. This reduces the dataset to only the rows you care about, so that variables from later rows don't accidentally reference affiliates or offers you wanted to exclude.
+
+---
+
+## When to use it
+
+- Remove affiliates with zero conversions before including them in an email
+- Keep only campaigns above a certain revenue threshold
+- Exclude specific affiliates (e.g. internal test accounts) from the results
+- Work with only the top N rows by a specific column
+
+---
+
+## How it's different from Condition Check
+
+| | Filter Data | Condition Check |
+|---|---|---|
+| **What it operates on** | Rows in a dataset | Variable values |
+| **What happens on failure** | Matching rows are removed; automation continues | Automation stops entirely |
+| **Use case** | Narrow down a list | Gate the whole automation |
+
+Use Filter Data to clean up your dataset. Use Condition Check to stop the automation if something is wrong.
+
+---
+
+## Configuration
+
+### Source Step
+
+Select which Pull Stats step's data to filter. This lets you apply different filters to different datasets if you have multiple Pull Stats steps.
+
+### Filter Rules
+
+Each rule compares a column value to a threshold:
+
+| Operator | Meaning |
+|---|---|
+| **greater than** | Keep rows where this column's value is above the threshold |
+| **less than** | Keep rows where this column's value is below the threshold |
+| **equal to** | Keep rows where this column matches exactly |
+| **not equal to** | Keep rows where this column doesn't match |
+| **contains** | Keep rows where text in this column includes the phrase |
+
+### AND / OR Logic
+
+Like Condition Check, you can apply all rules (AND) or any one rule (OR) to determine which rows survive.
+
+---
+
+## Example
+
+**Keep only affiliates with more than 10 conversions and revenue above $500:**
+
+```
+conversions > 10
+revenue > 500
+[All rules must match]
+```
+
+**Remove internal test accounts:**
+```
+affiliate_name does not contain "test"
+affiliate_name does not contain "internal"
+[All rules must match]
+```
+
+---
+
+## After Filtering
+
+The variables from the filtered dataset continue to reference rows by their original row indices (1, 2, 3...). After filtering, row indices are re-numbered so that the first surviving row becomes row 1. Variables like `{affiliate_name_1_stats_1}` will refer to the first row that passed the filter.
+
+<Warning>
+  If all rows are filtered out, subsequent steps have no data to work with. Consider adding a Condition Check after the Filter Data step to stop the automation gracefully if the filtered dataset is empty.
+</Warning>

@@ -1,0 +1,67 @@
+---
+title: Connections Overview
+description: Connect your tracking platforms so AffZero can pull live affiliate data.
+---
+
+## What is a Connection?
+
+A **connection** is a saved set of API credentials for one external platform. Once configured, AffZero uses the connection to fetch stats from your tracker on demand — either manually on the Stats page or automatically when an automation runs.
+
+You create a connection once and reuse it across as many automations as you need.
+
+## Supported Platforms
+
+<CardGroup cols={2}>
+  <Card title="Affise" icon="link" href="/connections/affise">
+    Connect via Admin Portal or Affiliate Portal API. Supports stats by affiliate, offer, advertiser, and date.
+  </Card>
+  <Card title="Binom" icon="link" href="/connections/binom">
+    Self-hosted tracker. Connect using your Binom domain and API key.
+  </Card>
+  <Card title="CAKE" icon="link" href="/connections/cake">
+    Connect via the Affiliate API using your CAKE network domain and API key.
+  </Card>
+  <Card title="Demo" icon="flask" href="/connections/demo">
+    Built-in demo connection with sample data. No credentials needed — perfect for testing.
+  </Card>
+</CardGroup>
+
+<Note>
+  **Everflow** and **Voluum** integrations are coming soon. If you need one urgently, contact us.
+</Note>
+
+## Connection Types (Admin vs. Affiliate Portal)
+
+Some platforms — particularly **Affise** — have two distinct API access levels:
+
+| Type | What it accesses | When to use it |
+|---|---|---|
+| **Admin Portal** | Full network data — all affiliates, all offers, all advertisers | Network owners or managers with admin access |
+| **Affiliate Portal** | Only the data visible to a specific affiliate | When you're connecting as an affiliate or sub-affiliate |
+
+Most AffZero users add an **Admin Portal** connection since it gives access to network-wide stats.
+
+## How to Add a Connection
+
+1. Go to **Connections** in the left sidebar
+2. Click **Add Connection**
+3. Select your platform
+4. Fill in the required credentials (see the platform-specific pages for where to find these)
+5. Click **Save**
+
+AffZero will immediately verify the connection is working. If there's an error, check that the API key and base URL are correct.
+
+## Connection Limits by Plan
+
+| Plan | Max Connections |
+|---|---|
+| Starter | 1 |
+| Pro | 3 |
+| Pro+ | 8 |
+| Business | 10 |
+
+The Demo connection does **not** count toward this limit.
+
+## Editing or Deleting a Connection
+
+Click the **...** menu next to any connection on the Connections page to edit its credentials or delete it. Deleting a connection does not delete the automations that use it, but those automations will fail if they try to run without a valid connection.

@@ -1,0 +1,89 @@
+---
+title: Create Invoice Step
+description: Generate a PDF invoice from an HTML or Google Doc template with variables filled in automatically.
+---
+
+## What it does
+
+The **Create Invoice** step takes one of your invoice templates and generates a PDF with all variable placeholders replaced by real values from previous steps. The resulting PDF can then be:
+
+- Attached to an email in a subsequent Send Email step
+- Saved to a Google Drive folder
+
+---
+
+## When to use it
+
+- Generating affiliate payout invoices at the end of each month
+- Creating automated billing documents with live revenue data
+- Producing branded payment records to send alongside performance emails
+
+---
+
+## Template Types
+
+AffZero supports two types of invoice templates:
+
+### HTML Templates
+
+Custom HTML and CSS that you design in the invoice template editor. Variables like `{affiliate_name_1_stats_1}` are placed directly in the HTML and are substituted at generation time.
+
+HTML templates offer full design control — custom fonts, colors, tables, and layouts.
+
+See [HTML Invoice Templates](/invoices/html-templates) for how to build one.
+
+### Google Doc Templates
+
+A Google Doc connected to your Google account. AffZero substitutes variable placeholders in the document and exports it as a PDF.
+
+Google Doc templates are useful if your team already manages invoice layouts in Google Docs or prefers a word-processor-style editing experience.
+
+See [Google Doc Templates](/invoices/google-doc-templates) for setup instructions.
+
+---
+
+## Configuration
+
+### Template
+
+Select the invoice template to use. All templates you've created under [Invoices](/invoices/overview) appear here.
+
+### Invoice Filename
+
+Enter a filename for the generated PDF. You can use variables to create dynamic filenames:
+
+```
+Invoice_{affiliate_name_1_stats_1}_{invoice_number}
+```
+
+This produces a file like `Invoice_Acme Media_INV-2026-047.pdf`.
+
+### Save to Google Drive (optional)
+
+Toggle this on to save the generated PDF to a specified Google Drive folder. You'll need a [Google Drive connection](/connections/overview) set up first.
+
+Enter the folder name or path where the file should be saved.
+
+---
+
+## Using Variables in Invoice Templates
+
+Any variable available at the point the Create Invoice step runs can be used inside the template. This includes:
+
+- Pull Stats variables: `{affiliate_name_1_stats_1}`, `{revenue_1_stats_1}`, etc.
+- AI Analyze variables: `{top_affiliate}`, `{total_payout}`, etc.
+- Invoice number: `{invoice_number}` from a Generate Invoice Number step
+
+Place the variable exactly as written (with curly braces) in your HTML or Google Doc template, and AffZero will substitute it at generation time.
+
+---
+
+## Attaching the Invoice to an Email
+
+After the Create Invoice step runs, the PDF is available to a subsequent [Send Email step](/automations/steps/send-email). In the Send Email step, toggle **Attach Invoice** and select the Create Invoice step — the generated PDF will be attached automatically.
+
+---
+
+## Generated Invoices List
+
+All generated PDFs are stored and viewable under **Invoices → Generated** in the main menu. You can view, download, or delete them from there.

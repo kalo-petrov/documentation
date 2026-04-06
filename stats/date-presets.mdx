@@ -1,0 +1,63 @@
+---
+title: Date Presets
+description: Understand how AffZero calculates date ranges and why timezone matters.
+---
+
+## What are Date Presets?
+
+Instead of manually entering a start and end date every time, AffZero offers **date presets** — named ranges that are calculated fresh each time a query runs. This means an automation set to "Last 7 days" will always pull the past 7 days, no matter when it runs.
+
+---
+
+## Available Presets
+
+| Preset | What it covers |
+|---|---|
+| **Today** | Midnight to now, current day |
+| **Yesterday** | Full previous calendar day |
+| **Last 7 Days** | The 7 days ending yesterday (does not include today) |
+| **Last 14 Days** | The 14 days ending yesterday |
+| **Last 30 Days** | The 30 days ending yesterday |
+| **This Week** | Monday through today (current week) |
+| **Last Week** | Full previous Monday–Sunday week |
+| **This Month** | First of the current month through today |
+| **Last Month** | Full previous calendar month |
+| **This Year** | January 1 through today |
+| **Custom Range** | You pick the exact start and end dates |
+
+<Note>
+  "Last 7 Days" and similar presets end on **yesterday**, not today. This ensures you're always querying complete days with finalized conversion data, rather than a partial day that may still be updating.
+</Note>
+
+---
+
+## Why Timezone Matters
+
+Date presets are calculated relative to **midnight in your selected timezone**. This is important because:
+
+- "Yesterday" in New York (UTC-5) is a different 24-hour window than "Yesterday" in Berlin (UTC+1)
+- If you're running an automation for affiliates in different timezones, the dates in the email should match what they see in their own tracker
+
+**Example:** If your Affise instance is set to Eastern Time and you set your automation's timezone to Eastern Time, "Last 7 Days" will correctly map to the same 7-day window visible in Affise's own reporting.
+
+### How to set the timezone
+
+On the Stats page and inside the Pull Stats automation step, there is a **Timezone** dropdown. Select the timezone that matches your tracking platform's timezone for consistent results.
+
+<Warning>
+  Mismatched timezones are one of the most common causes of "wrong numbers" in stats. If your AffZero data doesn't match what your tracker shows, check that the timezones match.
+</Warning>
+
+---
+
+## Custom Date Ranges in Automations
+
+When using the **Pull Stats** automation step, you can also choose a custom date range. However, for automations that run on a schedule, **date presets are strongly recommended** — a custom date range is fixed at the time you save the automation and won't update as time passes.
+
+Use custom ranges only for one-off automations or when you need a specific historical period.
+
+---
+
+## How Dates are Displayed in Stats Results
+
+Dates in the results table are shown in the format returned by your tracking platform. They are not reformatted by AffZero. If you see dates in an unexpected format, this reflects how your tracker API returns date strings.

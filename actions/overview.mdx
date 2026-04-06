@@ -1,0 +1,83 @@
+---
+title: Actions Overview
+description: Read, create, and update records directly in your tracking platform — offers, conversions, campaigns, and more — without leaving AffZero.
+---
+
+## What are Actions?
+
+**Actions** let you interact with your tracking platform's API beyond just pulling stats. Where the Stats page is read-only reporting, Actions let you actually **do things** — create offers, edit conversions, enable affiliates, update campaigns, and more.
+
+Everything happens inside AffZero. You select a connection, choose what you want to do, fill in the parameters, and AffZero makes the API call to your tracker on your behalf and shows you the result.
+
+---
+
+## Who Should Use Actions?
+
+Actions are designed for network managers and operations teams who regularly perform tasks like:
+
+- Creating new offers in bulk across multiple connections
+- Editing conversion statuses after fraud review
+- Enabling affiliates on offers without logging into the tracker
+- Updating campaign costs or campaign routing in Binom
+- Generating affiliate tracking links programmatically
+
+You don't need to be a developer — the forms guide you through each required field with clear labels.
+
+---
+
+## How to Use Actions
+
+1. Go to **Actions** in the left sidebar
+2. Select a **Connection** from the dropdown (your Affise or Binom connection)
+3. The available actions appear, grouped and color-coded by method:
+   - **Get** (blue) — read data
+   - **Add** (green) — create new records
+   - **Edit** (amber) — update existing records
+4. Click any action to expand its form
+5. Fill in the required fields and click **Execute**
+6. Results appear immediately below the form
+
+---
+
+## Platform Coverage
+
+| Platform | Actions Available |
+|---|---|
+| **Affise (Admin Portal)** | Offers, conversions, affiliate management, tracking links |
+| **Affise (Affiliate Portal)** | Get offers list, get offer by ID |
+| **Binom** | Campaigns, landing pages, offers, rotations, costs |
+| **CAKE** | Coming soon |
+| **Demo** | Not available (read-only demo data) |
+
+---
+
+## Actions vs. Tracker Action Steps
+
+Actions in this section are **manual, on-demand** operations — you run them when you need them, directly from the Actions page.
+
+For **automated** tracker operations that run on a schedule, use the [Tracker Action steps](/automations/steps/tracker-actions) in the automation builder. The two are complementary:
+
+- Use manual Actions for day-to-day operations (creating offers, editing conversions)
+- Use Tracker Action steps to automate recurring operations (e.g. automatically update costs every week)
+
+---
+
+## Available Action Pages
+
+<CardGroup cols={2}>
+  <Card title="Get Actions" icon="magnifying-glass" href="/actions/get-actions">
+    Retrieve offers, conversions, and campaign data by ID or with filters.
+  </Card>
+  <Card title="Add Actions" icon="plus" href="/actions/add-actions">
+    Create new offers and import conversions into your tracker.
+  </Card>
+  <Card title="Edit Actions" icon="pen" href="/actions/edit-actions">
+    Update offers, conversions, affiliate access, and campaign settings.
+  </Card>
+  <Card title="Bulk Offer Upload" icon="layer-group" href="/actions/bulk-offer-upload">
+    Create dozens of offers at once from text or CSV using AI parsing.
+  </Card>
+  <Card title="Binom Actions" icon="server" href="/actions/binom-actions">
+    Manage Binom campaigns, landing pages, offers, and rotations.
+  </Card>
+</CardGroup>

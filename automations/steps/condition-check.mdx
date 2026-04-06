@@ -1,0 +1,94 @@
+---
+title: Condition Check Step
+description: Stop the automation if data doesn't meet your criteria — like a revenue threshold or minimum payout.
+---
+
+## What it does
+
+The **Condition Check** step evaluates one or more conditions against variable values from previous steps. If all conditions pass, the automation continues to the next step. If any condition fails, **the automation stops** — no further steps run.
+
+This is useful for creating "guardrail" automations that only send emails or generate invoices when the numbers actually warrant it.
+
+---
+
+## When to use it
+
+- Only send an affiliate email if their payout is above a minimum threshold
+- Stop the automation if a campaign's conversion rate drops below a target
+- Skip invoice generation if total revenue is zero
+- Trigger different downstream flows based on whether a metric is above or below a value
+
+---
+
+## Configuration
+
+### Conditions
+
+Each condition compares a variable to a value using an operator:
+
+| Operator | Meaning |
+|---|---|
+| **is greater than** | Variable value > threshold |
+| **is less than** | Variable value < threshold |
+| **is equal to** | Variable value exactly matches |
+| **is not equal to** | Variable value does not match |
+| **contains** | Variable value includes this text (text fields) |
+| **does not contain** | Variable value does not include this text |
+
+### Adding conditions
+
+1. Click **Add Condition**
+2. Select a variable from the dropdown (all variables from previous steps are listed)
+3. Choose an operator
+4. Enter the comparison value
+
+### AND vs. OR Logic
+
+- **All conditions must pass (AND)** — the automation continues only if every single condition is true
+- **Any condition must pass (OR)** — the automation continues if at least one condition is true
+
+Choose your logic mode in the condition group header.
+
+---
+
+## Example Use Cases
+
+**Only email if payout is above $100:**
+```
+{payout_1_stats_1} is greater than 100
+```
+
+**Stop if there are no conversions:**
+```
+{conversions_1_stats_1} is greater than 0
+```
+
+**Only proceed if affiliate name matches a specific partner:**
+```
+{affiliate_name_1_stats_1} is equal to "Acme Affiliates"
+```
+
+**Stop if revenue is zero OR conversions are zero (AND logic, inverted):**
+```
+{revenue_1_stats_1} is greater than 0
+{conversions_1_stats_1} is greater than 0
+[All conditions must pass]
+```
+
+---
+
+## What Happens When a Condition Fails
+
+When a condition fails, the automation run is marked as **stopped by condition** in Runs & Logs. This is not an error — it's the expected behavior. You'll see a clear message indicating which condition was not met and what the actual value was.
+
+<Note>
+  A condition stop is recorded as a "completed with condition stop" run, not a failure. This keeps your run history clean and distinguishes intentional stops from actual errors.
+</Note>
+
+---
+
+## Tips
+
+- Place Condition Check steps **after** Pull Stats and before Send Email or Create Invoice — this way you don't send emails when there's no meaningful data
+- Use conditions to protect against edge cases: no data, zero revenue, or test affiliates accidentally included in the results
+- You can have multiple Condition Check steps at different points in the workflow for multi-stage gating

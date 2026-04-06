@@ -1,0 +1,112 @@
+---
+title: Email Services
+description: Configure how AffZero sends emails — via Gmail SMTP, Resend, or SendGrid.
+---
+
+## Overview
+
+AffZero needs an email service configured before it can send any emails. You have three options, each suited to different scales and technical comfort levels.
+
+Go to **Providers → Email** to set up or manage your email services.
+
+---
+
+## Choosing the Right Service
+
+| | Gmail SMTP | Resend | SendGrid |
+|---|---|---|---|
+| **Setup difficulty** | Easy | Easy | Easy |
+| **Volume** | Low (Gmail sending limits apply) | Medium–High | High |
+| **Best for** | Small teams, getting started | Growing teams | Enterprise, high volume |
+| **Cost** | Free (uses your Gmail) | Free tier, then paid | Free tier (100/day), then paid |
+| **Tracking** | No | Open/click tracking | Open/click tracking |
+| **Accounts per plan** | 1–3 Gmail accounts | 1 | 1 |
+
+---
+
+## Gmail SMTP
+
+Gmail SMTP sends emails directly from one of your Gmail addresses using Google's mail servers. No external service required.
+
+### Setup
+
+1. Go to **Providers → Gmail & Drive**
+2. Click **Connect Gmail Account**
+3. Sign in with your Google account and grant permission
+4. Your Gmail address is now available as a "Send From" account in Send Email steps
+
+### Notes
+
+- You can connect up to **3 Gmail accounts** depending on your plan (Starter: 1, Pro+: up to 3)
+- Gmail has daily sending limits (~500 emails/day for regular Gmail, 2,000/day for Google Workspace accounts)
+- Emails are sent from your actual Gmail address — recipients see your real address in the From field
+
+<Warning>
+  AffZero encrypts your Gmail credentials at rest using AES-256-GCM encryption. However, if you change your Google password or revoke app access, you'll need to reconnect the account.
+</Warning>
+
+---
+
+## Resend
+
+[Resend](https://resend.com) is a developer-friendly email API designed for transactional emails. It offers a free tier and excellent deliverability.
+
+### Setup
+
+1. Create an account at [resend.com](https://resend.com)
+2. In Resend, go to **API Keys** and create a new API key
+3. Verify your sending domain in Resend (add the DNS records Resend provides to your domain)
+4. In AffZero, go to **Providers → Email** and select **Resend**
+5. Paste your Resend API key and enter the "From" address (must use your verified domain)
+6. Click **Save**
+
+### Notes
+
+- Domain verification is required — you can't send from a Gmail address via Resend; you need a custom domain (e.g. `noreply@yourcompany.com`)
+- Resend's free tier allows 3,000 emails/month and 100/day
+- Paid plans start at $20/month for higher volumes
+
+---
+
+## SendGrid
+
+[SendGrid](https://sendgrid.com) by Twilio is an enterprise email platform with strong deliverability, detailed analytics, and high sending limits.
+
+### Setup
+
+1. Create an account at [sendgrid.com](https://sendgrid.com)
+2. In SendGrid, go to **Settings → API Keys** and create a key with **Mail Send** permissions
+3. Verify your sending domain in SendGrid (Sender Authentication)
+4. In AffZero, go to **Providers → Email** and select **SendGrid**
+5. Paste your SendGrid API key and enter the "From" address (must use your verified sender)
+6. Click **Save**
+
+### Notes
+
+- SendGrid's free tier includes 100 emails/day
+- Paid plans scale to millions of emails/month
+- SendGrid provides open rate and click tracking, unsubscribe management, and detailed delivery logs
+
+---
+
+## Using Multiple Email Accounts
+
+If you have multiple Gmail SMTP accounts connected, the **Send From** dropdown in the Send Email step shows all of them. You can send different automations from different addresses — for example, one address for affiliate communications, another for billing.
+
+Resend and SendGrid each support one configuration at a time.
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Email not delivered — Gmail SMTP">
+    Check that your Google account hasn't revoked AffZero's access. Go to your Google Account → Security → Third-party apps and verify AffZero is listed. Also check Gmail's daily sending limits.
+  </Accordion>
+  <Accordion title="Email not delivered — Resend or SendGrid">
+    Verify that your sending domain's DNS records are correctly configured and verified in Resend/SendGrid. Check the API key has the correct permissions. Look at the delivery logs in your Resend or SendGrid dashboard for bounce or rejection reasons.
+  </Accordion>
+  <Accordion title="Emails landing in spam">
+    This is usually a domain reputation issue. Make sure you've completed domain verification (SPF, DKIM, DMARC records) in your email service. Avoid spam trigger words in subject lines.
+  </Accordion>
+</AccordionGroup>

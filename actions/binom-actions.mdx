@@ -1,0 +1,190 @@
+---
+title: Binom Actions
+description: Manage campaigns, landing pages, offers, rotations, and traffic costs in your Binom tracker.
+---
+
+## Overview
+
+AffZero provides a full suite of actions for **Binom** self-hosted trackers, covering campaigns, landing pages, offers, and rotations. These let you view and update your Binom configuration without logging into the Binom interface directly.
+
+All Binom actions require a configured [Binom connection](/connections/binom).
+
+---
+
+## Campaign Actions
+
+### Get Campaign
+
+Retrieve the basic details of a campaign by its numeric Binom campaign ID.
+
+**Returns:** Campaign name, domain, redirect type, postback settings, and status.
+
+**Parameters:** Campaign ID (required)
+
+### Get Campaign (Full)
+
+Retrieve the complete campaign configuration including all routing paths and rules.
+
+**Returns:** Everything from Get Campaign, plus the full path structure — all landings, offers, weights, and routing conditions assigned to each path.
+
+**Use this when:** You need to understand the full traffic routing logic before making changes, or when troubleshooting an unexpected routing behavior.
+
+**Parameters:** Campaign ID (required)
+
+### Get Campaign Path
+
+Retrieve a complete campaign path (its landing pages and offers) by looking up the campaign by name.
+
+**Returns:** The path structure for the matching campaign — landings, offers, weights.
+
+**Parameters:** Campaign name (required, partial match supported)
+
+### Edit Campaign
+
+Update a campaign's core settings.
+
+**Editable fields:**
+
+| Field | Description |
+|---|---|
+| **Name** | Campaign display name |
+| **Domain** | The tracking domain for this campaign |
+| **Redirect Type** | `302`, `meta`, `js`, or `frame` |
+| **Postback URL** | Server-to-server postback URL |
+| **Cloaking** | Enable or disable cloaking for this campaign |
+
+**Parameters:** Campaign ID (required) + any fields to update
+
+---
+
+## Landing Page Actions
+
+### Get Landing Page
+
+Retrieve details for a specific landing page by its Binom ID.
+
+**Returns:** Landing page name, URL, weight, and status.
+
+**Parameters:** Landing page ID (required)
+
+### Get All Landing Pages
+
+Retrieve a list of all active landing pages in your Binom tracker.
+
+**Returns:** Full list with IDs, names, and URLs — useful for finding the ID of a landing page before editing it.
+
+**Parameters:** None
+
+### Edit Landing Page
+
+Update the name of an existing landing page.
+
+**Parameters:** Landing page ID (required), new name (required)
+
+---
+
+## Offer Actions
+
+### Get Offer
+
+Retrieve details for a specific offer in Binom by its ID.
+
+**Returns:** Offer name, URL, geo targeting, group, and payout settings.
+
+**Parameters:** Offer ID (required)
+
+### Get All Offers
+
+Retrieve a list of all active offers in your Binom tracker.
+
+**Returns:** Full list with IDs, names, and URLs.
+
+**Parameters:** None
+
+### Edit Offer
+
+Update an offer's settings in Binom.
+
+**Editable fields:**
+
+| Field | Description |
+|---|---|
+| **Name** | Offer display name |
+| **URL** | The offer destination URL |
+| **Geo** | Country targeting (comma-separated country codes) |
+| **Group** | Offer group for organization |
+| **Auto-payout** | Enable or set automatic payout settings |
+
+**Parameters:** Offer ID (required) + any fields to update
+
+---
+
+## Rotation Actions
+
+### Get Full Rotation
+
+Retrieve the complete configuration of a rotation (Binom's traffic distribution feature) including all paths and routing rules.
+
+**Returns:** Rotation name, type, all paths with their landings, offers, weights, and conditions.
+
+**Parameters:** Rotation ID (required)
+
+### Edit Rotation
+
+Update a rotation's name, type, and routing paths.
+
+**Editable fields:**
+
+| Field | Description |
+|---|---|
+| **Name** | Rotation display name |
+| **Type** | Distribution type (`random`, `weight`, or `sequential`) |
+| **Paths** | Add, remove, or reweight routing paths |
+
+**Parameters:** Rotation ID (required) + fields to update
+
+### Manage Rotation (Live Editor)
+
+The most interactive Binom action — a live editor for adjusting an active rotation's traffic distribution without rebuilding it from scratch.
+
+**What you can do:**
+- Load a rotation by ID
+- **Pause or enable individual offers** within any path with a single click
+- **Adjust weight splits** between paths in real time (e.g. shift 80% to a top performer)
+- See the updated distribution instantly
+
+**Use this for:**
+- Real-time optimization of a running campaign
+- Quickly pausing a low-performing offer without touching anything else
+- Shifting budget/weight to a top performer
+
+**Parameters:** Rotation ID (required) to load the editor
+
+---
+
+## Update Costs
+
+Update the traffic costs for a Binom campaign by time period.
+
+**Useful for:**
+- Recording ad spend after importing traffic
+- Keeping ROI calculations accurate in Binom reporting
+- Updating costs after reconciling a traffic source invoice
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|
+| **Campaign ID** | Yes | The numeric Binom campaign ID |
+| **Period** | Yes | The date or date range to update costs for |
+| **Cost** | Yes | Total cost for the period, or CPC (cost per click) |
+| **Cost Type** | Yes | `total` (fixed amount) or `cpc` (per-click rate) |
+
+---
+
+## Tips for Binom Users
+
+- **Get before Edit** — always retrieve the current state of a campaign, landing, or rotation before editing to confirm the ID and current values
+- **Get All Landing Pages / Get All Offers** are useful reference actions — run them first to build a mental map of your tracker's contents
+- **Manage Rotation** is best used during active traffic periods when you want to optimize without pausing the campaign — changes take effect immediately in Binom
+- **Update Costs** integrates with Binom's ROI reporting — keep costs updated to get accurate profit/loss data in your Binom stats

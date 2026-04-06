@@ -1,0 +1,103 @@
+---
+title: Runs & Logs
+description: Monitor every automation execution — see step-by-step output, variable values, emails sent, and errors.
+---
+
+## What is Runs & Logs?
+
+**Runs & Logs** is your complete history of automation executions. Every time an automation runs — whether triggered by a schedule or manually via Run Now — a detailed record is created here.
+
+Go to **Runs & Logs** in the left sidebar to access it.
+
+---
+
+## What You Can See
+
+For each run, you can view:
+
+- **Automation name** and when it ran
+- **Status** — Completed, Failed, Stopped by Condition, or Pending Approval
+- **Duration** — how long the run took
+- **Step-by-step log** — expand any run to see the output of each individual step
+- **Variable values** — what values were resolved for each variable
+- **Emails sent** — recipient, subject, and send time for each email dispatched
+- **Error details** — if a step failed, the exact error message and context
+
+---
+
+## Run Statuses
+
+| Status | Meaning |
+|---|---|
+| **Completed** | All steps ran successfully |
+| **Failed** | One or more steps encountered an error and the automation stopped |
+| **Stopped by Condition** | A Condition Check step evaluated as false and halted execution — this is expected behavior, not an error |
+| **Pending Approval** | A Send for Approval step is waiting for manual review |
+| **Running** | The automation is currently executing |
+
+---
+
+## Reading the Step Log
+
+Click on any run to expand it and see the step-by-step log. Each step shows:
+
+- Whether it succeeded or failed
+- Key outputs (e.g. how many rows were returned by a Pull Stats step, which variables were set)
+- Any warnings (e.g. an affiliate was not found in the fresh data and a fallback was used)
+- The exact error message if the step failed
+
+This is the primary tool for debugging automations that aren't working as expected.
+
+---
+
+## Common Issues and How to Diagnose Them
+
+### "Pull Stats: 0 rows returned"
+
+The tracker API returned no data for the selected date range. Check:
+- Is there actual data in that date range in your tracker?
+- Is the timezone set correctly in the Pull Stats step?
+- Is the connection still valid (try pulling stats manually on the Stats page)?
+
+### "Variable not found"
+
+A Send Email or Create Invoice step referenced a variable that doesn't exist. Check:
+- Did you select that cell in the Pull Stats test pull?
+- Is the variable name spelled exactly right (case-sensitive)?
+- Did a Filter Data or Condition Check step remove all rows before the variable could be used?
+
+### "Email send failed"
+
+The email service rejected the send request. Check:
+- Is your email service still connected and configured? (Providers → Email)
+- For Gmail: has your Google account's app access been revoked?
+- For Resend/SendGrid: is the API key still valid?
+
+### "Stopped by condition — revenue was 0"
+
+Not an error. Your Condition Check was working correctly. The data didn't meet the threshold you set, so the automation stopped. If you want to investigate, check the step log to see what value the variable actually had.
+
+---
+
+## Email History
+
+Within each run's log, every email sent is recorded with:
+
+- Recipient address
+- Subject line
+- Time sent
+- Delivery status
+
+This gives you proof of delivery and makes it easy to look up what was sent to a specific affiliate on a given date.
+
+---
+
+## Filtering and Searching
+
+Use the filters at the top of the Runs & Logs page to narrow the list by:
+
+- Automation name
+- Date range
+- Status (completed, failed, etc.)
+
+This is useful when you manage many automations and need to find a specific run quickly.

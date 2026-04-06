@@ -1,0 +1,83 @@
+---
+title: Stats Overview
+description: Pull live performance data from your tracking platform directly inside AffZero.
+---
+
+## What is the Stats Page?
+
+The **Stats** page lets you query your tracking platform and view live affiliate data directly inside AffZero — without logging into Affise, Binom, or CAKE separately. It's useful for ad-hoc data checks, quick performance lookups, and testing your connection and date ranges before using them in an automation.
+
+---
+
+## How to Pull Stats
+
+1. Go to **Stats** in the left sidebar
+2. Select a **Connection** from the dropdown (one of your configured tracking platforms)
+3. Choose a **Stat Type** — what dimension to group data by (e.g. By Affiliate, By Offer, By Date)
+4. Choose a **Date Range** — select a preset like "Last 7 days" or enter custom dates
+5. Select your **Timezone** if needed
+6. Apply any optional **filters** (available filters depend on the platform and stat type)
+7. Click **Pull Stats**
+
+Results appear as a table below. Columns vary by platform and stat type.
+
+---
+
+## Stat Types by Platform
+
+### Affise — Admin Portal
+
+| Stat Type | Groups data by |
+|---|---|
+| By Affiliate | Affiliate (revenue, payout, clicks, conversions, CR, EPC) |
+| By Advertiser | Advertiser (revenue, traffic) |
+| By Date | Calendar day (network-wide totals) |
+
+### Affise — Affiliate Portal
+
+| Stat Type | Groups data by |
+|---|---|
+| By Offer | Offer (clicks, conversions, revenue) |
+
+### CAKE — Affiliate API
+
+| Stat Type | Groups data by |
+|---|---|
+| Daily Summary | Calendar day |
+| Campaign Summary | Campaign/offer |
+
+### Binom
+
+| Stat Type | Groups data by |
+|---|---|
+| By Traffic Source | Traffic source |
+| By Campaign | Campaign |
+| By Date | Calendar day |
+
+---
+
+## Filters
+
+Filters let you narrow down results to specific affiliates, offers, campaigns, or date ranges within your query. Available filters depend on your platform and stat type. Enter one or more filter values to narrow the results.
+
+<Note>
+  Filters are optional. If you leave them blank, AffZero fetches all data for the selected date range and stat type.
+</Note>
+
+---
+
+## What Can You Do with the Results?
+
+- **Review data** directly in the browser — sortable columns, clean table format
+- **Download as CSV** — export the full results to a spreadsheet
+- **Use results in automations** — when you use this same query inside a Pull Stats step in the automation builder, the data becomes available as variables
+
+The Stats page and the Pull Stats automation step use the exact same query engine, so if a query works here, it will work in your automation.
+
+---
+
+## Related
+
+- [Date Presets](/stats/date-presets) — how date ranges are calculated
+- [Downloading CSV](/stats/downloading-csv) — export your results
+- [Pull Stats Step](/automations/steps/pull-stats) — use stats data inside automations

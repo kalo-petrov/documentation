@@ -1,0 +1,72 @@
+---
+title: Binom
+description: Connect your self-hosted Binom tracker to AffZero using your instance URL and API key.
+---
+
+## Overview
+
+Binom is a self-hosted affiliate tracking platform. Because it runs on your own server, the connection requires your specific Binom installation URL in addition to an API key.
+
+AffZero supports **Binom Tracker** (the current generation of Binom).
+
+---
+
+## What You Need
+
+- The **URL of your Binom installation** (the domain or IP where Binom is hosted)
+- A **Binom API key**
+
+---
+
+## Where to Find Your Binom API Key
+
+1. Log in to your Binom instance
+2. Go to **Settings** (gear icon in the top navigation)
+3. Navigate to the **API** tab
+4. Your API key is displayed on this page — copy it
+
+<Tip>
+  If you don't see an API section in Settings, your Binom account may not have API access enabled. Contact your Binom administrator to enable it.
+</Tip>
+
+---
+
+## What to Enter in AffZero
+
+| Field | What to enter |
+|---|---|
+| **Platform** | Binom |
+| **Base URL** | The root URL of your Binom instance, e.g. `https://tracker.yourdomain.com` |
+| **API Key** | The API key from Binom Settings → API |
+
+<Note>
+  The base URL should be the root of your Binom installation. Do not include any path segments like `/click.php` or `/api/`. Just the domain, e.g. `https://tracker.yourdomain.com`.
+</Note>
+
+---
+
+## What Stats Can You Pull?
+
+With a Binom connection, AffZero can fetch:
+
+| Stat Type | What it shows |
+|---|---|
+| **By Traffic Source** | Clicks, conversions, revenue, ROI grouped by traffic source |
+| **By Campaign** | Performance broken down by campaign |
+| **By Date** | Daily breakdown across all campaigns |
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection fails — server not reachable">
+    Your Binom server must be accessible from the internet (not behind a local network or VPN-only firewall). AffZero's servers need to reach your Binom URL to fetch data. If Binom is only accessible from your office network, you'll need to open the API endpoint or move Binom to a public server.
+  </Accordion>
+  <Accordion title="API key is rejected">
+    Make sure you copied the key from Settings → API in Binom. Keys are case-sensitive and must be copied exactly. Regenerating the key in Binom will invalidate the old one.
+  </Accordion>
+  <Accordion title="Empty stats returned">
+    Verify that the date range contains data in Binom's own reporting UI. Also confirm you're using the correct stat type — for example, if your Binom setup tracks campaigns, use "By Campaign" rather than "By Traffic Source".
+  </Accordion>
+</AccordionGroup>

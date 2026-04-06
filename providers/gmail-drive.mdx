@@ -1,0 +1,107 @@
+---
+title: Gmail & Google Drive
+description: Connect your Google account to enable invoice storage, Google Doc templates, Google Sheets exports, and Gmail sending via OAuth.
+---
+
+## What is the Gmail & Google Drive Integration?
+
+The **Gmail & Google Drive** connection is a single Google OAuth authorization that unlocks four capabilities inside AffZero at once:
+
+| Capability | What it enables |
+|---|---|
+| **Google Drive** | Save generated PDF invoices directly to a folder in your Drive |
+| **Google Docs** | Use a Google Doc as an invoice template — AffZero fills in variables and exports to PDF |
+| **Google Sheets** | Write automation data (stats, variables) into a spreadsheet via the Write to Google Sheets step |
+| **Gmail (send)** | Send emails from your Google address inside automations |
+
+This is different from [Gmail SMTP](/email/email-services). Gmail SMTP is a simpler password-based setup used only for sending emails. The OAuth integration here gives deeper access to the full Google Workspace suite and is required for Drive, Docs, and Sheets features.
+
+---
+
+## How to Connect a Google Account
+
+1. Go to **Providers** in the left sidebar
+2. Click the **Gmail + GDrive** tab
+3. Click **Add Google Account**
+4. A consent screen appears explaining exactly what AffZero will access — review it, then click **Continue with Google**
+5. You'll be redirected to Google's sign-in flow
+6. On Google's permissions screen, click **Select All** then **Continue**
+7. You'll be returned to AffZero with the account connected and verified
+
+<Note>
+  On the Google permissions screen, you must select **all** the requested permissions — not just some of them. If you skip a scope (e.g. Sheets), features that depend on it won't work.
+</Note>
+
+---
+
+## What Permissions Are Requested and Why
+
+When you connect, AffZero requests the following Google permissions:
+
+| Permission | Why it's needed |
+|---|---|
+| **Google Drive files** | To save generated invoice PDFs to your Drive and read Google Doc templates |
+| **Google Docs** | To open your invoice template doc, insert variable values, and export to PDF |
+| **Google Sheets** | To write rows of automation data (stats, variables) into a spreadsheet |
+| **Send Gmail** | To send emails from your Google address in Send Email automation steps |
+
+<Info>
+  AffZero only accesses files you explicitly use within the platform — it never scans, browses, or indexes your Drive. Gmail access is used only to send outbound emails you configure in automations. Your inbox is never read.
+</Info>
+
+---
+
+## Primary Account
+
+If you connect multiple Google accounts, one is designated the **Primary** account. The primary account is used by default when a step doesn't specify which account to use.
+
+To change the primary account, click **Set Primary** next to any connected account.
+
+---
+
+## Multiple Google Accounts
+
+You can connect more than one Google account — for example, a personal Gmail and a company Google Workspace account. The number of accounts you can connect depends on your plan.
+
+| Plan | Google Accounts |
+|---|---|
+| Starter | 1 |
+| Pro | 2 |
+| Pro+ | 3 |
+| Business | Unlimited |
+
+---
+
+## Connection Status
+
+After connecting, AffZero automatically verifies that the account is active and permissions are valid. Each account shows one of:
+
+- **Verified and active** — everything is working
+- **Could not verify** — verification check couldn't reach Google (connection may still work)
+- **Invalid — needs reconnection** — OAuth token has expired or been revoked; disconnect and reconnect to restore access
+
+---
+
+## Disconnecting an Account
+
+Click the **trash icon** next to any account to disconnect it immediately. Any automations using that account for Drive saves, Sheets writes, or Gmail sending will fail until you reconnect or update them to use a different account.
+
+---
+
+## Which Features Require This Integration?
+
+| Feature | Requires Gmail + GDrive? |
+|---|---|
+| Save invoice to Google Drive | Yes |
+| Use a Google Doc as invoice template | Yes |
+| Write to Google Sheets step | Yes |
+| Send email via Gmail (OAuth) | Yes |
+| Send email via Gmail SMTP | No — uses separate SMTP config |
+| Send email via Resend or SendGrid | No |
+| Generate HTML invoice (no Drive save) | No |
+
+---
+
+## Privacy
+
+AffZero's use of Google data complies with the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements. Files are accessed only when you trigger an action. Your Google data is never sold, shared with third parties, or used to train AI models. OAuth tokens are stored encrypted.

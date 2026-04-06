@@ -1,0 +1,114 @@
+---
+title: Affise
+description: Connect your Affise affiliate network to AffZero using the Admin or Affiliate Portal API.
+---
+
+## Overview
+
+Affise is one of the most widely used affiliate tracking platforms for performance networks. AffZero supports two types of Affise connections:
+
+- **Admin Portal** — full network access (recommended for network owners and managers)
+- **Affiliate Portal** — limited to data visible to a specific affiliate account
+
+## Which Connection Type Should I Use?
+
+**Use Admin Portal** if you manage the Affise network and want to pull stats for all your affiliates, offers, and advertisers. This is the most common setup.
+
+**Use Affiliate Portal** if you are connecting as an affiliate (or on behalf of an affiliate) and only need that affiliate's own data.
+
+<Warning>
+  The Admin Portal and Affiliate Portal use different API keys and different base URLs. Make sure you're using the right one for your connection type.
+</Warning>
+
+---
+
+## Admin Portal Connection
+
+### What you need
+
+- Your Affise network's **base URL** (e.g., `https://yournetwork.affise.com`)
+- An **Admin API key**
+
+### Where to find your Admin API key in Affise
+
+1. Log in to your Affise Admin Portal
+2. Click your profile icon in the top-right corner and go to **Profile**
+3. Scroll to the **API** section — your API key is displayed there
+4. Copy the key
+
+Alternatively, API keys for team members can be found and managed under **Settings → Users**.
+
+### What to enter in AffZero
+
+| Field | What to enter |
+|---|---|
+| **Platform** | Affise |
+| **Connection Type** | Admin Portal |
+| **Base URL** | Your network URL, e.g. `https://yournetwork.affise.com` |
+| **API Key** | The admin API key from your Affise profile |
+
+<Note>
+  The base URL should not have a trailing slash and should not include `/api/` — just the root domain, e.g. `https://mynetwork.affise.com`.
+</Note>
+
+### What stats can you pull?
+
+With an Admin Portal connection, AffZero can fetch:
+
+| Stat Type | What it shows |
+|---|---|
+| **By Affiliate** | Revenue, payouts, clicks, conversions, CR, EPC per affiliate |
+| **By Advertiser** | Revenue and traffic data grouped by advertiser |
+| **By Date** | Daily breakdown of network-wide performance |
+
+---
+
+## Affiliate Portal Connection
+
+### What you need
+
+- The **Affiliate Portal URL** (usually a different subdomain from the admin, e.g. `https://affiliates.yournetwork.com`)
+- An **Affiliate API key**
+
+### Where to find the Affiliate API key in Affise
+
+1. Log in to the Affise **Affiliate Portal** (not the Admin Portal)
+2. Go to your **Profile** settings
+3. Look for the **API Key** section
+4. Copy the key
+
+### What to enter in AffZero
+
+| Field | What to enter |
+|---|---|
+| **Platform** | Affise |
+| **Connection Type** | Affiliate Portal |
+| **Base URL** | The affiliate portal URL, e.g. `https://affiliates.yournetwork.com` |
+| **API Key** | The affiliate's API key |
+
+### What stats can you pull?
+
+With an Affiliate Portal connection, AffZero can fetch:
+
+| Stat Type | What it shows |
+|---|---|
+| **By Offer** | Performance broken down by offer for this affiliate |
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection fails with 401 Unauthorized">
+    Your API key is incorrect or has been revoked. Log back into Affise, navigate to Profile → API, and copy the key again. Make sure there are no leading/trailing spaces.
+  </Accordion>
+  <Accordion title="Connection fails with a network error">
+    Double-check your base URL. It should be the root domain of your Affise instance (e.g. `https://mynetwork.affise.com`) with no path segments like `/api/` or trailing slashes.
+  </Accordion>
+  <Accordion title="Stats show zero or empty results">
+    First test the same query directly in Affise to confirm data exists for the selected date range. If Affise shows data but AffZero doesn't, check that the date range and timezone settings match.
+  </Accordion>
+  <Accordion title="I see data for some affiliates but not others">
+    Some affiliates may have been added to your network after the stat period you're querying, or they may have zero activity. AffZero only shows rows returned by the Affise API.
+  </Accordion>
+</AccordionGroup>

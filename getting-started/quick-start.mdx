@@ -1,0 +1,93 @@
+---
+title: Quick Start
+description: Get your first automation running in under 10 minutes.
+---
+
+This guide walks you through the core loop of AffZero: connecting a tracker, pulling stats, and sending an email automatically. We'll use the built-in Demo connection so you don't need API credentials to follow along.
+
+## Step 1 — Add a Connection
+
+A **connection** is how AffZero talks to your tracking platform. For this quick start, we'll use the Demo connection which comes pre-loaded with sample data.
+
+1. Go to **Connections** in the left sidebar
+2. Click **Add Connection**
+3. Select **Demo** from the platform list
+4. Give it a name like `My Demo Connection` and click **Save**
+
+<Tip>
+  Once you're comfortable with the flow, come back and add a real connection to Affise, CAKE, or Binom. See the [Connections section](/connections/overview) for platform-specific setup instructions.
+</Tip>
+
+## Step 2 — Explore the Stats Page
+
+Before building an automation, get familiar with how data looks.
+
+1. Go to **Stats** in the left sidebar
+2. Select your **Demo** connection
+3. Choose a stat type such as **By Affiliate**
+4. Pick a date range like **Last 7 days** and click **Pull Stats**
+
+You'll see a table of sample affiliates with columns like name, clicks, conversions, revenue, and payout. These are the values you'll be able to send in personalized emails.
+
+## Step 3 — Build Your First Automation
+
+1. Go to **Automations** in the left sidebar
+2. Click **New Automation**
+3. Give it a name like `Weekly Affiliate Report`
+
+You're now in the **visual automation builder**. Steps are added from left to right, and each step can pass data to the next one.
+
+### Add a Pull Stats step
+
+1. Click the **+** button to add your first step
+2. Select **Pull Stats**
+3. Choose your **Demo** connection
+4. Set the stat type to **By Affiliate**
+5. Set the date preset to **Last 7 days**
+6. Click **Test Pull** to fetch a preview of the data
+
+You'll see a table of results. Click any cell to **select it as a variable** — for example, click the affiliate name in row 1. It turns highlighted and becomes available as `{affiliate_name_1_stats_1}` in later steps.
+
+<Note>
+  You can select multiple cells from multiple rows. Each selected cell becomes its own variable you can use in emails, conditions, or invoices downstream.
+</Note>
+
+### Add a Send Email step
+
+1. Click **+** again and select **Send Email**
+2. Set a recipient email address (your own for testing)
+3. Write a subject like `Weekly stats for {affiliate_name_1_stats_1}`
+4. In the body, use the **Variables Available** panel on the left to insert values — for example:
+
+```
+Hi {affiliate_name_1_stats_1},
+
+Here are your stats for last week:
+Revenue: {revenue_1_stats_1}
+Payout: {payout_1_stats_1}
+
+Thanks,
+The Team
+```
+
+## Step 4 — Set a Schedule and Save
+
+1. Scroll up to the automation header and set the **Schedule** to **Weekly**
+2. Choose a day and time
+3. Click **Save**
+
+Your automation is now active. It will run automatically each week, pulling fresh stats and sending a personalized email with real data.
+
+## Step 5 — Test It Now
+
+You don't have to wait for the scheduled time. On the Automations list page, click the **Run Now** button next to your automation to execute it immediately.
+
+After it runs, go to **Runs & Logs** to see the full execution history, step-by-step output, and the email that was sent.
+
+---
+
+**Next steps:**
+
+- [Add a real connection](/connections/overview) to pull live data from your tracker
+- [Learn about variables](/automations/variables) to build more complex, personalized emails
+- [Explore all step types](/automations/overview) to add conditions, invoices, and AI analysis

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "AffZero",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#1CABBC",
+    "light": "#4DCFDB",
+    "dark": "#0E8F9E"
+  },
+  "topbarLinks": [
+    {
+      "name": "Go to App",
+      "url": "https://app.affzero.com"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started Free",
+    "url": "https://app.affzero.com/signup"
+  },
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "getting-started/quick-start",
+        "getting-started/account-and-plans"
+      ]
+    },
+    {
+      "group": "Connections",
+      "pages": [
+        "connections/overview",
+        "connections/affise",
+        "connections/binom",
+        "connections/cake",
+        "connections/everflow",
+        "connections/demo"
+      ]
+    },
+    {
+      "group": "Stats",
+      "pages": [
+        "stats/overview",
+        "stats/date-presets",
+        "stats/downloading-csv"
+      ]
+    },
+    {
+      "group": "Actions",
+      "pages": [
+        "actions/overview",
+        "actions/get-actions",
+        "actions/add-actions",
+        "actions/edit-actions",
+        "actions/bulk-offer-upload",
+        "actions/binom-actions"
+      ]
+    },
+    {
+      "group": "Automations",
+      "pages": [
+        "automations/overview",
+        "automations/building-your-first-automation",
+        "automations/scheduling",
+        "automations/variables",
+        {
+          "group": "Steps",
+          "pages": [
+            "automations/steps/pull-stats",
+            "automations/steps/condition-check",
+            "automations/steps/filter-data",
+            "automations/steps/ai-analyze",
+            "automations/steps/generate-invoice-number",
+            "automations/steps/create-invoice",
+            "automations/steps/send-email",
+            "automations/steps/send-for-approval",
+            "automations/steps/write-to-google-sheets",
+            "automations/steps/tracker-actions"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Providers",
+      "pages": [
+        "providers/gmail-drive",
+        "email/email-services",
+        "email/email-templates"
+      ]
+    },
+    {
+      "group": "Invoices",
+      "pages": [
+        "invoices/overview",
+        "invoices/invoice-numbering",
+        "invoices/html-templates",
+        "invoices/google-doc-templates"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "runs-logs",
+        "plans-and-limits",
+        "faq"
+      ]
+    }
+  ],
+  "footerSocials": {}
+}

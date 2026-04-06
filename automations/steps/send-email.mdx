@@ -1,0 +1,97 @@
+---
+title: Send Email Step
+description: Send a personalized email with live data inserted automatically via variables.
+---
+
+## What it does
+
+The **Send Email** step sends an email via your configured email service — Gmail SMTP, Resend, or SendGrid. It supports full HTML formatting, variable substitution from previous steps, and optional invoice attachments.
+
+---
+
+## When to use it
+
+- Sending weekly or monthly affiliate performance reports
+- Delivering generated invoices as email attachments
+- Notifying affiliates when a condition is met (e.g. payout threshold reached)
+- Sending AI-generated performance summaries
+
+---
+
+## Configuration
+
+### Send From
+
+Select which email account to send from. The dropdown shows all configured email accounts:
+
+- Gmail SMTP accounts (labeled with the Gmail address)
+- Resend (if configured in Providers → Email)
+- SendGrid (if configured in Providers → Email)
+
+If you haven't set up an email service yet, go to [Providers → Email](/email/email-services) first.
+
+### Recipients
+
+Enter one or more recipient email addresses, separated by commas. You can also enter a static address for testing.
+
+<Tip>
+  You don't currently have to use a variable for the recipient address — enter it as a fixed email. If you're building one automation per affiliate, each Send Email step targets that affiliate's address directly.
+</Tip>
+
+### Subject
+
+Write the email subject line. You can include variables — for example:
+
+```
+Your weekly stats: {affiliate_name_1_stats_1}
+```
+
+### Email Body
+
+The body editor supports full rich text formatting and HTML. Use the **Variables Available** panel on the left to browse and insert variables at the cursor position.
+
+**Example body:**
+
+```html
+Hi {affiliate_name_1_stats_1},
+
+Here are your stats for last week:
+
+Clicks: {clicks_1_stats_1}
+Conversions: {conversions_1_stats_1}
+Revenue: {revenue_1_stats_1}
+Payout: {payout_1_stats_1}
+
+Thanks,
+Your Team
+```
+
+### Using a Template
+
+Instead of composing from scratch, you can select a saved **email template** from the Template dropdown. The template's subject and body are loaded into the editor, where you can further customize before saving.
+
+See [Email Templates](/email/email-templates) for how to create and manage reusable templates.
+
+### Generate with AI
+
+Click **Generate with AI** in the email editor to have AffZero AI write a draft subject and body based on the variables available. You can describe the tone and purpose — for example: "Write a professional affiliate performance update highlighting their payout and top offer."
+
+### Invoice Attachment
+
+If a previous [Create Invoice step](/automations/steps/create-invoice) ran in the automation, its generated PDF can be attached to this email. Toggle **Attach Invoice** and select which invoice step's output to attach.
+
+---
+
+## How Variables are Substituted
+
+When the automation runs, AffZero replaces every `{variable_name}` placeholder in the subject and body with the actual value from the corresponding step. If a variable is not found, it's left as-is (with the curly braces), which usually means the variable name was mistyped.
+
+<Warning>
+  Variable names are case-sensitive and must match exactly. `{Affiliate_Name_1_Stats_1}` is not the same as `{affiliate_name_1_stats_1}`. Always copy variable names from the Variables Available panel to avoid typos.
+</Warning>
+
+---
+
+## Send History
+
+Every email sent by an automation is recorded in the **Email History** section of Runs & Logs. You can see the recipient, subject, timestamp, and delivery status for each sent email.

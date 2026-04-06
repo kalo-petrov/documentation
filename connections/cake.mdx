@@ -1,0 +1,72 @@
+---
+title: CAKE
+description: Connect your CAKE affiliate network to AffZero using the Affiliate API.
+---
+
+## Overview
+
+CAKE is a performance marketing platform used by affiliate networks and brands. AffZero connects to CAKE using the **Affiliate API**, which allows pulling stats for campaigns and daily summaries.
+
+---
+
+## What You Need
+
+- Your **CAKE network domain** (the subdomain specific to your CAKE instance)
+- A **CAKE Affiliate API key**
+
+---
+
+## Where to Find Your CAKE API Key
+
+The Affiliate API key is found in the **CAKE Affiliate Portal**:
+
+1. Log in to your CAKE affiliate portal (e.g. `https://yournetwork.cakemarketing.com/affiliate/login`)
+2. Click on your name or account settings in the top-right corner
+3. Navigate to **API Keys** or **Account Settings → API**
+4. Copy the **Affiliate API Key** shown on this page
+
+<Warning>
+  CAKE has separate API keys for the Affiliate portal and the Admin portal. AffZero currently uses the **Affiliate API** — make sure you're copying the correct key.
+</Warning>
+
+---
+
+## What to Enter in AffZero
+
+| Field | What to enter |
+|---|---|
+| **Platform** | CAKE |
+| **Connection Type** | Affiliate API |
+| **Domain** | Your CAKE subdomain, e.g. `yournetwork` (from `yournetwork.cakemarketing.com`) |
+| **API Key** | The Affiliate API key from your CAKE portal |
+
+<Note>
+  Enter just the subdomain portion of your CAKE URL — for example, if your portal is at `https://mynetwork.cakemarketing.com`, enter `mynetwork`.
+</Note>
+
+---
+
+## What Stats Can You Pull?
+
+With a CAKE Affiliate API connection, AffZero can fetch:
+
+| Stat Type | What it shows |
+|---|---|
+| **Daily Summary** | Day-by-day breakdown of clicks, conversions, revenue, and payouts |
+| **Campaign Summary** | Performance grouped by campaign/offer |
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication failed or 403 Forbidden">
+    You may be using the Admin API key instead of the Affiliate API key. Log into the CAKE Affiliate Portal (not the Admin Portal) and copy the key from there.
+  </Accordion>
+  <Accordion title="Domain not recognized">
+    Make sure you're entering only the subdomain — e.g. `yournetwork` — not the full URL. The field should not include `https://` or `.cakemarketing.com`.
+  </Accordion>
+  <Accordion title="No data returned">
+    CAKE's Affiliate API only returns data for the affiliate account associated with your API key. If the account has no activity in the selected date range, results will be empty. Verify the date range in CAKE's own reporting first.
+  </Accordion>
+</AccordionGroup>

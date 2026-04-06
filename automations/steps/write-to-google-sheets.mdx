@@ -1,0 +1,260 @@
+---
+title: Write to Google Sheets Step
+description: Write data from your automation into a Google Sheet — replace placeholders, append recurring rows, or fill in specific cells by matching criteria.
+---
+
+## What it does
+
+The **Write to Google Sheets** step writes data from your automation into a Google Sheet on every run. It supports three write modes to handle different use cases, from one-time reports to daily recurring logs to filling pre-built yearly tables.
+
+---
+
+## Prerequisites
+
+You need a **Google Drive connection** in your account before using this step. Go to **Settings → Gmail + GDrive** to connect your Google account. The connected account must have **edit access** to the target spreadsheet.
+
+---
+
+## Configuration
+
+### 1. Google Sheet URL or ID
+
+Paste the full Google Sheets URL (while you are on the specific tab you want to use — the URL includes the `gid` parameter which identifies the tab). Alternatively, paste just the Spreadsheet ID from the URL.
+
+Example URL:
+```
+https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0
+```
+
+AffZero detects the sheet and tab automatically and verifies access with your connected Google account.
+
+### 2. Write Mode
+
+Choose how the step writes data to your sheet. There are three modes:
+
+| Mode | Best for | Variables in sheet? |
+|------|----------|-------------------|
+| **Replace** | One-time reports, templates you reset manually | Yes — paste `{variable}` into cells |
+| **Append** | Daily/weekly logs, growing history tables | Template row (or none with "below data") |
+| **Match & Fill** | Pre-built tables filled over time, multiple automations writing to same sheet | No |
+
+---
+
+## Write Mode: Replace
+
+**Replace** is the default mode and works exactly like a mail-merge. You paste `{variable}` placeholders into your Google Sheet cells, and when the automation runs, each placeholder is replaced with the actual value from that run.
+
+### How to set it up
+
+1. Open your Google Sheet.
+2. Click into the cells where you want data to appear.
+3. Type the variable placeholder, e.g. `{revenue_1}` or `{affiliate_name_1}`.
+4. Save the step in AffZero. On the next run, the placeholders are replaced with real values.
+
+### Example
+
+Before the automation runs, your sheet looks like this:
+
+| Date | Affiliate | Revenue |
+|------|-----------|---------|
+| `{date_long_format}` | `{affiliate_name_1}` | `{revenue_1}` |
+
+After the automation runs, the sheet looks like:
+
+| Date | Affiliate | Revenue |
+|------|-----------|---------|
+| March 15, 2026 | Acme Corp | $4,200 |
+
+### Important limitation
+
+After the first run, the placeholders are permanently replaced. The next run will find no placeholders and write nothing. **Replace mode is intended for one-time use.** If you need to write new data on every run, use Append or Match & Fill mode instead.
+
+---
+
+## Write Mode: Append
+
+**Append** mode is designed for recurring automations that build a growing history in a spreadsheet — daily revenue logs, weekly performance reports, monthly summaries, etc.
+
+There are two Append strategies:
+
+### Strategy: Template row (recommended)
+
+You place `{variable}` placeholders in a row in your sheet — this is called the **template row**. Each time the automation runs:
+
+1. A new row of resolved data is inserted **above** the template row.
+2. The template row shifts down, staying intact for the next run.
+3. Your data history grows upward from the template row.
+
+#### Example
+
+Before any runs, your sheet:
+
+| Date | Offer | Revenue |
+|------|-------|---------|
+| `{date_month_year}` | `{offer_name_1}` | `{revenue_1}` |
+
+After three monthly runs:
+
+| Date | Offer | Revenue |
+|------|-------|---------|
+| January 2026 | OfferX | $1,200 |
+| February 2026 | OfferX | $1,450 |
+| March 2026 | OfferX | $1,600 |
+| `{date_month_year}` | `{offer_name_1}` | `{revenue_1}` |
+
+The template row (in orange) always stays at the bottom.
+
+#### Tips for Template row mode
+
+- The template can span **multiple rows**. Any contiguous rows containing at least one `{variable}` placeholder are treated as a single template block. If your Pull Stats step returns three offers, you can have three template rows (one per offer) and all three will be inserted together on each run.
+- **Mix variables with static values** in the same row. For example, a template row could contain `{date_month_year}` in column A, a fixed category label like `"Affiliates"` in column B, and `{revenue_1}` in column C. Static cells are copied as-is into each new row.
+- If you accidentally delete the template row, the step will stop inserting new rows (it can't find the template). Simply add a new row with `{variable}` placeholders to restore it.
+- You can have other data above the template row — charts, headers, previous automation results, etc. The step only looks for the first contiguous block of rows containing variables.
+
+### Strategy: Below data
+
+In this strategy, you map variables to column names from your sheet's header row. On each run, a new row is appended after the last existing row. No template row is needed in your sheet.
+
+#### How to set it up
+
+1. Make sure your sheet has a header row (row 1) with column names.
+2. In the step settings, set **Append Strategy** to "Below existing data".
+3. Click **Load columns from sheet** — AffZero reads your header row and populates the dropdown.
+4. Add column mappings: for each column, select the column name and set the value (a `{variable}` or static text).
+5. On each run, the mapped values are written as a new row at the bottom.
+
+---
+
+## Write Mode: Match & Fill
+
+**Match & Fill** is the most powerful mode. Think of it as a database `UPDATE WHERE` for your spreadsheet: you define conditions to **find a specific row**, then specify which cells to **fill in** that row. Everything else in the row and sheet is left untouched.
+
+This mode is ideal when:
+- You have a pre-built table for the whole year and want to fill in one month's data at a time.
+- Multiple automations write to the same sheet (e.g., Automation A fills Acme Corp's rows, Automation B fills BetaCorp's rows).
+- Your sheet has many columns and you only want to populate a subset from each automation.
+- You want clean, human-readable sheets without any `{variable}` placeholders.
+
+### How to set it up
+
+1. **Make sure your sheet has a header row** (row 1) with column names. This is how AffZero identifies columns.
+2. In the step settings, set **Write Mode** to "Match & Fill".
+3. Click **Load columns from sheet** to populate the column dropdowns.
+4. **Add match conditions** ("Find row where"):
+   - Select a column (e.g. "Affiliate").
+   - Set a value — this can be a `{variable}` (resolved at run time) or static text.
+   - Add more conditions as needed. All conditions must match for a row to be selected.
+5. **Add fill mappings** ("Then fill"):
+   - Select a column to write to (e.g. "Revenue").
+   - Set a value — typically a `{variable}` from a previous Pull Stats step.
+6. **Set the "If no matching row" action**:
+   - **Skip** — do nothing, automation continues.
+   - **Append new row** — insert the values as a new row at the bottom.
+   - **Stop with error** — fail the step so you are alerted.
+
+### Example
+
+**Your sheet (pre-built for the year):**
+
+| Affiliate | Month | Revenue | Clicks |
+|-----------|-------|---------|--------|
+| Acme Corp | January 2026 | $12,000 | 3,500 |
+| Acme Corp | February 2026 | $14,200 | 4,100 |
+| Acme Corp | March 2026 | | |
+| Acme Corp | April 2026 | | |
+| BetaCorp | January 2026 | $8,000 | 2,000 |
+| BetaCorp | February 2026 | | |
+
+**Your automation runs on March 1st with these variables:**
+- `{affiliate_name_1}` → "Acme Corp"
+- `{date_month_year}` → "March 2026"
+- `{revenue_1}` → "$15,800"
+- `{clicks_1}` → "4,600"
+
+**Match conditions:**
+- Affiliate = `{affiliate_name_1}` (resolves to "Acme Corp")
+- Month = `{date_month_year}` (resolves to "March 2026")
+
+**Fill mappings:**
+- Revenue ← `{revenue_1}`
+- Clicks ← `{clicks_1}`
+
+**Result:** AffZero scans top to bottom. It skips January and February (Revenue and Clicks already have values), then finds the March 2026 row where Revenue and Clicks are empty and fills them in. The April row and everything else is untouched.
+
+The next run of this automation (April 1st) would repeat the same process — skipping January, February, and now March (already filled), then filling the April row.
+
+**Alternative — match by advertiser name only:** If your match condition is just `Affiliate = {affiliate_name_1}` (without Month), the same scan logic applies. AffZero skips all Acme Corp rows that already have data and fills the first one it finds with empty Revenue/Clicks columns. This is useful when you want the sheet layout to control the order rather than specifying the month explicitly in the automation.
+
+### Notes on matching
+
+#### How matching works across multiple rows
+
+When AffZero scans the sheet it reads through every row from top to bottom:
+
+1. If a row satisfies **all** match conditions and the fill columns are **empty** → fill that row and stop.
+2. If a row satisfies all match conditions but the fill columns **already have values** → skip it and keep scanning for the next matching row.
+3. If the scan reaches the end of the sheet with no fillable match found, the **"If no matching row"** action applies:
+   - **Skip** / **Stop with error** — behave as configured.
+   - **Append new row** — only fires when **no row matching the conditions was found at all**. If matching rows exist but are already populated, AffZero does not append — it warns instead and leaves the sheet as-is.
+
+This design lets you pre-fill a table for an entire year (all rows present, fill columns empty) and run the same automation every month. Each run finds the first open slot for that affiliate/advertiser and fills it in, naturally working its way down the table without duplicating rows.
+
+**Additional notes:**
+- Matching is **case-insensitive** and trims surrounding whitespace.
+- If there are **multiple rows** that match all conditions, only the **first** one is filled.
+- Variable values in match conditions are resolved at run time — so `{date_month_year}` becomes `"March 2026"` when the automation runs in March.
+- The **"Overwrite existing values"** toggle (in the step settings) disables the empty-cell check. With it enabled, the step always fills the **first** matching row regardless of whether it already has data — useful for updating a row in place rather than filling the next open slot.
+
+---
+
+## Variables
+
+The left panel of the step editor shows all variables available from previous Pull Stats, AI Analyze, and other steps in your workflow. Click the copy button next to any variable to copy its placeholder (e.g. `{revenue_1}`) to your clipboard.
+
+**Date variables** are particularly useful for match conditions and append values. AffZero injects these automatically — no extra configuration needed:
+
+| Variable | Example value | Description |
+|----------|---------------|-------------|
+| `{date_today}` | March 31, 2026 | Today's date in long form |
+| `{date_month_year}` | March 2026 | Month and year of the stats period |
+| `{date_long_format}` | March 1, 2026 | Start date in long form |
+| `{date_month}` | March | Month name |
+| `{date_year}` | 2026 | Year |
+| `{date_start_day}` | 01 | Day number of the range start |
+| `{date_end_day}` | 31 | Day number of the range end |
+| `{date_future_net15}` | April 15, 2026 | 15 days from today (Net 15) |
+| `{date_future_net30}` | April 30, 2026 | 30 days from today (Net 30) |
+| `{date_future_netN}` | — | Any number of days: `{date_future_net7}`, `{date_future_net45}`, etc. |
+
+See [Date Variables](/automations/variables#date-variables) for the full reference.
+
+---
+
+## Tips & FAQ
+
+**Which mode should I use for a daily automation?**
+Use **Append (template row)**. Place your variable placeholders in one row in your sheet. Each day, a new row of data will appear above the template row, building a growing log automatically.
+
+**I have a monthly table pre-built for the whole year. How do I fill it in each month?**
+Use **Match & Fill**. You have two approaches:
+- **Match by advertiser name only** (e.g. Affiliate = `{affiliate_name_1}`): AffZero scans all rows for that advertiser, skips any that already have data in the fill columns, and fills the first empty one. This lets your sheet's row order drive which month gets filled next — no need to specify the month in the automation.
+- **Match by advertiser + month** (e.g. Affiliate = `{affiliate_name_1}` AND Month = `{date_month_year}`): AffZero targets that exact row. Useful when month values are already pre-filled in your sheet and you want precise targeting.
+
+Set **"If no matching row"** to **Skip** if all rows for that advertiser are already filled — the automation will continue without error.
+
+**Can multiple automations write to the same sheet?**
+Yes, with **Match & Fill** mode. Each automation can have different match conditions (e.g. one for each affiliate or campaign), and they will find and fill their own rows without interfering with each other.
+
+**My Pull Stats step returns multiple rows (multiple affiliates). How do I handle that?**
+- In **Append (template row)** mode: add one template row per affiliate in your sheet. All contiguous template rows are inserted together on each run.
+- In **Match & Fill** mode: create one Write to Google Sheets step per affiliate, each with a different match condition (using `{affiliate_name_1}`, `{affiliate_name_2}`, etc.).
+
+**The step says "No variable placeholders found" and writes nothing.**
+You are in Replace mode but there are no `{variable}` placeholders left in the sheet — they were already replaced in a previous run. Either reset the sheet with fresh placeholders, or switch to Append or Match & Fill mode for recurring runs.
+
+**I get a 404 or 403 error.**
+- 404: The Sheet ID is wrong, or your Google account doesn't have access to the sheet. Check the URL and sharing settings.
+- 403: Your OAuth token may be missing Google Sheets permission. Disconnect and reconnect Google Drive in **Settings → Gmail + GDrive** to refresh permissions.
+
+**The column dropdown is empty or shows "Load columns from sheet".**
+Click the **Load columns from sheet** button in the step settings. This reads the first row of your sheet to populate the dropdown. Make sure you have entered a valid Sheet URL above and that your Google account has access to the sheet.

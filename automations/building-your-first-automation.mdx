@@ -1,0 +1,140 @@
+---
+title: Building Your First Automation
+description: A step-by-step walkthrough of building a weekly affiliate performance email automation.
+---
+
+## What We're Building
+
+By the end of this guide, you'll have a working automation that:
+
+1. Pulls affiliate stats from your tracker every week
+2. Sends a personalized email to each of your top affiliates with their individual numbers
+
+This is the most common AffZero use case. The same pattern scales to more complex flows — invoices, conditions, multiple recipients — once you understand the basics.
+
+---
+
+## Before You Start
+
+Make sure you have:
+- A [connection set up](/connections/overview) (or use the [Demo connection](/connections/demo) to follow along without real credentials)
+- An [email service configured](/email/email-services) (Gmail SMTP, Resend, or SendGrid)
+
+---
+
+## Step 1 — Create the Automation
+
+1. Go to **Automations** in the left sidebar
+2. Click **New Automation**
+3. Name it something like `Weekly Affiliate Performance Email`
+
+You're now in the visual automation builder with an empty canvas.
+
+---
+
+## Step 2 — Add a Pull Stats Step
+
+Click **+** to add the first step and select **Pull Stats**.
+
+Configure it:
+
+| Field | What to select |
+|---|---|
+| **Connection** | Your Affise / CAKE / Binom connection |
+| **Stat Type** | By Affiliate |
+| **Date Preset** | Last 7 Days |
+| **Timezone** | Match your tracker's timezone |
+
+Then click **Test Pull**. AffZero will fetch real data from your tracker and display it in a preview table.
+
+### Select the cells you want to use in the email
+
+This is the key step. In the preview table, **click on individual cells** to select them as variables.
+
+For example, click:
+- The affiliate name in row 1 → becomes `{affiliate_name_1_stats_1}`
+- The revenue in row 1 → becomes `{revenue_1_stats_1}`
+- The payout in row 1 → becomes `{payout_1_stats_1}`
+
+Repeat for row 2, row 3, and so on — for each affiliate you want to email.
+
+<Tip>
+  Selected cells turn highlighted. You'll see the variable name appear in the **Variables Available** panel on the left side of the step editor. You can copy a variable from there and paste it into your email later.
+</Tip>
+
+---
+
+## Step 3 — Add a Send Email Step
+
+Click **+** again and select **Send Email**.
+
+### Set up recipients
+
+Enter the email address of the affiliate in row 1. If you're sending one email to each affiliate, you'll have one recipient per row — or you can use a single email that lists all affiliates.
+
+<Note>
+  For sending individual emails to each affiliate, you would create one Send Email step per affiliate (or set up multiple automations). Each step references the variables from the corresponding row number.
+</Note>
+
+### Write the subject
+
+```
+Your weekly stats: {affiliate_name_1_stats_1}
+```
+
+### Write the email body
+
+Use the email editor to write your message, and insert variables from the **Variables Available** panel on the left. For example:
+
+```
+Hi {affiliate_name_1_stats_1},
+
+Here's your performance summary for last week:
+
+Clicks: {clicks_1_stats_1}
+Conversions: {conversions_1_stats_1}
+Revenue: {revenue_1_stats_1}
+Payout: {payout_1_stats_1}
+
+Thanks for your work — keep it up!
+
+Best,
+Your Team
+```
+
+### Choose which email account to send from
+
+In the **Send From** dropdown, select your configured Gmail / Resend / SendGrid account.
+
+---
+
+## Step 4 — Set the Schedule
+
+At the top of the automation builder, set:
+
+- **Schedule**: Weekly
+- **Day**: Monday (or whichever day makes sense for your workflow)
+- **Time**: Choose a time before business hours — stats sent first thing in the morning tend to perform well
+
+---
+
+## Step 5 — Save and Test
+
+1. Click **Save** to activate the automation
+2. Go back to the Automations list
+3. Click **Run Now** next to your automation
+
+AffZero will immediately execute the workflow. After it finishes, go to [Runs & Logs](/runs-logs) to see what happened — the step outputs, variable values, and confirmation that the email was sent.
+
+Check your inbox to see the personalized email with live data.
+
+---
+
+## What's Next?
+
+Now that your basic automation works, you can extend it:
+
+- Add a [Condition Check step](/automations/steps/condition-check) to only send if revenue is above a threshold
+- Add a [Create Invoice step](/automations/steps/create-invoice) to attach a PDF invoice to the email
+- Add a [Filter Data step](/automations/steps/filter-data) to exclude affiliates below a minimum payout
+- Add an [AI Analyze step](/automations/steps/ai-analyze) to let AI identify your top performers automatically

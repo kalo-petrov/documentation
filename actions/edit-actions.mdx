@@ -1,0 +1,131 @@
+---
+title: Edit Actions
+description: Update offers, conversions, affiliate access, and tracking links directly in your Affise network.
+---
+
+## Overview
+
+**Edit actions** update existing records in your Affise network. They let you make changes that would otherwise require logging into Affise directly — updating offer settings, changing conversion statuses, enabling or disabling affiliates, and generating tracking links.
+
+All edit actions require an **Affise Admin Portal** connection.
+
+---
+
+## Edit Offer By ID
+
+Update the settings of an existing offer in your Affise network.
+
+**Useful for:**
+- Changing an offer's status (e.g. active → stopped) without opening Affise
+- Updating tracking URLs, payout rules, or traffic restrictions in bulk
+- Making consistent changes across multiple offers by running the action several times
+
+### How to use
+
+1. Use **Get Offer By ID** first to see the current settings and confirm the offer ID
+2. In Edit Offer By ID, enter the **Offer ID**
+3. Fill in only the fields you want to change — blank fields are not updated
+4. Click **Execute**
+
+<Note>
+  Only fields you explicitly fill in are sent to Affise. Leaving a field blank does not reset it — it simply leaves it unchanged. This lets you update one setting at a time safely.
+</Note>
+
+### Editable fields
+
+The same fields available when creating an offer can be updated: title, tracking URL, status, privacy, advertiser, payout rules, traffic restrictions, notes, descriptions, and more.
+
+---
+
+## Enable Affiliate on Offer
+
+Connect one or more affiliates to one or more offers, giving them access to promote.
+
+**Useful for:**
+- Onboarding a new affiliate to your network's offer catalog
+- Enabling an affiliate on a new offer you just created
+- Granting access to multiple affiliates at once
+
+### Parameters
+
+| Field | Required | Description |
+|---|---|
+| **Offer IDs** | Yes | One or more numeric Affise offer IDs (comma-separated) |
+| **Affiliate IDs (PIDs)** | Yes | One or more Affise affiliate IDs to enable |
+
+After enabling, you can immediately use **Generate Tracking Link** to create affiliate-specific URLs for the newly enabled combination.
+
+---
+
+## Disable Affiliate on Offer
+
+Remove an affiliate's access to one or more offers.
+
+**Useful for:**
+- Revoking access when an affiliate relationship ends
+- Temporarily pausing an affiliate on a specific offer
+- Cleaning up access after an offer is stopped
+
+### Parameters
+
+Same as Enable Affiliate on Offer — enter the Offer IDs and Affiliate IDs to disconnect.
+
+---
+
+## Generate Tracking Link
+
+Generate an affiliate-specific tracking link for an offer.
+
+**Useful for:**
+- Producing the exact tracking URL to send to a new affiliate
+- Verifying the generated link format before distributing
+- Creating tracking links after enabling an affiliate on an offer
+
+### Parameters
+
+| Field | Required | Description |
+|---|---|
+| **Offer ID** | Yes | The Affise offer ID |
+| **Affiliate ID (PID)** | Yes | The affiliate's Affise ID |
+
+**Result:** The complete affiliate tracking URL ready to copy and share. The URL includes Affise's standard click tracking macros embedded correctly for that offer-affiliate combination.
+
+---
+
+## Edit Conversions
+
+Update the status, payout, or custom fields of one or multiple existing conversions.
+
+**Useful for:**
+- Approving or declining pending conversions after fraud review
+- Correcting payout amounts on confirmed conversions
+- Updating custom fields with additional metadata from external systems
+
+### Parameters
+
+| Field | Description |
+|---|---|
+| **Conversion IDs** | Comma-separated list of action IDs or click IDs to update |
+| **New Status** | `confirmed`, `pending`, `declined`, or `hold` |
+| **Payout** | Override the payout amount |
+| **Revenue** | Override the revenue amount |
+| **Comment** | Internal note attached to the conversion |
+| **Custom Fields** | Update custom field 1, 2, 3 |
+
+<Warning>
+  Conversion edits in Affise can affect affiliate payouts and advertiser billing. Always review the conversion list before executing, especially when changing statuses in bulk.
+</Warning>
+
+---
+
+## Edit Conversions By Advertiser
+
+Same as Edit Conversions, but with an additional advertiser ownership validation — Affise verifies the conversions belong to the specified advertiser before applying changes. Supports up to 2,000 conversions per request.
+
+**Use this instead of Edit Conversions** when your network has multiple advertisers and you want an extra layer of safety to prevent accidental edits across advertiser boundaries.
+
+### Additional parameter
+
+| Field | Description |
+|---|---|
+| **Advertiser ID** | Affise advertiser ID — only conversions belonging to this advertiser will be updated |

@@ -1,0 +1,143 @@
+---
+title: Pull Stats Step
+description: Fetch live performance data from your tracking platform. Choose between Dataset Mode (dynamic tables and filters) and Cell Selection Mode (named variables for specific rows).
+---
+
+## What it does
+
+The **Pull Stats** step connects to your tracking platform and fetches a snapshot of your stats for the date range you specify. It is the starting point for almost every automation.
+
+Once the data is pulled, later steps — emails, invoices, condition checks, Google Sheets updates — can reference the data through variables or table placeholders.
+
+---
+
+## Choosing an extraction mode
+
+When you open a Pull Stats step, you must first choose how you want the data to be extracted. Pick the mode that matches your use case.
+
+| | Dataset Mode | Cell Selection Mode |
+|---|---|---|
+| **Best for** | Dynamic row counts, daily/weekly reports, filtering by criteria | 2–5 known affiliates, offers, or campaigns you always want to track |
+| **Output** | `{data_table}` HTML table + aggregate variables like `{total_revenue}` | Named variables per cell: `{revenue_1}`, `{affiliate_name_1}` |
+| **Row matching** | Filter rules (column conditions) | Entity ID (affiliate ID, offer ID, etc.) — survives table reorder |
+| **Number of rows** | Changes freely between runs | Fixed to however many rows you selected |
+
+---
+
+## Dataset Mode {#dataset-mode}
+
+Dataset Mode pulls **all** rows that match your configuration and optional filter conditions. The data becomes a structured table on the automation context, accessible in later steps as a formatted HTML table, as column-level aggregates, or as the value from the first matching row.
+
+### Configuration
+
+#### Connection
+Select which saved tracker connection to use.
+
+#### Stat Type
+Choose how the data should be grouped:
+
+| Platform | Available Stat Types |
+|---|---|
+| Affise Admin | By Affiliate, By Advertiser, By Date |
+| Affise Affiliate | By Offer |
+| CAKE | Daily Summary, Campaign Summary |
+| Binom | By Traffic Source, By Campaign, By Date |
+
+#### Date Preset
+Choose the date range for the stats query. See [Date Presets](/stats/date-presets) for a full explanation. For scheduled automations, always use a preset (not a custom date) so the range stays fresh on every run.
+
+#### Timezone
+Select the timezone that matches your tracking platform's reporting timezone. This ensures "Yesterday" and "Last 7 Days" align with what you see in your tracker's own UI.
+
+#### Filters (optional)
+Add row-level conditions to narrow the result set — for example, "Revenue greater than 100" or "Status equals Approved". Comparisons are type-aware: numbers, percentages (CR%, ROI, margin), ISO dates, and durations like `1d 2h 30m` are all parsed correctly before comparing.
+
+### Running a Test Pull
+Click **Test Pull New Stats** to fetch a live preview. The results appear as a table below the configuration. This call uses the real API — data is live, not sample.
+
+### Column selection (optional)
+After a test pull, you can tick specific columns to include. Only those columns generate variables and appear in the Variables Available panel on the left. Leave all columns selected (default) to include everything.
+
+### Variables available in later steps (Dataset Mode)
+
+| Placeholder | What it inserts |
+|---|---|
+| `{data_table}` | A formatted HTML table of all rows that matched your filters |
+| `{data_table:Col1,Col2}` | Same table but limited to the specified columns |
+| `{revenue}` | Value from the first matching row's Revenue column |
+| `{total_revenue}` | Sum of Revenue across all matching rows |
+| `{avg_revenue}` | Average of Revenue across all matching rows |
+| `{rows_count}` | Number of rows that passed the filter |
+| `{total_rows}` | Total rows before filtering |
+| `{date_range_start}` / `{date_range_end}` | ISO date strings for the pulled period |
+
+<Note>
+When you have two Pull Stats steps in the same automation, variables get a step prefix: `{stats_1_revenue}`, `{stats_2_revenue}`, `{stats_1_data_table}`, etc.
+</Note>
+
+---
+
+## Cell Selection Mode {#cell-selection-mode}
+
+Cell Selection Mode lets you click individual cells in the results table to create **named variables** for each one. AffZero stores the entity ID (affiliate ID, offer ID, campaign ID, etc.) alongside every selected cell, so the correct row is always matched on future runs — even if the table order changes.
+
+This mode is ideal when you have a fixed set of affiliates or offers you want to reference by name in emails, invoices, or conditions.
+
+### Configuration
+
+The connection, stat type, date preset, timezone, and parameters work identically to Dataset Mode (see above).
+
+### Running a Test Pull and selecting cells
+1. Click **Test Pull New Stats**.
+2. Click any cell in the results table to select it. Selected cells are highlighted and automatically generate a variable name.
+3. Select as many cells as you need across as many rows as you need.
+4. Each selected cell becomes a variable in the **Variables Available** panel on the left.
+
+<Tip>
+Select the affiliate name, revenue, payout, and any other columns you plan to reference. You only need to select the cells you will actually use.
+</Tip>
+
+### Variable names
+
+Variable names are generated automatically from the column name and row number:
+
+| Selected cell | Variable |
+|---|---|
+| Row 1, Revenue | `{revenue_1}` |
+| Row 1, Affiliate Name | `{affiliate_name_1}` |
+| Row 2, Revenue | `{revenue_2}` |
+| Row 2, Payout | `{payout_2}` |
+| Totals row, Revenue | `{total_revenue}` |
+
+<Note>
+AffZero stores the entity ID (e.g. affiliate ID) alongside each selected cell, not just the row position. This means that even if the table order changes on future runs, the correct values will always be matched to the right affiliate. See [Variables](/automations/variables) for details.
+</Note>
+
+---
+
+## Multiple Pull Stats Steps
+
+You can add more than one Pull Stats step in a single automation — for example, to pull stats from two different connections or stat types. Variables from each step get a numeric suffix to avoid collisions.
+
+In **Dataset Mode**:
+- First step: `{data_table}`, `{stats_1_data_table}`, `{stats_1_revenue}`, `{stats_1_total_revenue}`
+- Second step: `{stats_2_data_table}`, `{stats_2_revenue}`, `{stats_2_total_revenue}`
+
+In **Cell Selection Mode**:
+- First step: `{revenue_1_stats_1}`, `{affiliate_name_1_stats_1}`
+- Second step: `{revenue_1_stats_2}`, `{affiliate_name_1_stats_2}`
+
+All variables from all Pull Stats steps are available to any subsequent step.
+
+---
+
+## Common Issues
+
+| Issue | What to check |
+|---|---|
+| Test pull returns empty results | Confirm data exists for this date range in your tracker directly |
+| Test pull fails with an error | Verify your connection is still valid (API key not expired, base URL correct) |
+| `{data_table}` shows "No data available" | Check your filter conditions — they may be excluding all rows |
+| Variables don't appear in later steps (Cell Selection) | Make sure you clicked cells after the test pull — just viewing the table doesn't create variables |
+| Wrong numbers in the email | Check that the Pull Stats step timezone matches your tracker's timezone |
+| Cell Selection variables show the wrong affiliate | The entity ID saved at selection time may no longer exist — re-run a test pull and reselect |

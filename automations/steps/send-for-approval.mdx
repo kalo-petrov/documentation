@@ -1,0 +1,64 @@
+---
+title: Send for Approval Step
+description: Queue an email for manual review before it's sent — useful for high-stakes or sensitive communications.
+---
+
+## What it does
+
+The **Send for Approval** step works identically to the Send Email step, except the email is **not sent immediately**. Instead, it's queued for manual review. An approver (you or a teammate) reviews the drafted email and either approves it (which sends it) or rejects it (which discards it).
+
+---
+
+## When to use it
+
+- Invoices or payment emails that a finance manager should review before delivery
+- Partner communications that require sign-off from a manager
+- New affiliates where you want to personally check the first automated email
+- Any situation where "set it and forget it" feels too risky
+
+---
+
+## How Approval Works
+
+1. The automation runs and builds the draft email (with all variables substituted)
+2. Instead of sending, the email is placed in the **Approval Queue**
+3. You (or a designated approver) receives a notification
+4. The approver goes to the approval page, reads the drafted email, and clicks **Approve** or **Reject**
+5. Approved emails are sent immediately; rejected ones are discarded with a note
+
+---
+
+## Configuration
+
+Configuration is identical to the [Send Email step](/automations/steps/send-email):
+
+- **Send From** — which email account to use for sending (after approval)
+- **Recipients** — who the email goes to once approved
+- **Subject** — supports variables
+- **Body** — full HTML editor with variable insertion
+- **Template** — optionally load from a saved email template
+- **Invoice Attachment** — optionally attach a generated invoice PDF
+
+---
+
+## Reviewing Pending Approvals
+
+Pending approvals appear in the **Runs & Logs** section, under the specific automation run. Click the pending item to:
+
+- Preview the full email (subject, body, recipients, any attachments)
+- Click **Approve** to send immediately
+- Click **Reject** to discard and leave a rejection reason
+
+<Note>
+  Approved emails use the same email account and recipients configured in the step — no changes can be made at approval time. If you want to modify the content before sending, reject it, edit the automation, and run again.
+</Note>
+
+---
+
+## Expiry
+
+Pending approvals don't expire automatically. They remain in the queue until approved or rejected. However, if the underlying data is time-sensitive (e.g. "last week's stats"), delay in approval means the email's content may be outdated by the time it's sent.
+
+<Tip>
+  For time-sensitive data, approve emails promptly or switch to the regular Send Email step with manual monitoring via Runs & Logs.
+</Tip>

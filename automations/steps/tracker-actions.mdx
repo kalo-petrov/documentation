@@ -1,0 +1,115 @@
+---
+title: Tracker Action Steps
+description: Read, create, or update records in your tracking platform via custom API endpoints.
+---
+
+## Overview
+
+**Tracker Action** steps let you interact with your tracking platform's API beyond just pulling stats. There are three types:
+
+| Step | What it does |
+|---|---|
+| **Tracker Action Get** | Reads data from a custom API endpoint and exposes selected fields as variables |
+| **Tracker Action Edit** | Updates an existing record via a tracker API (e.g. change an affiliate's status) |
+| **Tracker Action Add** | Creates a new record via a tracker API (e.g. add a new offer or affiliate) |
+
+These steps are for advanced users who are comfortable working with API endpoints and JSON responses.
+
+---
+
+## When to use Tracker Actions
+
+- **Get**: Read specific affiliate details, offer configurations, or conversion records that aren't available via standard Pull Stats stat types
+- **Edit**: Update affiliate cap limits, change offer statuses, or modify conversion records based on conditions in your automation
+- **Add**: Create new affiliates, offers, or campaigns programmatically as part of an automated workflow
+
+---
+
+## Prerequisites
+
+Tracker Action steps use your saved [Connections](/connections/overview). You need a valid connection to the tracking platform you want to interact with.
+
+Additionally, the specific API endpoints need to be configured as **Action Templates** under **Actions** in the main menu. Action Templates define the endpoint URL, HTTP method, and parameter schema for each type of tracker action.
+
+---
+
+## Tracker Action Get
+
+### What it does
+
+Makes a GET request to a configured tracker API endpoint and lets you select which fields from the response to expose as variables.
+
+### Configuration
+
+- **Connection** — select the tracker connection to use
+- **Action Template** — select the pre-configured endpoint to call
+- **Parameters** — fill in any required parameters (e.g. affiliate ID, date range). Parameters can reference variables from previous steps.
+
+### Selecting response fields
+
+After running a test request, the response JSON is displayed. Click on any field value to register it as a variable. Selected fields become available as `{field_path_action_N}` in subsequent steps.
+
+---
+
+## Tracker Action Edit
+
+### What it does
+
+Makes a PUT or PATCH request to a configured tracker API endpoint to update an existing record.
+
+### Common use cases
+
+- Updating an affiliate's payout cap after it's been reviewed
+- Changing an offer's status from active to paused
+- Modifying conversion approval status for specific records
+
+### Configuration
+
+- **Connection** — select the tracker connection
+- **Action Template** — select the endpoint to call
+- **Parameters / Body** — enter the values to update. You can use variables from previous steps (e.g. pass `{affiliate_id_1_stats_1}` from a Pull Stats step to identify which record to update).
+
+---
+
+## Tracker Action Add
+
+### What it does
+
+Makes a POST request to a configured tracker API endpoint to create a new record.
+
+### Common use cases
+
+- Adding new affiliates to your network as part of an onboarding automation
+- Creating new offers or campaigns programmatically
+- Logging custom conversion events
+
+### Configuration
+
+Similar to Edit — select the connection, action template, and provide the required fields for creating the new record. Variable values from previous steps can be used in any field.
+
+---
+
+## Setting Up Action Templates
+
+Before using Tracker Action steps, you need to create the corresponding Action Template:
+
+1. Go to **Actions** in the left sidebar
+2. Click **Add Action Template**
+3. Select the connection (platform) this action is for
+4. Enter the API endpoint path, HTTP method, and define the parameters
+5. Save the template
+
+Once saved, the template appears as an option inside Tracker Action steps in the automation builder.
+
+<Note>
+  Action Templates are shared across automations — create them once and reuse in multiple workflows.
+</Note>
+
+---
+
+## Tips for Using Tracker Actions
+
+- **Test your endpoint** using the Action Template's test feature before using it in an automation
+- **Use variables in parameters** — pass affiliate IDs, offer IDs, or other values from Pull Stats steps to make actions dynamic
+- **Combine Get → Check → Edit** — a common pattern is: Get a record, check a condition, then Edit it only if the condition passes
+- Check your tracking platform's API documentation for available endpoints, required parameters, and rate limits

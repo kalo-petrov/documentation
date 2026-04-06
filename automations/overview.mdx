@@ -1,0 +1,104 @@
+---
+title: Automations Overview
+description: Build multi-step workflows that pull data, process it, and take action — all on a schedule.
+---
+
+## What is an Automation?
+
+An **automation** is a named workflow made up of a series of steps that run in sequence. You build it once in the visual automation builder, set a schedule, and AffZero runs it automatically — pulling fresh data, processing it, and sending emails or generating invoices without any manual work.
+
+---
+
+## The Visual Automation Builder
+
+The automation builder presents steps as cards arranged left to right. Data flows from each step to the next, and any data-producing step makes its output available to all subsequent steps.
+
+You can add, configure, reorder, and delete steps freely while building. Nothing is saved until you click **Save**.
+
+---
+
+## Step Types
+
+Each step performs one action. Steps are color-coded for quick reference:
+
+<CardGroup cols={2}>
+  <Card title="Pull Stats" icon="chart-bar" color="#3B82F6" href="/automations/steps/pull-stats">
+    Fetch performance data from a connected tracker. Produces variables for use in later steps.
+  </Card>
+  <Card title="AI Analyze" icon="sparkles" color="#8B5CF6" href="/automations/steps/ai-analyze">
+    Analyze data from Pull Stats steps using AI. Produces custom named variables based on your instruction.
+  </Card>
+  <Card title="Generate Invoice Number" icon="hash" href="/automations/steps/generate-invoice-number">
+    Use AI to identify and generate the next number in your invoice series.
+  </Card>
+  <Card title="Condition Check" icon="filter" href="/automations/steps/condition-check">
+    Stop the automation if conditions aren't met (e.g. revenue below a threshold).
+  </Card>
+  <Card title="Filter Data" icon="funnel" href="/automations/steps/filter-data">
+    Remove rows from a dataset based on rules before passing data to later steps.
+  </Card>
+  <Card title="Create Invoice" icon="file-invoice" href="/automations/steps/create-invoice">
+    Generate a PDF invoice from an HTML or Google Doc template with variable substitution.
+  </Card>
+  <Card title="Send Email" icon="envelope" href="/automations/steps/send-email">
+    Send a personalized email via Gmail SMTP, Resend, or SendGrid with variables inserted.
+  </Card>
+  <Card title="Send for Approval" icon="clock" href="/automations/steps/send-for-approval">
+    Queue an email for manual review before it's sent. An approver reviews and approves or rejects.
+  </Card>
+  <Card title="Write to Google Sheets" icon="table" href="/automations/steps/write-to-google-sheets">
+    Write variable data into a specified Google Sheet tab.
+  </Card>
+  <Card title="Tracker Action Get" icon="download" href="/automations/steps/tracker-actions">
+    Read data from a custom tracker API endpoint and expose selected fields as variables.
+  </Card>
+  <Card title="Tracker Action Edit" icon="pen" href="/automations/steps/tracker-actions">
+    Update records via a tracker API (e.g. change an affiliate's status).
+  </Card>
+  <Card title="Tracker Action Add" icon="plus" href="/automations/steps/tracker-actions">
+    Create new records via a tracker API.
+  </Card>
+</CardGroup>
+
+---
+
+## How Data Flows Between Steps
+
+Every data-producing step (Pull Stats, AI Analyze, Generate Invoice Number, Tracker Action Get) stores its output as **variables**. Those variables are then available to every step that comes after it in the workflow.
+
+For example:
+- Step 1: Pull Stats → produces `{affiliate_name_1_stats_1}`, `{revenue_1_stats_1}`
+- Step 2: Condition Check → can check whether `{revenue_1_stats_1}` is above a threshold
+- Step 3: Send Email → can include `{affiliate_name_1_stats_1}` and `{revenue_1_stats_1}` in the email body
+
+See [Variables](/automations/variables) for the full naming convention and how to use them.
+
+---
+
+## Creating an Automation
+
+1. Go to **Automations** in the left sidebar
+2. Click **New Automation**
+3. Enter a name for the automation
+4. Add steps using the **+** button
+5. Configure each step
+6. Set a **schedule** in the automation header
+7. Click **Save** — the automation is now active
+
+---
+
+## Managing Automations
+
+From the Automations list, you can:
+
+- **Enable / Disable** — toggle the automation on or off without deleting it
+- **Run Now** — execute the automation immediately, regardless of schedule
+- **Duplicate** — create a copy as a starting point for a new automation
+- **Edit** — open the builder to modify steps or settings
+- **Delete** — permanently remove the automation
+
+---
+
+## Runs & Logs
+
+Every execution — whether triggered by a schedule or Run Now — is recorded. Go to [Runs & Logs](/runs-logs) to see the full history, step-by-step output, any errors, and emails sent.

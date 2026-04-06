@@ -1,0 +1,89 @@
+---
+title: Google Doc Invoice Templates
+description: Use a Google Doc as your invoice template — AffZero fills in the variables and exports to PDF.
+---
+
+## What are Google Doc Templates?
+
+Google Doc invoice templates let you design and manage your invoice layout directly in Google Docs. You add variable placeholders like `{affiliate_name_1_stats_1}` directly into the document, connect it to AffZero, and the system substitutes real values and exports the document as a PDF.
+
+This is a good choice if your team is already comfortable in Google Docs, or if you want a non-technical person to maintain the invoice design.
+
+---
+
+## Prerequisites
+
+You need a **Google account connected** in AffZero:
+
+1. Go to **Providers → Gmail & Drive**
+2. Click **Connect Google Account**
+3. Sign in and grant AffZero permission to access your Google Drive
+
+This gives AffZero the ability to read your template document and export the generated invoices.
+
+---
+
+## Creating a Google Doc Template
+
+### Step 1 — Design the document in Google Docs
+
+Open Google Docs and create your invoice layout. You can use tables, headers, images, and all standard Google Docs formatting.
+
+### Step 2 — Add variable placeholders
+
+In the document, type your variable names exactly where you want the data to appear:
+
+```
+Invoice Number: {invoice_number}
+Affiliate: {affiliate_name_1_stats_1}
+Payout: {payout_1_stats_1}
+Revenue: {revenue_1_stats_1}
+Period: Last Month
+```
+
+Variable names are case-sensitive and must match exactly — copy them from the Variables Available panel in your automation.
+
+### Step 3 — Connect the document to AffZero
+
+1. Go to **Invoices → Templates**
+2. Click **New Template**
+3. Select **Google Doc Template**
+4. Enter a template name
+5. Paste the Google Doc URL (or the Document ID from the URL)
+6. Click **Connect** — AffZero will verify it can access the document
+7. Click **Save**
+
+---
+
+## How Variable Substitution Works
+
+When the Create Invoice step runs:
+
+1. AffZero makes a copy of your Google Doc
+2. Every instance of `{variable_name}` in the copy is replaced with the actual value
+3. The filled-in copy is exported as a PDF
+4. The original template document is **not modified**
+
+---
+
+## Saving to Google Drive
+
+In the [Create Invoice step](/automations/steps/create-invoice), you can enable **Save to Google Drive** to store the generated PDF in a specific folder in your Drive. This is useful for keeping an organized archive of all generated invoices.
+
+---
+
+## Limitations
+
+<Warning>
+  - AffZero can only access Google Docs that are shared with the connected Google account or are owned by it
+  - Complex formatting (multi-column layouts, text boxes) may not render perfectly in the PDF export — test with Run Now
+  - Google Apps Scripts or embedded formulas in the template are not executed — only static text with variable placeholders is substituted
+</Warning>
+
+---
+
+## Tips
+
+- **Keep the design simple** — clean table-based layouts convert best to PDF
+- **Make a template copy for testing** — keep your "production" template clean and test changes on a copy first
+- **Share the template doc appropriately** — if multiple team members need to edit the template, share the Google Doc with them directly; no need to reconnect in AffZero

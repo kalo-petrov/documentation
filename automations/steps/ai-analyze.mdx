@@ -1,0 +1,111 @@
+---
+title: AI Analyze Step
+description: Use AI to analyze your stats data and produce named variables based on a plain-English instruction.
+---
+
+## What it does
+
+The **AI Analyze** step passes your stats data to AffZero's AI (powered by Google Gemini) along with a natural language instruction. The AI reads the data and produces a set of named variables — for example, identifying top performers, flagging anomalies, or computing custom aggregates — that you can then use in emails, conditions, and invoices.
+
+Each AI Analyze step consumes **one AI call** from your monthly allowance.
+
+---
+
+## When to use it
+
+- Find the top 3 affiliates by revenue without manually sorting
+- Flag affiliates whose EPC dropped significantly from the previous period
+- Calculate a custom metric like "total payout across all affiliates"
+- Identify which affiliates haven't had any conversions this week
+- Summarize performance in a sentence for an executive-style email
+
+---
+
+## Configuration
+
+### Instruction
+
+Write a plain-English instruction describing what you want the AI to do with the data. Be specific about the output you need.
+
+**Good instructions:**
+```
+Find the top affiliate by revenue. Return their name and revenue.
+```
+```
+List all affiliates with fewer than 5 conversions this week. Count how many there are.
+```
+```
+Calculate the total payout across all affiliates in the dataset.
+```
+```
+Rank affiliates by EPC (descending) and identify the top 3 and bottom 2.
+```
+
+**Less useful instructions:**
+```
+Analyze the data
+```
+```
+Find patterns
+```
+
+The more specific you are, the more reliable the output.
+
+### Which data does it analyze?
+
+The AI receives the full output of all previous Pull Stats steps in the automation. If you have two Pull Stats steps, the AI sees both datasets — labeled "Pull Stats 1" and "Pull Stats 2" — and can cross-reference between them if needed.
+
+---
+
+## Output Variables
+
+The AI produces an array of named variables, each with:
+- A **name** in snake_case (e.g. `top_affiliate`, `low_epc_count`)
+- A **value** (always a text string)
+- A **description** of what it represents
+
+These variables appear in the **Variables Available** panel after running the step and can be used in any subsequent step.
+
+**Example output from "Find top affiliate by revenue":**
+```
+{top_affiliate}        → "Acme Media"
+{top_affiliate_revenue}→ "12453.50"
+```
+
+**Example output from "Flag low converters":**
+```
+{low_conversion_count} → "3"
+{low_conversion_affiliates} → "Partner A, Partner B, Partner C"
+```
+
+<Note>
+  All variable values are text strings, even numbers. If you use them in a Condition Check (e.g. comparing `{low_conversion_count}` to a number), AffZero handles the type conversion automatically.
+</Note>
+
+---
+
+## Testing the Step
+
+Click **Run Analysis** inside the step editor to test your instruction against the most recent Pull Stats data. The AI response and variable list will appear immediately so you can refine the instruction before saving.
+
+---
+
+## Tips for Better Results
+
+- **Name specific columns** in your instruction: "sort by revenue" works better than "sort by performance"
+- **Ask for specific output**: "return the affiliate name and their payout" is more reliable than "tell me about the top affiliate"
+- **For lists**, ask the AI to return them as comma-separated values: "return all affiliate names as a comma-separated list"
+- **Limit scope**: "find the top 3" produces cleaner output than "rank all affiliates"
+
+---
+
+## AI Call Limits
+
+Each use of the AI Analyze step (per run) consumes one AI call. Check your usage on **Settings → Usage** or **Settings → Billing**.
+
+| Plan | AI Calls / Month |
+|---|---|
+| Starter | 20 |
+| Pro | 100 |
+| Pro+ | 500 |
+| Business | Unlimited |

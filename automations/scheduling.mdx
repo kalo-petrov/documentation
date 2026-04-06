@@ -1,0 +1,79 @@
+---
+title: Scheduling
+description: Configure when your automations run — once, daily, weekly, or monthly.
+---
+
+## Available Schedules
+
+AffZero supports four schedule types. Availability depends on your plan.
+
+| Schedule | Description | Plans |
+|---|---|---|
+| **Run Once** | Executes one time at a specified date and time, then disables itself | All plans |
+| **Monthly** | Runs on a specific day of the month (e.g. 1st of every month) | All plans |
+| **Weekly** | Runs on a specific day of the week (e.g. every Monday at 8 AM) | Pro and above |
+| **Daily** | Runs every day at a specified time | Pro+ and above |
+
+<Note>
+  The **Starter plan** only supports Monthly and Run Once schedules. If you need weekly or daily runs, upgrade to Pro or Pro+.
+</Note>
+
+---
+
+## Setting a Schedule
+
+In the automation builder, the schedule controls are at the top of the page:
+
+1. Select a **Schedule Type** from the dropdown
+2. Depending on the type:
+   - **Monthly**: choose which day of the month (1–28)
+   - **Weekly**: choose a day of the week
+   - **Daily**: no day selection needed
+3. Set the **Time** the automation should run (uses your account's timezone)
+
+---
+
+## Run Now
+
+You can trigger any automation immediately, regardless of its schedule, using **Run Now** on the Automations list page. This is useful for:
+
+- Testing a new automation before it runs automatically
+- Re-running a failed automation without waiting for the next scheduled time
+- Running a one-off report outside the normal schedule
+
+Run Now executes the same steps with the same configuration as a scheduled run — including fresh date calculations for any preset like "Last 7 days".
+
+---
+
+## Enabling and Disabling Automations
+
+Toggle the **Enabled** switch on the Automations list to pause any automation without deleting it. A disabled automation will not run on its schedule but can still be triggered manually with Run Now.
+
+Use this when:
+- An affiliate relationship is paused and you want to stop emails temporarily
+- You're editing the automation and don't want it to run mid-update
+- You want to archive an automation without losing its configuration
+
+---
+
+## Timezone Considerations
+
+Schedules run in UTC. If you need an automation to run at a specific local time (e.g. 8 AM Eastern), account for the UTC offset when setting the time:
+
+- Eastern Time (UTC-5): 8 AM ET = 1 PM UTC → set time to 13:00
+- Central European Time (UTC+1): 8 AM CET = 7 AM UTC → set time to 07:00
+
+<Tip>
+  Date presets like "Last 7 days" and "Yesterday" are calculated based on the **timezone you select inside the Pull Stats step**, not the schedule's run time. This is what matters for data accuracy — a run at 1 PM UTC with a Pull Stats timezone of "Eastern Time" will correctly calculate "Yesterday" as the previous day in Eastern Time.
+</Tip>
+
+---
+
+## What Happens if a Run Fails?
+
+If an automation encounters an error during a scheduled run, it will:
+
+1. Log the error to [Runs & Logs](/runs-logs)
+2. Continue to attempt the next scheduled run — the automation does not disable itself automatically on failure
+
+To investigate errors, go to Runs & Logs, find the failed run, and expand the step-by-step log to see exactly where it failed and why.

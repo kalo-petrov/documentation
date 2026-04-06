@@ -1,0 +1,115 @@
+---
+title: Bulk Offer Upload
+description: Create dozens of offers at once from plain text or CSV using AI parsing — with optional affiliate enablement and tracking link generation.
+---
+
+## What is Bulk Offer Upload?
+
+**Bulk Offer Upload** is AffZero's most powerful action. It lets you create multiple Affise offers simultaneously from unstructured text or CSV data, with AI automatically extracting the relevant fields. You can optionally base all new offers on an existing model offer, enable affiliates on every created offer, and generate tracking links — all in a single workflow.
+
+**Requires:** An Affise Admin Portal connection.
+
+---
+
+## When to Use It
+
+- You received a list of new offers from an advertiser (email, spreadsheet, document)
+- You need to launch 10, 20, or 50+ offers quickly without manually entering each one in Affise
+- You want all new offers to inherit settings from an existing model offer (same advertiser, payout rules, tracking domain, traffic restrictions)
+- You need to enable specific affiliates and generate tracking links immediately after creation
+
+---
+
+## The 4-Step Process
+
+### Step 1 — Choose an Offer Source
+
+**Base on existing offer (recommended):**
+Enter an Affise offer ID to use as a **model**. AffZero loads all settings from that offer — advertiser, payout rules, status, privacy, tracking domain, restrictions, and more — and uses them as defaults for all new offers.
+
+You can review and edit any of these defaults before creating. Per-offer values from the input text take highest priority, model defaults fill in everything else.
+
+**Start from scratch:**
+No model offer. Each new offer only gets the fields extracted from your input text. Title, tracking URL, and advertiser ID are required.
+
+<Tip>
+  Using a model offer is strongly recommended. It saves you from re-entering the advertiser ID, payout rules, and traffic settings for every offer, and ensures consistency across your new offer batch.
+</Tip>
+
+### Step 2 — Paste Your Offer Data
+
+Paste your offers as **freeform text** or **CSV**. AI parses it automatically.
+
+**Freeform text example:**
+```
+Widget US with url https://track.example.com/us?aff_id={affiliate_id}&offer_id={offer_id} and preview https://example.com/us
+Widget UK with url https://track.example.com/uk and preview https://example.com/uk
+Widget EU with url https://track.example.com/eu targeting DE, FR, IT
+```
+
+**CSV example:**
+```
+title,url,url_preview
+Widget US,https://track.example.com/us,https://example.com/us
+Widget UK,https://track.example.com/uk,https://example.com/uk
+```
+
+Click **Parse with AI** — AffZero sends your text to AI, which extracts the structured offer data and presents it in a review table.
+
+### Step 3 — Review and Edit
+
+The parsed offers appear in an editable table. Every cell is editable — click to correct any field AI got wrong, add missing values, or remove rows you don't want to create.
+
+Fields marked with a red asterisk (Title, Tracking URL) are required for every row. Any field from the model offer that isn't shown in the table will still be applied — the table only shows fields extracted from your input.
+
+You can also add rows manually using the **Add row** button if you have additional offers to include.
+
+### Step 4 — Post-Creation Options
+
+Before executing, configure what happens after each offer is created:
+
+**Enable affiliates on created offers:**
+Toggle this on and enter one or more affiliate IDs (PIDs) separated by commas. Every affiliate listed will be enabled on every newly created offer.
+
+**Generate tracking links:**
+If affiliates are enabled, you can also generate tracking links for each offer-affiliate combination. Choose what to include in the results output:
+- **Preview URL** — the offer's preview/landing page URL
+- **Payout** — the affiliate's payout for this offer
+- **Caps** — the offer's conversion cap settings
+
+Click **Create N Offers** to execute. AffZero creates offers sequentially and shows a live results panel.
+
+---
+
+## Results Panel
+
+After execution, the results panel shows each offer with:
+
+- **Created** (green) or **Failed** (red) status
+- The new Affise offer ID for each created offer
+- For each affiliate: their tracking link (ready to copy), enable status, and any errors
+
+Failed offers show the exact Affise API error message so you can correct and retry.
+
+---
+
+## Payout Rules
+
+If you used a model offer, its payout rules are automatically copied to all new offers. The Payouts section in the model configuration shows these rules (read-only) so you know what will be applied.
+
+<Note>
+  Personal payouts (affiliate-specific payout overrides) cannot be transferred via the Affise API and must be set manually in Affise after creation.
+</Note>
+
+## Caps
+
+Cap rules from the model offer are shown for reference but **cannot be transferred** via the Affise Add Offer API — this is an Affise limitation. Configure caps manually in Affise after the offers are created.
+
+---
+
+## Tips
+
+- **Test with 1–2 offers first** — before creating a batch of 50, run the workflow with 2 offers to verify the model settings and tracking URL format are correct
+- **Check advertiser ID** — if using Start from Scratch, include the advertiser ID in your text or enter it in the model defaults; Affise requires it
+- **Tracking URL macros** — include Affise's standard macros in the tracking URL: `{affiliate_id}`, `{offer_id}`, `{click_id}`, etc. The AI preserves them correctly
+- **Affiliate IDs** — you can find affiliate PIDs by going to Stats → By Affiliate and checking the affiliate_id column in the results
