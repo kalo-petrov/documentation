@@ -11,22 +11,27 @@ The **Write to Google Sheets** step writes data from your automation into a Goog
 
 ## Prerequisites
 
-You need a **Google Drive connection** in your account before using this step. Go to **Settings → Gmail + GDrive** to connect your Google account. The connected account must have **edit access** to the target spreadsheet.
+You need a **Google Drive + Gmail connection** in your account before using this step. Go to **Providers → Gmail + GDrive** to connect your Google account. The connected account must have **edit access** to the target spreadsheet.
 
 ---
 
 ## Configuration
 
-### 1. Google Sheet URL or ID
+### 1. Google Account
 
-Paste the full Google Sheets URL (while you are on the specific tab you want to use — the URL includes the `gid` parameter which identifies the tab). Alternatively, paste just the Spreadsheet ID from the URL.
+If you have more than one Google account connected, a dropdown lets you choose which account to use for this step. The selected account must have edit access to the spreadsheet you pick.
 
-Example URL:
-```
-https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0
-```
+### 2. Select a Spreadsheet
 
-AffZero detects the sheet and tab automatically and verifies access with your connected Google account.
+Click **Select Spreadsheet** to open the Google Drive Picker — a file browser that shows spreadsheets accessible to your connected account. Select the spreadsheet you want to write to.
+
+### 3. Select a Tab
+
+After picking a spreadsheet, a **Sheet Tab** dropdown appears showing all tabs in that file. Select the specific tab you want to write to.
+
+<Note>
+  You no longer paste a URL or GID — everything is selected through the Drive Picker and tab dropdown, which makes it easier and avoids copy-paste errors.
+</Note>
 
 ### 2. Write Mode
 
@@ -253,8 +258,8 @@ Yes, with **Match & Fill** mode. Each automation can have different match condit
 You are in Replace mode but there are no `{variable}` placeholders left in the sheet — they were already replaced in a previous run. Either reset the sheet with fresh placeholders, or switch to Append or Match & Fill mode for recurring runs.
 
 **I get a 404 or 403 error.**
-- 404: The Sheet ID is wrong, or your Google account doesn't have access to the sheet. Check the URL and sharing settings.
-- 403: Your OAuth token may be missing Google Sheets permission. Disconnect and reconnect Google Drive in **Settings → Gmail + GDrive** to refresh permissions.
+- 404: Your Google account doesn't have access to the selected spreadsheet. Check the sharing settings in Google Drive and make sure the connected account has edit access.
+- 403: Your OAuth token may have expired or permissions changed. Disconnect and reconnect your Google account in **Providers → Gmail + GDrive** to refresh.
 
 **The column dropdown is empty or shows "Load columns from sheet".**
 Click the **Load columns from sheet** button in the step settings. This reads the first row of your sheet to populate the dropdown. Make sure you have entered a valid Sheet URL above and that your Google account has access to the sheet.

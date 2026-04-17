@@ -40,13 +40,11 @@ When you connect, AffZero requests the following Google permissions:
 
 | Permission | Why it's needed |
 |---|---|
-| **Google Drive files** | To save generated invoice PDFs to your Drive and read Google Doc templates |
-| **Google Docs** | To open your invoice template doc, insert variable values, and export to PDF |
-| **Google Sheets** | To write rows of automation data (stats, variables) into a spreadsheet |
+| **drive.file** | Access only to files you explicitly open or create via AffZero — invoice PDFs saved to Drive, Google Doc templates you select, and Google Sheets you pick through the Drive Picker. AffZero cannot see any other files in your Drive. |
 | **Send Gmail** | To send emails from your Google address in Send Email automation steps |
 
 <Info>
-  AffZero only accesses files you explicitly use within the platform — it never scans, browses, or indexes your Drive. Gmail access is used only to send outbound emails you configure in automations. Your inbox is never read.
+  AffZero uses the narrowest possible Drive permission (`drive.file`) — it only has access to the specific files you choose inside AffZero, never your full Drive. Your inbox is never read; Gmail access is outbound-only for emails you configure in automations.
 </Info>
 
 ---
