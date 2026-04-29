@@ -1,0 +1,66 @@
+---
+title: Understanding the Plan
+description: How to read the transformation plan the AI generates, and what to do if it looks wrong.
+---
+
+## What is the plan?
+
+After you click **Generate Plan**, the AI produces a step-by-step transformation plan. Each step is one operation applied to your data in sequence.
+
+AffZero displays the plan in plain English before you run it. You can review it to check it matches your intent.
+
+---
+
+## Plan step types
+
+| Step | What it does |
+|------|-------------|
+| **Filter** | Keeps only rows that match a condition (e.g. column equals a value, is in a list, contains a string) |
+| **Join** | Merges two sources on a matching column |
+| **Group by** | Aggregates rows grouped by one or more columns (sum, count, avg, min, max) |
+| **Select** | Keeps only specific columns, optionally renaming them |
+| **Sort** | Orders rows by a column (ascending or descending) |
+| **Rename** | Renames a single column |
+
+Steps run in order from top to bottom.
+
+---
+
+## Filter operators
+
+| Operator | Meaning |
+|----------|---------|
+| `=` | Exactly equals (one value) |
+| `≠` | Does not equal |
+| `>` / `<` / `≥` / `≤` | Numeric comparison |
+| **is one of** | Matches any value in a list — use this for OR logic |
+| **is not one of** | Does not match any value in the list |
+| **contains** | Case-insensitive substring match |
+| **does not contain** | Does not contain the substring |
+
+<Note>
+  To filter where a column matches *any of several values*, the plan should use a single **is one of** step with the full list. If you see multiple separate filter steps on the same column with `=`, those would be combined with AND (producing no rows). In that case, re-write your instruction to say "where X is one of [a, b, c]" and regenerate the plan.
+</Note>
+
+---
+
+## If the plan looks wrong
+
+The plan is shown before execution — you don't have to run it as-is.
+
+If a step is incorrect:
+1. Edit your **Instruction** in section 2 to be more specific
+2. Click **Generate Plan** again to produce a new plan
+3. Review the updated plan
+
+Common fixes:
+- If a filter is using the wrong column, name the column explicitly in your instruction
+- If two values that should be OR are split into two AND steps, rewrite as *"where column is one of [value1, value2]"*
+- If a join is using the wrong key, name the key column explicitly: *"join on the 'Affiliate ID' column"*
+
+---
+
+## Related
+
+- [Writing effective instructions](/report-analysis/writing-instructions)
+- [Exporting results](/report-analysis/exporting-results)

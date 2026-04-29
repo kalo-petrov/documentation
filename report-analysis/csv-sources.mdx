@@ -1,0 +1,42 @@
+---
+title: CSV Sources
+description: Upload CSV files as data sources for a Report Analysis run.
+---
+
+## Uploading a CSV
+
+In the **Sources** section of the Report Analysis page, click **Upload CSV** and select a file from your computer. AffZero reads the file in your browser — the data is never uploaded to a server until you explicitly run a plan.
+
+You can upload up to **3 CSV files** per run.
+
+---
+
+## Requirements
+
+- Files must be comma-separated (`.csv`)
+- The first row must contain column headers
+- Headers should be descriptive — the AI uses them to understand what each column represents
+- There is no strict row limit, but very large files (>100k rows) may slow down plan execution
+
+---
+
+## Source names
+
+Each source is given a short name that the AI uses to refer to it in the generated plan. The name defaults to the file name (without extension). You can rename it before generating the plan if the file name isn't descriptive.
+
+For example, a file called `affise_export_2024_05.csv` might be renamed to `Affise Stats` to produce a clearer plan.
+
+---
+
+## Tips
+
+- If your CSV has extra header rows or metadata rows at the top, remove them before uploading so the first row is a clean column header row
+- Column names like `Sub ID 2` or `Affiliate Name` work better than `col_4` or `field_B` — the AI uses column names to understand meaning
+- If you are joining two files, make sure the shared key column has the same name (or close enough that you can describe the join in your instruction)
+
+---
+
+## Related
+
+- [Google Sheet sources](/report-analysis/google-sheet-sources)
+- [Writing effective instructions](/report-analysis/writing-instructions)

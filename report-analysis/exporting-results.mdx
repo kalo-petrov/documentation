@@ -1,0 +1,58 @@
+---
+title: Exporting Results
+description: Download your transformed data as a CSV or write it to a Google Sheet.
+---
+
+## Download as CSV
+
+After a plan runs successfully, click **Download CSV** in the Results section. The file is generated in your browser and downloaded immediately — it contains all rows and columns from the output table.
+
+The filename defaults to a slugified version of the run name (e.g. `report-may-1-10-30-am.csv`).
+
+---
+
+## Write to Google Sheet
+
+You can push the result rows directly to a new tab in one of your Google Sheets.
+
+**Prerequisites:** A [Google Drive connection](/providers/gmail-drive) must be set up in AffZero.
+
+**Steps:**
+
+1. In the Results section, click **Write to Sheet**
+2. Enter the Google Sheet URL (the spreadsheet you want to write to)
+3. Enter a name for the new tab (e.g. `Report 2024-05`)
+4. Click **Write**
+
+AffZero creates the new tab and writes the header row plus all result rows. If a tab with that name already exists, the write will fail — use a unique tab name.
+
+<Note>
+  The tab is created fresh each time. AffZero does not overwrite or append to existing tabs — always provide a new tab name.
+</Note>
+
+---
+
+## History and re-running
+
+Every run is saved to your **History** panel (up to 25 runs). You can open any past run to:
+
+- View the original instruction and plan
+- Browse the full results table
+- Download as CSV again
+- Open the Google Sheet if results were written there
+
+To re-run the same transformation on new data:
+
+1. Open the past run from History
+2. Click **Reuse for new report**
+3. A fresh workspace opens with the instruction and plan pre-filled
+4. Upload your new source files
+5. Click **Run Plan** (or **Generate Plan** first if your column names have changed)
+
+---
+
+## Related
+
+- [Report Analysis overview](/report-analysis/overview)
+- [Writing effective instructions](/report-analysis/writing-instructions)
+- [Gmail & Google Drive setup](/providers/gmail-drive)

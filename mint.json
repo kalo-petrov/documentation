@@ -85,6 +85,17 @@
       ]
     },
     {
+      "group": "Report Analysis",
+      "pages": [
+        "report-analysis/overview",
+        "report-analysis/csv-sources",
+        "report-analysis/google-sheet-sources",
+        "report-analysis/writing-instructions",
+        "report-analysis/understanding-the-plan",
+        "report-analysis/exporting-results"
+      ]
+    },
+    {
       "group": "Providers",
       "pages": [
         "providers/gmail-drive",

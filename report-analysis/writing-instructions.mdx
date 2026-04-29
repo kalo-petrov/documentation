@@ -1,0 +1,99 @@
+---
+title: Writing Effective Instructions
+description: How to write instructions that produce accurate, useful transformation plans.
+---
+
+## Overview
+
+The instruction is the plain-English description you give the AI to explain what transformation you want. The AI uses your instruction along with the column names and sample rows from your sources to build a step-by-step plan.
+
+The clearer your instruction, the more accurate the plan.
+
+---
+
+## Good instruction patterns
+
+### Filtering rows
+
+Describe exactly which values to keep or exclude. Name the column and list the values.
+
+```
+Keep only rows where "Sub ID 2" is one of: partner_a, partner_b, partner_c
+```
+
+```
+Remove rows where "Status" is "Pending" or "Cancelled"
+```
+
+```
+Keep only rows where Revenue is greater than 100
+```
+
+### Grouping and aggregating
+
+Name the grouping column and the aggregation you want.
+
+```
+Group by "Affiliate Name" and sum "Revenue" and "Payout" for each group
+```
+
+```
+Group by "Offer" and count the number of conversions
+```
+
+### Joining two sources
+
+Name both sources and describe the shared column.
+
+```
+Join "Affise Stats" and "Sub IDs" on "Affiliate ID", keeping all columns from both
+```
+
+```
+Match rows in "Report A" and "Report B" where "Sub ID" matches, then combine their columns
+```
+
+### Sorting
+
+```
+Sort by Revenue descending
+```
+
+```
+Group by Affiliate, sum Payout, then sort by Payout descending and keep the top 10
+```
+
+### Selecting columns
+
+```
+Keep only the "Affiliate Name", "Conversions", and "Revenue" columns
+```
+
+```
+Rename "aff_name" to "Affiliate Name" and "rev" to "Revenue"
+```
+
+---
+
+## Tips for better results
+
+- **Name specific columns exactly** as they appear in the header row — the AI matches by column name
+- **For OR logic**, list all values in one instruction: *"where Sub ID is one of [a, b, c]"* rather than three separate conditions
+- **Be explicit about aggregation**: say "sum Revenue" not "total the Revenue" if you want numeric addition
+- **Describe the desired output shape**: mention which columns you want in the result and in what order
+- **Mention the source name** when joining or filtering a specific file: *"in the Affise export, keep rows where…"*
+
+---
+
+## What the AI cannot do
+
+- It cannot read values that are not in the sample rows or column headers during plan generation
+- It cannot look up external data
+- It cannot apply business logic it has no way to infer — be explicit
+
+---
+
+## Related
+
+- [Understanding the plan](/report-analysis/understanding-the-plan)
+- [Report Analysis overview](/report-analysis/overview)

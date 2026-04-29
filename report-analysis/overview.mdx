@@ -1,0 +1,64 @@
+---
+title: Report Analysis Overview
+description: Upload CSVs or connect Google Sheets, describe what you need, and let AI generate and run a data transformation plan — then download the result or push it to a new sheet.
+---
+
+## What is Report Analysis?
+
+**Report Analysis** is a standalone tool that lets you combine data from multiple sources, transform it with AI assistance, and produce a clean output report — without writing formulas or code.
+
+You describe what you want in plain English. AffZero's AI builds a step-by-step transformation plan. You review the plan and click **Run**. The result can be downloaded as a CSV or written directly to a new tab in your Google Sheet.
+
+---
+
+## When to use it
+
+- Merge two or more exported CSV reports that don't share the same format
+- Filter, group, and sort affiliate data to create a custom summary
+- Cross-reference subaccount IDs or sub-IDs across multiple platform exports
+- Produce a clean report from raw tracker exports without touching a spreadsheet
+
+---
+
+## How it works
+
+<Steps>
+  <Step title="Add your sources">
+    Upload up to 3 CSV files, or select tabs from a connected Google Sheet. AffZero reads the column headers and a few sample rows — it does not send your full data to the AI.
+  </Step>
+  <Step title="Write an instruction">
+    Describe what transformation you want in plain English. For example: *"Keep only rows where Sub ID 2 is in the list [partner_a, partner_b], then group by affiliate name and sum revenue, sorted by revenue descending."*
+  </Step>
+  <Step title="Generate a plan">
+    Click **Generate Plan**. AffZero sends the column names and sample rows to the AI, which returns a structured transformation plan. You can review every step of the plan before running it.
+  </Step>
+  <Step title="Run the plan">
+    Click **Run Plan**. The transformation is executed locally against your data — no raw rows are sent to the AI. Results appear instantly.
+  </Step>
+  <Step title="Export or save to Google Sheets">
+    Download the result as a CSV, or write it to a new tab in one of your connected Google Sheets.
+  </Step>
+</Steps>
+
+---
+
+## History
+
+Every successful run is saved to your **History** panel (last 25 runs). Click any past run to see:
+
+- The original instruction you wrote
+- The plan that was generated
+- The full result table
+- A link to the Google Sheet, if you wrote the results there
+
+You can also click **Reuse for new report** to open a fresh workspace pre-filled with the same instruction and plan — useful when you receive new weekly exports and want to run the same transformation on fresh files.
+
+---
+
+## Related
+
+- [Working with CSV sources](/report-analysis/csv-sources)
+- [Working with Google Sheet sources](/report-analysis/google-sheet-sources)
+- [Writing effective instructions](/report-analysis/writing-instructions)
+- [Understanding the plan](/report-analysis/understanding-the-plan)
+- [Exporting results](/report-analysis/exporting-results)

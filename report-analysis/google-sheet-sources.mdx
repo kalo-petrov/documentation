@@ -1,0 +1,43 @@
+---
+title: Google Sheet Sources
+description: Use tabs from a connected Google Sheet as data sources for Report Analysis.
+---
+
+## Prerequisites
+
+You need a **Google Drive connection** set up in AffZero before you can use Google Sheet tabs as sources. See [Gmail & Google Drive](/providers/gmail-drive) for setup instructions.
+
+---
+
+## Selecting a Google Sheet tab
+
+1. In the **Sources** section, click **Add from Google Sheet**
+2. Paste the URL of the Google Sheet (or enter the spreadsheet ID)
+3. AffZero loads the list of available tabs (sheets) in that spreadsheet
+4. Select the tab you want to use as a source
+
+You can add up to **3 sources total** across CSV uploads and sheet tabs combined.
+
+---
+
+## What AffZero reads
+
+AffZero reads the full contents of the selected tab:
+- Row 1 is treated as the column header row
+- All subsequent rows are the data
+
+The first row must contain column names. If your sheet has a title row or merged cells above the headers, the AI may misinterpret the structure — consider cleaning the sheet first.
+
+---
+
+## Writing results back to a sheet
+
+After running a plan, you can write the output to a **new tab** in any Google Sheet you have write access to. See [Exporting results](/report-analysis/exporting-results) for details.
+
+---
+
+## Related
+
+- [CSV sources](/report-analysis/csv-sources)
+- [Exporting results](/report-analysis/exporting-results)
+- [Gmail & Google Drive setup](/providers/gmail-drive)
