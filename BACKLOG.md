@@ -2,6 +2,19 @@
 
 Single source of truth for all pending and planned work.
 
+## Report Analysis (Implemented — Follow-up Ideas)
+
+Core feature is live (`/report-analysis`). Possible improvements:
+
+- **Re-import past sources**: Currently only source schema (headers + sample rows) is stored, not raw data. Could store a lightweight snapshot or re-parse from the original file.
+- **More than 3 sources**: Current limit is 3 CSV/Sheet sources per report.
+- **Richer plan editing**: Direct JSON editing of plan steps for power users (currently prompt is the only edit surface).
+- **Scheduled reports**: Run a saved plan on a schedule and email/sheet the output automatically (would integrate with the Automation Engine).
+- **Plan versioning**: Show a diff when a Re-analyze produces a different plan than the previous run.
+- **History retention controls**: Per-user setting for how many runs to keep (currently hard-coded to 25 via DB trigger).
+- **AI usage display**: Show how many AI calls remain on the current plan directly in the Report Analysis UI.
+- **Export to Supabase / webhook**: Push result rows to an external destination beyond Google Sheets.
+
 ## Platform Integrations
 
 ### Everflow Integration

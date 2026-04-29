@@ -35,9 +35,9 @@ Aff-Zero is a Next.js 15 App Router application with Supabase as the backend. It
 
 The app uses Next.js route groups to separate concerns:
 
-- `app/(dashboard)/` — Client-facing pages (stats, automations, connections, invoices, email templates, settings, runs-logs, actions)
+- `app/(dashboard)/` — Client-facing pages (stats, automations, connections, invoices, email templates, settings, runs-logs, actions, report-analysis)
 - `app/(admin)/` — Admin panel pages (dashboard, users, sessions, logs, activity, manage-admins)
-- `app/api/` — Server-side API routes
+- `app/api/` — Server-side API routes (including `/api/reports/*` for Report Analysis)
 - `app/login/`, `app/signup/` — Authentication pages
 - `app/admin-portal-xyz/` — Admin login (hidden route)
 
@@ -78,6 +78,13 @@ The app uses Next.js route groups to separate concerns:
 | Table | Purpose |
 |-------|---------|
 | `user_settings` | JSONB blob for Gmail SMTP accounts, Google Drive tokens, ChatGPT config |
+
+### Report Analysis Tables
+
+| Table | Purpose |
+|-------|---------|
+| `report_runs` | History of executed report analyses. Stores source schemas, AI plan, instruction (prompt), result rows/columns, optional Google Sheet URL. All sensitive fields encrypted at rest. Capped at 25 rows per user by a DB trigger. |
+| `report_recipes` | Dormant — kept in DB but UI and API route removed. No active writes. |
 
 ## Platform System
 
@@ -143,6 +150,11 @@ The workflow is stored as a JSONB array in `automations.workflow`.
 - Supports multiple recipients
 - Variables are inserted into subject and body
 - Can select which email account (Gmail/Resend/SendGrid) to send from
+
+**Write to Google Sheets** (`components/automations/write-to-google-sheets-step.tsx`):
+- Writes automation data to a specified tab in a Google Spreadsheet the user owns
+- Three write modes: **Replace** (in-place placeholder replacement), **Append** (template row preservation + below-data strategy), **Match & Fill** (row matching by criteria + targeted cell writes)
+- Uses the user's linked Google Drive OAuth token
 
 ### Execution Lifecycle
 
@@ -229,6 +241,7 @@ Three providers supported, each with a different sending mechanism:
 Key files:
 - `lib/email-sender.ts` — Unified send interface for all providers
 - `lib/email-encryption.ts` — AES-256-GCM encryption for Gmail passwords (PBKDF2 key derivation, per-encryption salt)
+- `lib/data-encryption.ts` — Typed encrypt/decrypt wrappers for all other sensitive DB fields (report runs, report recipes). TEXT fields use `safeEncrypt`/`safeDecrypt`; JSONB fields stored as `['__enc__', '<base64>']` sentinel arrays.
 
 ### Multi-Account Gmail
 
@@ -252,6 +265,78 @@ The Stats page (`components/shared/stats-query-interface.tsx`) is a shared compo
 - `lib/stats/date-presets.ts` — Timezone-aware date calculations using `Intl.DateTimeFormat().formatToParts()`. Fixes timezone bugs (e.g., "yesterday" showing wrong day in non-UTC zones).
 - `lib/stats/url-builder.ts` — Platform-specific URL construction with API key masking for display.
 - `lib/stats/entity-extractor.ts` — Entity ID extraction, entity lookup in API responses, variable name generation.
+
+## Report Analysis
+
+The Report Analysis feature (`app/(dashboard)/report-analysis/`) lets users transform CSV or Google Sheet data with AI-generated plans executed deterministically in-process.
+
+### Architecture
+
+**Option B pattern** — LLM generates a structured JSON plan from headers + sample rows; application code executes the plan deterministically. This is reproducible, auditable, and scales without sending raw data to the LLM.
+
+```
+User describes goal (instruction)
+   │
+   ▼
+POST /api/reports/analyze
+   ├─ Extract headers + sample rows from each source (lib/reports/schema-extractor.ts)
+   ├─ Call LLM (Claude Haiku → Gemini Flash fallback) with REPORT_PLANNER_SYSTEM_PROMPT
+   └─ Returns { plan: Plan, plan_description: string }
+                       │
+                       ▼
+POST /api/reports/execute
+   ├─ lib/reports/plan-executor.ts runs each step against in-memory data
+   └─ Returns { rows: DataRow[], columns: string[] }
+                       │
+                       ▼
+Auto-save to report_runs (encrypted)
+   └─ POST /api/reports/runs
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `lib/reports/types.ts` | `Plan`, `PlanStep`, `FilterStep`, `SourceSchema`, `ReportRun`, `ReportRunSummary` |
+| `lib/reports/plan-executor.ts` | Executes transformation plans in-memory (join, filter, group_by, select, sort, rename) |
+| `lib/reports/schema-extractor.ts` | Extracts headers + sample rows from parsed sources for the AI prompt |
+| `lib/ai/system-prompts.ts` | `REPORT_PLANNER_SYSTEM_PROMPT` — guides LLM to produce valid plans |
+| `lib/data-encryption.ts` | Typed encrypt/decrypt wrappers for `report_runs` and `report_recipes` fields |
+| `app/api/reports/analyze/route.ts` | AI plan generation endpoint (tracks AI usage limits) |
+| `app/api/reports/execute/route.ts` | Plan execution endpoint |
+| `app/api/reports/runs/route.ts` | GET (history list) / POST (save run) / DELETE |
+| `app/api/reports/runs/[id]/route.ts` | GET full run details (decrypted) |
+| `app/api/reports/sheets-read/route.ts` | Read rows from a Google Sheet tab |
+| `app/api/reports/sheets-write/route.ts` | Write result rows to a new Google Sheet tab |
+
+### Plan Operations
+
+| Op | Description |
+|----|-------------|
+| `join` | Merge two sources on matching column values |
+| `filter` | Keep rows matching a condition. Operators: `>`, `<`, `>=`, `<=`, `=`, `!=`, `in`, `not_in`, `contains`, `not_contains` |
+| `group_by` | Aggregate rows grouped by one or more columns |
+| `select` | Keep only specific columns (with optional rename) |
+| `sort` | Sort rows by a column (asc/desc) |
+| `rename` | Rename a column |
+
+**Important:** Use `in`/`not_in` (array value) for OR logic on a single column. Chaining multiple `=` filters on the same column produces zero rows (AND semantics).
+
+### Data Encryption
+
+All sensitive fields in `report_runs` are encrypted at rest using AES-256-GCM (same key as `EMAIL_ENCRYPTION_KEY`):
+- TEXT fields (`name`, `instruction`, `sheet_url`, `sheet_tab_name`): encrypted with `safeEncrypt`
+- JSONB fields (`sources`, `plan`, `result_rows`, `result_columns`): serialised to JSON then encrypted; stored as `['__enc__', '<base64>']` sentinel array
+
+### UI Layout
+
+Single-page progressive disclosure — 4 always-visible numbered cards:
+1. **Sources** — Upload CSVs or connect Google Sheet tabs (up to 3)
+2. **Instruction** — Plain-text prompt + "Generate Plan" button
+3. **Plan** — Read-only plan preview + "Run Plan" button. Pre-filled from a past run when reusing; shows a banner to prompt Re-analyze if sources differ.
+4. **Results** — Stats bar, Download CSV, Write to Sheet, data table
+
+**History panel** (sidebar): lists past runs. Clicking a run opens `RunDetail` which shows the original instruction, plan, and results, plus a "Reuse for new report" button that mounts a fresh workspace pre-filled with the prior instruction and plan.
 
 ## Admin Panel
 
