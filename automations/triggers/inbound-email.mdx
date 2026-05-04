@@ -5,16 +5,31 @@ description: "Automatically run an automation when an email is forwarded to a un
 
 ## Overview
 
-The **Email Received** trigger runs an automation every time an email is forwarded to its unique AffZero forwarding address. This is ideal for capturing invoices, receipts, reports, or any document sent by email — without granting AffZero access to your inbox.
+The **Email Received** trigger runs an automation every time an email is forwarded to a dedicated AffZero forwarding address. This is ideal for capturing invoices, receipts, reports, or any document sent by email — without granting AffZero access to your inbox.
 
-Each automation with this trigger gets a dedicated address like `auto-7gk2p9xr@inbox.affzero.com`. The address is generated once and stays the same for the life of the automation.
+Forwarding addresses look like `auto-7gk2p9xr@inbox.affzero.com`. You create and manage them in **Providers → Email Forwarding**, then assign one to any automation that uses the Email Received trigger.
 
 ## How it works
 
-1. You create (or use a preset for) an automation and set its trigger to **Email Received**.
-2. AffZero generates a unique forwarding address for that automation.
-3. You configure your email provider (Gmail, Outlook, etc.) to forward specific emails to that address.
+1. Go to **Providers → Email Forwarding** in the AffZero dashboard and create one or more forwarding addresses (within your plan limit).
+2. Create (or edit) an automation and set its trigger to **Email Received**. If you have multiple addresses, pick the one you want from the dropdown.
+3. Configure your email provider (Gmail, Outlook, etc.) to forward specific emails to that address.
 4. When AffZero receives a forwarded email, it runs the automation — extracting data, saving attachments, writing to Google Sheets, and so on.
+
+<Info>
+  **Multiple automations can share the same address.** When an email arrives, every enabled automation that references that address will run independently. This lets you, for example, extract invoice data _and_ archive the PDF in separate automations from a single forwarded email.
+</Info>
+
+## Managing your forwarding addresses
+
+All forwarding addresses for your account are listed in **Providers → Email Forwarding** in the AffZero dashboard.
+
+From there you can:
+- **Create** new addresses (up to your plan limit: Starter 1, Pro 2, Scale 5).
+- **Label** each address with a friendly name (e.g. "Vendor invoices", "Personal receipts").
+- **Copy** any address to the clipboard.
+- **See which automations** use each address.
+- **Delete** an address (after removing it from any linked automations first).
 
 ## Setting up forwarding in Gmail
 
@@ -99,22 +114,14 @@ When the trigger fires, the following variables are populated and can be used in
   Attachment variables are numbered starting from 1. If the email has 3 attachments, you'll have `attachment_1_*`, `attachment_2_*`, and `attachment_3_*`.
 </Note>
 
-## Managing your forwarding addresses
-
-All forwarding addresses for your account are listed in **Providers → Email Forwarding** in the AffZero dashboard.
-
-From there you can:
-- Copy any address to the clipboard.
-- See which automation each address is linked to.
-- Navigate directly to the linked automation to edit it.
-
-Addresses are created automatically when you set a trigger to **Email Received**, and removed if you change the trigger type or delete the automation.
-
 ## FAQ
 
 <AccordionGroup>
   <Accordion title="Can I use the same address for multiple automations?">
-    No — each automation gets its own unique address. This ensures emails are routed to the correct workflow.
+    Yes! Multiple automations can share the same forwarding address. When an email arrives, all enabled automations that reference that address will run independently. This is useful when you want to process the same email in different ways (e.g. extract data and archive the file separately).
+  </Accordion>
+  <Accordion title="How many forwarding addresses can I create?">
+    It depends on your plan: Starter allows 1, Pro allows 2, and Scale allows 5 addresses. You can manage your plan in **Settings → Billing**.
   </Accordion>
   <Accordion title="Does AffZero read my entire inbox?">
     No. AffZero only sees emails that you explicitly forward to the generated address. No inbox access or Gmail read permissions are required.
