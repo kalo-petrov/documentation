@@ -103,12 +103,21 @@ When the trigger fires, the following variables are populated and can be used in
 | `{email_body_text}` | Plain-text body of the email |
 | `{email_received_at}` | Timestamp when the email was received |
 | `{attachment_count}` | Number of attachments |
-| `{attachment_1_filename}` | Filename of the first attachment |
+| `{attachment_filename}` | Full filename of the **first** attachment (alias: `{attachment_name}`) |
+| `{attachment_basename}` | First attachment name **without** extension (alias: `{attachment_stem}`); use in templates like `{invoice_vendor}_{attachment_basename}.pdf` |
+| `{attachment_extension}` | Extension of the first attachment without a dot (e.g. `pdf`) |
+| `{attachment_1_filename}` | Full filename of the first attachment (alias: `{attachment_1_name}`) |
+| `{attachment_1_basename}` | First attachment name without extension |
+| `{attachment_1_extension}` | First attachment extension |
 | `{attachment_1_mime}` | MIME type of the first attachment (e.g. `application/pdf`) |
-| `{attachment_2_filename}` | Filename of the second attachment (if any) |
+| `{attachment_2_filename}` | Second attachment full name (also `{attachment_2_name}`, `{attachment_2_basename}`, …) |
 
 <Note>
-  Attachment variables are numbered starting from 1. If the email has 3 attachments, you'll have `attachment_1_*`, `attachment_2_*`, and `attachment_3_*`.
+  Attachment variables are numbered starting from 1. If the email has 3 attachments, you'll have `attachment_1_*`, `attachment_2_*`, and `attachment_3_*` variants (`_filename`, `_name`, `_basename`, `_stem`, `_extension`, `_mime`, `_size`, `_path`).
+</Note>
+
+<Note>
+  In the **Save PDF to Drive** step filename template, `{attachment_filename}`, `{attachment_basename}`, and related aliases refer to the **attachment index** you chose for that step (not always the first attachment).
 </Note>
 
 ## FAQ
