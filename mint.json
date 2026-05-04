@@ -68,6 +68,12 @@
         "automations/scheduling",
         "automations/variables",
         {
+          "group": "Triggers",
+          "pages": [
+            "automations/triggers/inbound-email"
+          ]
+        },
+        {
           "group": "Steps",
           "pages": [
             "automations/steps/pull-stats",

@@ -1,0 +1,128 @@
+---
+title: "Email Received Trigger"
+description: "Automatically run an automation when an email is forwarded to a unique AffZero address."
+---
+
+## Overview
+
+The **Email Received** trigger runs an automation every time an email is forwarded to its unique AffZero forwarding address. This is ideal for capturing invoices, receipts, reports, or any document sent by email — without granting AffZero access to your inbox.
+
+Each automation with this trigger gets a dedicated address like `auto-7gk2p9xr@inbox.affzero.com`. The address is generated once and stays the same for the life of the automation.
+
+## How it works
+
+1. You create (or use a preset for) an automation and set its trigger to **Email Received**.
+2. AffZero generates a unique forwarding address for that automation.
+3. You configure your email provider (Gmail, Outlook, etc.) to forward specific emails to that address.
+4. When AffZero receives a forwarded email, it runs the automation — extracting data, saving attachments, writing to Google Sheets, and so on.
+
+## Setting up forwarding in Gmail
+
+<Steps>
+  <Step title="Open Gmail Settings">
+    Click the gear icon → **See all settings** → go to the **Forwarding and POP/IMAP** tab.
+  </Step>
+  <Step title="Add a forwarding address">
+    Click **Add a forwarding address** and paste your AffZero forwarding address (e.g. `auto-7gk2p9xr@inbox.affzero.com`).
+  </Step>
+  <Step title="Confirm">
+    Gmail will send a confirmation email to the address. AffZero will automatically accept it — this may take a few seconds. Click **OK** and the address will show as confirmed.
+  </Step>
+  <Step title="Optional: create a filter">
+    Instead of forwarding _all_ email, you can create a filter:
+    - Click **Search options** (the small arrow in the Gmail search bar).
+    - Set **From** to `billing@vendor.com` (or whatever sender you want).
+    - Click **Create filter** → check **Forward it to** and select your AffZero address.
+    
+    This way only matching emails get forwarded.
+  </Step>
+</Steps>
+
+<Tip>
+  Using a Gmail filter is recommended so only relevant emails (invoices, receipts) are forwarded, rather than everything in your inbox.
+</Tip>
+
+## Setting up forwarding in Outlook
+
+<Steps>
+  <Step title="Open Outlook Settings">
+    Click the gear icon → **View all Outlook settings** → **Mail** → **Rules**.
+  </Step>
+  <Step title="Create a new rule">
+    Click **Add new rule**. Name it (e.g. "Forward invoices to AffZero").
+  </Step>
+  <Step title="Set conditions">
+    Add a condition such as **From** contains `billing@vendor.com` — or leave it broad to forward all email.
+  </Step>
+  <Step title="Add action">
+    Choose **Forward to** and paste your AffZero forwarding address.
+  </Step>
+  <Step title="Save">
+    Click **Save**. Matching emails will now be forwarded automatically.
+  </Step>
+</Steps>
+
+## Setting up in other providers
+
+Most email providers support forwarding or rules. Look for:
+
+- **Settings → Forwarding** — add the AffZero address as the destination.
+- **Settings → Rules / Filters** — create a rule that forwards matching emails.
+
+## Trigger filters
+
+Inside the automation builder, you can optionally restrict which emails are processed:
+
+| Filter | Description |
+|--------|-------------|
+| **Only accept emails from** | Only process emails where the sender matches (e.g. `billing@vendor.com` or `@vendor.com`). |
+| **Subject contains** | Only process emails whose subject includes a keyword (e.g. `Invoice`). |
+
+Emails that don't match the filters are silently skipped.
+
+## Variables available in steps
+
+When the trigger fires, the following variables are populated and can be used in any subsequent step:
+
+| Variable | Description |
+|----------|-------------|
+| `{email_from}` | Sender email address |
+| `{email_subject}` | Email subject line |
+| `{email_body_text}` | Plain-text body of the email |
+| `{email_received_at}` | Timestamp when the email was received |
+| `{attachment_count}` | Number of attachments |
+| `{attachment_1_filename}` | Filename of the first attachment |
+| `{attachment_1_mime}` | MIME type of the first attachment (e.g. `application/pdf`) |
+| `{attachment_2_filename}` | Filename of the second attachment (if any) |
+
+<Note>
+  Attachment variables are numbered starting from 1. If the email has 3 attachments, you'll have `attachment_1_*`, `attachment_2_*`, and `attachment_3_*`.
+</Note>
+
+## Managing your forwarding addresses
+
+All forwarding addresses for your account are listed in **Providers → Email Forwarding** in the AffZero dashboard.
+
+From there you can:
+- Copy any address to the clipboard.
+- See which automation each address is linked to.
+- Navigate directly to the linked automation to edit it.
+
+Addresses are created automatically when you set a trigger to **Email Received**, and removed if you change the trigger type or delete the automation.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I use the same address for multiple automations?">
+    No — each automation gets its own unique address. This ensures emails are routed to the correct workflow.
+  </Accordion>
+  <Accordion title="Does AffZero read my entire inbox?">
+    No. AffZero only sees emails that you explicitly forward to the generated address. No inbox access or Gmail read permissions are required.
+  </Accordion>
+  <Accordion title="What happens if I forward an email that doesn't match the filters?">
+    It is silently skipped. You can see filtered events in the automation's execution logs.
+  </Accordion>
+  <Accordion title="Are scanned PDF invoices supported?">
+    The AI Extract step currently works best with digital (text-based) PDFs. Scanned or image-based PDFs may return empty text. Multimodal support is planned for a future release.
+  </Accordion>
+</AccordionGroup>
