@@ -5,7 +5,7 @@ description: "Automatically run an automation when an email is forwarded to a un
 
 ## Overview
 
-The **Email Received** trigger runs an automation every time an email is forwarded to a dedicated AffZero forwarding address. This is ideal for capturing invoices, receipts, reports, or any document sent by email — without granting AffZero access to your inbox.
+The **Email Received** trigger runs an automation every time an email arrives at a dedicated AffZero forwarding address — whether you **forwarded it manually** from your inbox or it was delivered automatically via a rule or provider forwarding. This is ideal for capturing invoices, receipts, reports, or any document sent by email — without granting AffZero access to your inbox.
 
 Forwarding addresses look like `auto-7gk2p9xr@inbox.affzero.com`. You create and manage them in **Providers → Email Forwarding**, then assign one to any automation that uses the Email Received trigger.
 
@@ -13,8 +13,8 @@ Forwarding addresses look like `auto-7gk2p9xr@inbox.affzero.com`. You create and
 
 1. Go to **Providers → Email Forwarding** in the AffZero dashboard and create one or more forwarding addresses (within your plan limit).
 2. Create (or edit) an automation and set its trigger to **Email Received**. If you have multiple addresses, pick the one you want from the dropdown.
-3. Configure your email provider (Gmail, Outlook, etc.) to forward specific emails to that address.
-4. When AffZero receives a forwarded email, it runs the automation — extracting data, saving attachments, writing to Google Sheets, and so on.
+3. Either **forward messages manually** (open an email and use Forward to your AffZero address) or set up **automatic forwarding** or **filters** in your provider so matching mail is sent without extra steps.
+4. When AffZero receives an email at that address, it runs the automation — extracting data, saving attachments, writing to Google Sheets, and so on.
 
 <Info>
   **Multiple automations can share the same address.** When an email arrives, every enabled automation that references that address will run independently. This lets you, for example, extract invoice data _and_ archive the PDF in separate automations from a single forwarded email.
