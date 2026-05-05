@@ -1,0 +1,37 @@
+---
+title: "Manual Trigger"
+description: "Run an automation only when you explicitly click Run Now — no schedule, no automatic execution."
+---
+
+## Overview
+
+The **Manual** trigger disables all automatic execution. The automation only runs when you click **Run Now** from the Automations list (or via the API).
+
+Use this trigger when:
+
+- You're building or testing a workflow and don't want it to run on a schedule yet
+- The automation is one-off or ad-hoc — you decide exactly when it runs
+- You want full control before committing to a recurring schedule
+
+---
+
+## How to use it
+
+1. In the automation builder, click the **Trigger** section at the top of the page.
+2. Select **Manual** from the trigger type options.
+3. Save the automation.
+
+The automation will now only execute when you press **Run Now** on the Automations list.
+
+---
+
+## Switching to a schedule later
+
+At any time, you can open the automation and change the trigger to **On Schedule** to make it run automatically. Your steps and configuration are unaffected.
+
+---
+
+## Notes
+
+- A manually-triggered automation still appears in [Runs & Logs](/runs-logs) with a full execution record.
+- The **Enabled** toggle on the Automations list has no effect on a manual automation — it only controls whether scheduled automations run automatically. A manual automation always requires an explicit **Run Now**.

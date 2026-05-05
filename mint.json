@@ -71,7 +71,10 @@
         {
           "group": "Triggers",
           "pages": [
-            "automations/triggers/inbound-email"
+            "automations/triggers/schedule",
+            "automations/triggers/manual",
+            "automations/triggers/inbound-email",
+            "automations/triggers/webhook"
           ]
         },
         {

@@ -1,0 +1,44 @@
+---
+title: "Schedule Trigger"
+description: "Run an automation automatically at a fixed frequency — daily, weekly, monthly, or once."
+---
+
+## Overview
+
+The **On Schedule** trigger is the default trigger type. The automation runs automatically at the frequency and time you configure — no manual action required.
+
+This is the right trigger for anything recurring: daily stats emails, weekly performance summaries, monthly invoicing runs, and Google Sheets syncs.
+
+---
+
+## Configuring the schedule
+
+In the automation builder, click the **Trigger** panel (top-left of the builder) and select **On Schedule**. Then set the schedule in the **Schedule** panel:
+
+| Setting | Description |
+|---------|-------------|
+| **Frequency** | Daily, Weekly, Monthly, or Run Once |
+| **Day** (Weekly) | Which day of the week the automation runs |
+| **Day of month** (Monthly) | Which day (1–28) the automation runs each month |
+| **Time** | What time the automation runs (UTC) |
+
+Schedule availability depends on your plan — see [Scheduling](/automations/scheduling) for the full breakdown and timezone guidance.
+
+---
+
+## Enabling and disabling
+
+Toggle the **Enabled** switch on the Automations list to pause or resume a scheduled automation without deleting it. A disabled automation will not run on its schedule but can still be triggered manually with **Run Now**.
+
+---
+
+## Run Now
+
+You can always trigger a scheduled automation immediately using **Run Now** on the Automations list — regardless of its next scheduled time. This is useful for testing or re-running a failed execution.
+
+---
+
+## See also
+
+- [Scheduling](/automations/scheduling) — full schedule options, timezone guidance, and what happens on failure
+- [Runs & Logs](/runs-logs) — view the history of every execution

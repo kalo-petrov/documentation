@@ -1,11 +1,32 @@
 ---
 title: Automations Overview
-description: Build multi-step workflows that pull data, process it, and take action — all on a schedule.
+description: Build multi-step workflows that pull data, process it, and take action — triggered by a schedule, an inbound email, or manually.
 ---
 
 ## What is an Automation?
 
-An **automation** is a named workflow made up of a series of steps that run in sequence. You build it once in the visual automation builder, set a schedule, and AffZero runs it automatically — pulling fresh data, processing it, and sending emails or generating invoices without any manual work.
+An **automation** is a named workflow made up of a series of steps that run in sequence. You build it once in the visual automation builder, choose a trigger, and AffZero runs it automatically — pulling fresh data, processing it, and sending emails or generating invoices without any manual work.
+
+---
+
+## Trigger Types
+
+Every automation starts with a trigger — the event or schedule that kicks it off.
+
+<CardGroup cols={2}>
+  <Card title="On Schedule" icon="clock" href="/automations/triggers/schedule">
+    Run automatically at a fixed frequency: daily, weekly, monthly, or once. The most common trigger type.
+  </Card>
+  <Card title="Manual" icon="play" href="/automations/triggers/manual">
+    Run only when you click Run Now. No automatic execution — useful for ad-hoc or test workflows.
+  </Card>
+  <Card title="Email Received" icon="envelope" href="/automations/triggers/inbound-email">
+    Run every time an email is forwarded to your unique AffZero address. Ideal for invoice capture and document processing.
+  </Card>
+  <Card title="Webhook" icon="bolt" href="/automations/triggers/webhook">
+    Run when an external service sends an HTTP request to a unique URL. Coming soon.
+  </Card>
+</CardGroup>
 
 ---
 
