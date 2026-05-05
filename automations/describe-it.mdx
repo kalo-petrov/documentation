@@ -1,0 +1,87 @@
+---
+title: "Describe It — AI Automation Builder"
+description: "Describe your automation in plain English and let AI build the workflow for you."
+---
+
+## What is Describe It?
+
+**Describe It** is an AI-powered way to create automations without manually adding and configuring each step. Instead of building from scratch, you type a plain-English description of what you want — and AffZero generates the full workflow, including the right steps and a matching schedule.
+
+<Note>
+  Describe It is available on **Pro and above** plans. On the Starter plan the button is visible but disabled with an upgrade prompt.
+</Note>
+
+---
+
+## How to use it
+
+1. Go to **Automations** in the left sidebar.
+2. Click **New Automation** — this opens the New Automation modal.
+3. Click the **Describe It** button at the top of the modal.
+4. Type a description of your automation in plain English.
+5. Click **Build it for me**.
+
+AffZero sends your description to the AI, which generates a workflow and creates the automation. You are then taken directly to the automation builder with the steps already in place — review them, fill in any missing settings (connection, date range, email account, etc.), and save.
+
+---
+
+## Writing a good description
+
+The clearer your description, the better the result. Include:
+
+- **When** it should run: *"Every morning at 9am"*, *"Every Monday"*, *"On the 1st of each month"*
+- **What data** to pull: *"Pull last week's stats from Affise"*, *"Pull yesterday's conversions by offer"*
+- **What to do with it**: *"Send me an email with the top 5 affiliates by revenue"*, *"Write the results to a Google Sheet"*, *"Filter offers with revenue above $500"*
+
+**Good examples:**
+
+```
+Every morning at 9am, pull yesterday's stats from Affise and email me the top 5 affiliates by revenue.
+```
+
+```
+Every Friday, pull last week's Binom campaign stats, filter campaigns with revenue > $500, and write the results to a Google Sheet.
+```
+
+```
+On the 1st of each month, pull last month's stats, filter affiliates with payout above $100, generate invoice numbers, create PDF invoices, and email each invoice to the affiliate.
+```
+
+---
+
+## Clarification questions
+
+If your description is ambiguous — for example, if you have multiple tracker connections and the AI can't determine which one to use — AffZero will ask a short follow-up question before generating the workflow.
+
+You'll see a **"A quick question…"** screen with one or more multiple-choice options. Select the correct options and click **Generate workflow** to proceed.
+
+---
+
+## After the workflow is built
+
+The automation is created as **inactive** (not running yet). You'll land in the automation builder with a banner confirming it was AI-generated.
+
+From there:
+1. Review each step — check that the connection, date range, email account, and other settings are correct.
+2. Fill in anything that couldn't be determined from your description (e.g. specific email addresses, recipient lists).
+3. Enable the automation when ready.
+
+<Tip>
+  If the AI generated the wrong steps or missed something, it's faster to edit the existing steps than to start over. The builder gives you full control to add, remove, or reorder steps.
+</Tip>
+
+---
+
+## Limitations
+
+- Works best for workflows that combine **Pull Stats**, **Filter Data**, **Condition Check**, **Send Email**, **Write to Google Sheets**, and **Tracker Actions**. Complex inbound-email workflows (Invoice Capture) are better started from the **Invoice Capture preset**.
+- Describe It cannot pre-fill specific connections, email templates, or recipient addresses — you'll fill those in manually after the workflow is created.
+- Scoped to automations. It does not affect connections, email services, or other settings.
+
+---
+
+## Prefer a preset instead?
+
+If you're not sure what to type, use an **Automation Preset** instead — curated workflow templates that create a ready-to-configure automation with a single click. You can switch between Describe It and the preset list from the bottom of the Describe It modal.
+
+See [Automations Overview](/automations/overview#automation-presets) for the full preset list.

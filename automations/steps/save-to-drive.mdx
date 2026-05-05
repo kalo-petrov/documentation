@@ -1,0 +1,96 @@
+---
+title: "Save to Drive Step"
+description: "Save an email attachment or file to a Google Drive folder, with a customisable filename template."
+---
+
+## What it does
+
+The **Save to Drive** step uploads an attachment — typically a PDF from an inbound email — to a folder you choose in Google Drive. You can customise the saved filename using variables from earlier steps (e.g. extracted invoice fields).
+
+After the file is saved, the step produces three output variables (`{drive_file_id}`, `{drive_file_url}`, `{drive_file_name}`) that subsequent steps can use — for example, to embed a Drive link in a confirmation email.
+
+---
+
+## Requirements
+
+A **Google account** must be connected in **Providers → Gmail & Drive** before this step can run.
+
+---
+
+## Configuration
+
+### Which attachment to save
+
+Select which attachment from the inbound email to upload:
+
+| Option | Description |
+|--------|-------------|
+| First attachment (attachment 1) | The first file attached to the email |
+| Second attachment (attachment 2) | The second attached file |
+| Third attachment (attachment 3) | The third attached file |
+
+Attachments come from the [Email Received trigger](/automations/triggers/inbound-email) or a prior step that produces a file.
+
+### Target Drive folder
+
+Click **Browse Google Drive** to pick a folder. The Google Drive file picker opens directly in the browser — navigate to the folder you want and select it.
+
+If no folder is selected, files are saved to the **root** of Google Drive.
+
+If you have multiple Google accounts connected, choose which account's Drive to save to before picking the folder.
+
+### Filename template
+
+Control what the saved file is named. You can use:
+
+- **Attachment variable shortcuts** — reference the attachment this step is uploading:
+
+  | Variable | Description |
+  |----------|-------------|
+  | `{attachment_filename}` or `{attachment_name}` | Original filename with extension (e.g. `invoice.pdf`) |
+  | `{attachment_basename}` or `{attachment_stem}` | Filename without extension (e.g. `invoice`) |
+  | `{attachment_extension}` | Extension without dot (e.g. `pdf`) |
+
+- **Numbered attachment variables** — reference a specific attachment from the email:
+
+  `{attachment_1_filename}`, `{attachment_2_basename}`, etc.
+
+- **Any variable from a prior step** — for example, fields extracted by an AI Extract step:
+
+  `{invoice_vendor}`, `{invoice_number}`, `{invoice_date}`, etc.
+
+**Common patterns:**
+
+| Template | Result |
+|----------|--------|
+| `{attachment_filename}` | `invoice.pdf` (keeps the original name) |
+| `{invoice_vendor}_{invoice_number}.pdf` | `Acme Corp_INV-042.pdf` |
+| `{invoice_vendor}_{attachment_basename}.pdf` | `Acme Corp_invoice.pdf` |
+| `{invoice_date}_{invoice_vendor}.pdf` | `2024-03-01_Acme Corp.pdf` |
+
+---
+
+## Output variables
+
+After the step runs, these variables are available in subsequent steps:
+
+| Variable | Description |
+|----------|-------------|
+| `{drive_file_id}` | Google Drive file ID |
+| `{drive_file_url}` | Direct link to the file in Google Drive |
+| `{drive_file_name}` | The actual filename used when saving |
+
+Use `{drive_file_url}` in a Send Email step to include a link to the uploaded file in your confirmation email.
+
+---
+
+## Example: Invoice Capture
+
+A typical use of Save to Drive in an Invoice Capture workflow:
+
+1. **Email Received** trigger receives an invoice PDF
+2. **AI Extract** extracts `{invoice_vendor}` and `{invoice_number}`
+3. **Save to Drive** saves the PDF to a "Vendor Invoices" folder with filename `{invoice_vendor}_{invoice_number}.pdf`
+4. **Write to Google Sheets** logs the invoice with the `{drive_file_url}` in a "Link" column
+
+See [Invoice Capture preset](/automations/triggers/inbound-email) for a guided wizard that sets all of this up automatically.

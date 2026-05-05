@@ -58,13 +58,19 @@ Each step performs one action. Steps are color-coded for quick reference:
   <Card title="Tracker Action Add" icon="plus" href="/automations/steps/tracker-actions">
     Create new records via a tracker API.
   </Card>
+  <Card title="AI Extract" icon="scan-text" color="#4F46E5" href="/automations/steps/ai-extract">
+    Extract structured fields (number, vendor, amount, date…) from a PDF attachment or text variable using AI.
+  </Card>
+  <Card title="Save to Drive" icon="hard-drive" color="#0D9488" href="/automations/steps/save-to-drive">
+    Save an email attachment to a Google Drive folder with a customisable filename template.
+  </Card>
 </CardGroup>
 
 ---
 
 ## How Data Flows Between Steps
 
-Every data-producing step (Pull Stats, AI Analyze, Generate Invoice Number, Tracker Action Get) stores its output as **variables**. Those variables are then available to every step that comes after it in the workflow.
+Every data-producing step (Pull Stats, AI Analyze, Generate Invoice Number, AI Extract, Tracker Action Get, Save to Drive) stores its output as **variables**. Those variables are then available to every step that comes after it in the workflow.
 
 For example:
 - Step 1: Pull Stats → produces `{affiliate_name_1_stats_1}`, `{revenue_1_stats_1}`
@@ -77,15 +83,18 @@ See [Variables](/automations/variables) for the full naming convention and how t
 
 ## Automation Presets
 
-Not sure where to start? Click the **Presets** button on the Automations page to browse 5 curated workflow templates. Each preset creates a ready-to-configure automation with the right steps already in place — you just fill in your connection, template, and other settings.
+Not sure where to start? When you click **New Automation**, AffZero offers 6 curated workflow templates. Each preset creates a ready-to-configure automation with the right steps already in place — you just fill in your connection, template, and other settings.
 
-| Preset | Schedule | Steps |
-|---|---|---|
-| **Daily Affiliate Report** | Daily 8 AM | Pull Stats → Send Email |
-| **Weekly Performance Summary** | Weekly Monday 8 AM | Pull Stats → Send Email |
-| **Update Tracker Records** | Daily 6 AM | Pull Stats → Condition Check → Tracker Action Edit |
-| **Monthly Invoicing** | Monthly 9 AM | Pull Stats → Filter Data → Generate Invoice Number → Create Invoice → Send Email |
-| **Google Sheets Sync** | Monthly 7 AM | Pull Stats → Write to Google Sheets |
+| Preset | Trigger | Schedule | Steps |
+|---|---|---|---|
+| **Daily Affiliate Report** | Schedule | Daily 8 AM | Pull Stats → Send Email |
+| **Weekly Performance Summary** | Schedule | Weekly Monday 8 AM | Pull Stats → Send Email |
+| **Update Tracker Records** | Schedule | Daily 6 AM | Pull Stats → Condition Check → Tracker Action Edit |
+| **Monthly Invoicing** | Schedule | Monthly 9 AM | Pull Stats → Filter Data → Generate Invoice Number → Create Invoice → Send Email |
+| **Google Sheets Sync** | Schedule | Monthly 7 AM | Pull Stats → Write to Google Sheets |
+| **Invoice Capture** | Email Received | On every email | AI Extract → Save to Drive → Write to Google Sheets |
+
+The **Invoice Capture** preset uses the [Email Received trigger](/automations/triggers/inbound-email) instead of a schedule — it runs automatically each time you forward an invoice email to your unique AffZero address. Selecting this preset opens a guided setup wizard to configure your Drive folder and Google Sheet in three steps.
 
 All presets start **inactive** — review, configure each step, then enable when ready.
 
@@ -93,18 +102,27 @@ All presets start **inactive** — review, configure each step, then enable when
 
 ## Creating an Automation
 
+Click **New Automation** on the Automations page. A modal opens with three ways to get started:
+
+**With AI — Describe It (Pro and above):**
+1. Click **Describe It** at the top of the modal
+2. Type a plain-English description of what you want (e.g. *"Every morning, pull yesterday's Affise stats and email me the top affiliates"*)
+3. Click **Build it for me** — AI generates the full workflow automatically
+4. Review the steps, fill in any missing settings, and enable when ready
+
+See [Describe It](/automations/describe-it) for full details and tips on writing good descriptions.
+
 **From a preset (recommended for first-timers):**
-1. Go to **Automations** in the left sidebar
-2. Click **Presets** and choose a template
+1. Click **New Automation** and browse the preset cards
+2. Click **Use Preset** on the template you want
 3. The automation is created with steps pre-configured — open it to fill in your connection, date range, and other settings
 4. Enable when ready
 
 **From scratch:**
-1. Go to **Automations** in the left sidebar
-2. Click **New Automation**
-3. Enter a name, then add steps using the **+** button
-4. Configure each step and set a **schedule**
-5. Click **Save** — the automation is now active
+1. Click **New Automation** → **Start from scratch**
+2. You'll land in an empty builder — add steps using the **+** button
+3. Configure each step and set a **schedule**
+4. Click **Save**
 
 ---
 

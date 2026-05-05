@@ -1,0 +1,88 @@
+---
+title: "AI Extract Step"
+description: "Use AI to extract structured fields from a PDF attachment or text variable and turn them into variables for later steps."
+---
+
+## What it does
+
+The **AI Extract** step reads an attachment (typically a PDF) or a text variable and extracts a set of fields you define — such as invoice number, vendor name, amount, and due date. Each extracted field becomes a variable available in all subsequent steps.
+
+This step is most commonly used in [Invoice Capture](/automations/triggers/inbound-email) automations triggered by the **Email Received** trigger, but it works with any source that provides a PDF attachment or text data.
+
+---
+
+## Configuration
+
+### Extract from
+
+Choose what the AI reads:
+
+| Option | When to use |
+|--------|-------------|
+| **Attachment from trigger/prior step** | Read a PDF (or other file) attached to the inbound email |
+| **Text from a variable** | Read a text variable, e.g. `{email_body_text}` from the trigger |
+
+### Attachment (when source = Attachment)
+
+Select which attachment to extract from: first, second, or third. Attachments are numbered starting from 1 and come from the inbound email trigger.
+
+### Variable name (when source = Text variable)
+
+Enter the variable name to read, e.g. `email_body_text`.
+
+### Output variable prefix (optional)
+
+A prefix applied to every extracted field name. For example, if you set the prefix to `invoice` and you have a field named `amount`, the output variable will be `{invoice_amount}`.
+
+Using a prefix is strongly recommended when running multiple AI Extract steps in the same automation, to avoid variable name collisions.
+
+### Fields to extract
+
+Define the schema — the list of fields the AI should look for. For each field:
+
+| Setting | Description |
+|---------|-------------|
+| **Field name** | Lowercase, underscore-separated name (e.g. `invoice_number`, `amount`). Becomes part of the output variable name. |
+| **Type** | One of: **Text**, **Number**, **Currency**, **Date** |
+| **Description** | A hint that helps the AI understand what to look for (e.g. "Total amount due including tax"). More detail = better accuracy. |
+| **Required** | If checked and the field can't be found, the step will fail. |
+
+You can add, edit, or remove fields freely. The default schema covers common invoice fields.
+
+---
+
+## Output variables
+
+Each field you define produces one output variable. With a prefix of `invoice` and fields `number`, `vendor`, `amount`, `date`:
+
+| Variable | Example value |
+|----------|--------------|
+| `{invoice_number}` | `INV-2024-0042` |
+| `{invoice_vendor}` | `Acme Corp` |
+| `{invoice_amount}` | `1250.00` |
+| `{invoice_date}` | `2024-03-01` |
+
+These variables are available in every step that follows — Send Email, Write to Google Sheets, Save to Drive filename templates, etc.
+
+---
+
+## Tips for better extraction
+
+- **Write descriptive field descriptions.** The AI uses them as hints. *"Total amount due including VAT"* gives better results than just *"amount"*.
+- **Use Currency type for monetary values.** The AI normalises values like `$1,250.00` or `€ 1.250,00` to a plain number.
+- **Use Date type for dates.** Output format is `YYYY-MM-DD`.
+- **Avoid required fields if the document might not include them.** Non-required fields that aren't found are simply left empty.
+- Works best with **digital (text-based) PDFs**. Scanned or image-only PDFs may produce empty results — multimodal (image) extraction is planned for a future release.
+
+---
+
+## Example: Invoice Capture
+
+A typical Invoice Capture automation uses AI Extract like this:
+
+1. **Email Received** trigger (inbound email with PDF attachment)
+2. **AI Extract** — extracts `number`, `vendor`, `amount`, `currency`, `date`, `due_date` with prefix `invoice`
+3. **Save to Drive** — saves the PDF with filename `{invoice_vendor}_{invoice_number}.pdf`
+4. **Write to Google Sheets** — logs a row with `{invoice_number}`, `{invoice_vendor}`, `{invoice_amount}`, `{invoice_date}`
+
+See [Invoice Capture preset](/automations/triggers/inbound-email) for a guided setup wizard that pre-configures all of these steps.

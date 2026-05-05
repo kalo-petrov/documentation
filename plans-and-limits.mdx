@@ -11,8 +11,10 @@ description: A full breakdown of what's included in each AffZero plan.
 | **Connections** | 1 | 3 | 8 | 10 |
 | **Automations** | 3 | 10 | 30 | 100 |
 | **Gmail SMTP accounts** | 1 | 2 | 3 | 3 |
+| **Inbound email addresses** | 1 | 2 | 5 | 10 |
 | **AI calls / month** | 20 | 100 | 500 | Unlimited |
 | **Schedules** | Monthly, Once | Weekly, Monthly, Once | Daily, Weekly, Monthly, Once | All |
+| **Describe It (AI builder)** | — | ✓ | ✓ | ✓ |
 | **Stats page** | ✓ | ✓ | ✓ | ✓ |
 | **Email templates** | ✓ | ✓ | ✓ | ✓ |
 | **Invoice templates** | ✓ | ✓ | ✓ | ✓ |
@@ -37,11 +39,28 @@ Any saved automation — enabled or disabled — counts toward the limit. Deleti
 
 The number of Gmail accounts you can connect simultaneously. All accounts are available as "Send From" options in any Send Email step.
 
+## Inbound Email Addresses
+
+Forwarding addresses (e.g. `auto-7gk2p9xr@inbox.affzero.com`) used by the **Email Received** trigger. Each address can be shared across multiple automations. Manage them in **Providers → Email Forwarding**.
+
+| Plan | Addresses |
+|---|---|
+| Starter | 1 |
+| Pro | 2 |
+| Pro+ | 5 |
+| Business | 10 |
+
+## Describe It (AI Automation Builder)
+
+The **Describe It** feature lets you describe an automation in plain English and have AI generate the full workflow. Available on **Pro and above** plans. See [Describe It](/automations/describe-it) for details.
+
 ## AI Calls
 
 Consumed by:
 - AI Analyze step (1 call per run)
+- AI Extract step (1 call per run)
 - Generate Invoice Number step (1 call per run)
+- Describe It (1 call per automation generated)
 - Generate with AI buttons in email/invoice editor (1 call per use)
 - AffZero AI chatbot (1 call per message)
 

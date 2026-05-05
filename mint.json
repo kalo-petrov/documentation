@@ -65,6 +65,7 @@
       "pages": [
         "automations/overview",
         "automations/building-your-first-automation",
+        "automations/describe-it",
         "automations/scheduling",
         "automations/variables",
         {
@@ -80,11 +81,13 @@
             "automations/steps/condition-check",
             "automations/steps/filter-data",
             "automations/steps/ai-analyze",
+            "automations/steps/ai-extract",
             "automations/steps/generate-invoice-number",
             "automations/steps/create-invoice",
             "automations/steps/send-email",
             "automations/steps/send-for-approval",
             "automations/steps/write-to-google-sheets",
+            "automations/steps/save-to-drive",
             "automations/steps/tracker-actions"
           ]
         }
