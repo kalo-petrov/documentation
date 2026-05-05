@@ -42,13 +42,27 @@ The AI Analyze step produces **custom named variables** based on your instructio
 
 These names are chosen by the AI, so you can copy them from the **Variables Available** panel after running the step.
 
-### Generate Invoice Number Variable
+### Invoice Number Variables
+
+AffZero has two independent invoice numbering systems, each producing its own variable:
+
+**Global sequence** — configured at Invoices → Invoice Numbering, generated inside the Create Invoice step:
 
 ```
-{invoice_number}
+{global_invoice_number}
 ```
 
-The name is user-defined when you configure the step (defaults to `invoice_number`).
+Available in any step that runs **after** a Create Invoice step. Shared across all automations.
+
+**Local sequence** — from a Generate Invoice Number step added to this automation:
+
+```
+{invoice_number_local}
+```
+
+The name is user-defined when you configure the step (defaults to `invoice_number_local`). Scoped to this automation only, independent from the global sequence.
+
+Both can be active in the same automation at the same time.
 
 ### Tracker Action Get Variables
 

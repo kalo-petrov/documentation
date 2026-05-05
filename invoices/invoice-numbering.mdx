@@ -1,25 +1,43 @@
 ---
 title: Invoice Numbering
-description: Configure a global invoice sequence so every automation always gets the next correct invoice number automatically.
+description: Configure a global invoice sequence so every Create Invoice step always gets the next correct number automatically.
 ---
 
 ## What is Invoice Numbering?
 
-**Invoice Numbering** is a global setting that teaches AffZero your invoice number format and keeps track of where you are in the sequence. Once configured, AffZero automatically injects a `{invoice_number}` variable into every automation run — no step configuration needed.
+**Invoice Numbering** is a global setting that teaches AffZero your invoice number format and keeps track of where you are in the sequence. Once configured, the `{global_invoice_number}` variable is generated automatically inside every **Create Invoice** step — no separate numbering step needed.
 
 Go to **Invoices → Invoice Numbering** to set it up.
 
 ---
 
+## Global vs Local Sequences
+
+AffZero supports two invoice numbering approaches. You can use both in the same automation.
+
+| | Global sequence | Local sequence |
+|---|---|---|
+| **Variable name** | `{global_invoice_number}` | `{invoice_number_local}` (default, customisable) |
+| **Configured in** | Invoices → Invoice Numbering | Generate Invoice Number step |
+| **Scope** | Shared across all automations | One automation only |
+| **When generated** | Inside the Create Invoice step, when it runs | Inside the Generate Invoice Number step, when it runs |
+| **Available in panel** | After a Create Invoice step | After a Generate Invoice Number step |
+
+**Use the global sequence** when all your automations should share one continuous series (e.g. all affiliate invoices follow `#00133 → #00134 → …`).
+
+**Use a local sequence** when a specific automation needs its own numbering that is independent from everything else — for example, a separate series for advertiser billing.
+
+---
+
 ## Why Global Instead of Per-Automation?
 
-Previously, invoice numbering had to be configured as a separate **Generate Invoice Number step** inside each automation. This meant:
+Previously, invoice numbering had to be configured inside each automation as a dedicated **Generate Invoice Number** step. This meant:
 
 - Duplicating the same configuration across multiple automations
-- Risk of two automations generating the same invoice number if they ran at similar times
+- Risk of two automations generating the same number if they ran at the same time
 - No single place to see your current sequence position
 
-The global invoice sequence solves all of this. Configure it once, and every automation that uses `{invoice_number}` gets the correct next number automatically.
+The global sequence solves all of this. Configure it once under **Invoices → Invoice Numbering**, and every automation that runs a Create Invoice step picks up the next number automatically.
 
 ---
 
@@ -67,27 +85,31 @@ Click **Save**. AffZero stores your sequence configuration and pre-computes the 
 
 ## How It Works at Runtime
 
-When any automation runs, AffZero:
+When an automation runs a **Create Invoice** step, AffZero:
 
 1. Reads your saved sequence configuration
-2. Generates the next number in the series using AI
-3. Injects it as `{invoice_number}` into the automation's variable context
-4. Updates the **Last Used Number** so the next run advances the sequence
+2. Generates the next number in the series — deterministically for common patterns, or via AI for complex ones
+3. Injects it as `{global_invoice_number}` into the automation's variable context
+4. Updates the **Last Used Number** so the next Create Invoice run advances the sequence
 
-The `{invoice_number}` variable is then available in Create Invoice steps, Send Email steps, condition checks, and any other step that consumes variables — without any extra configuration in the automation itself.
+`{global_invoice_number}` is then available in any step that comes **after** the Create Invoice step — Send Email, Condition Check, Write to Google Sheets, etc.
+
+<Note>
+  The sequence only advances when a Create Invoice step actually executes. Automations without a Create Invoice step (e.g. stats-only or email-only workflows) never consume a sequence number.
+</Note>
 
 ---
 
 ## Updating After a Manual Invoice
 
-If you manually created an invoice outside AffZero (or a run failed and you issued the number manually), you need to tell AffZero about it so the sequence doesn't repeat that number.
+If you manually created an invoice outside AffZero (or a run failed and you issued the number manually), update the sequence so it doesn't repeat that number.
 
 1. Go to **Invoices → Invoice Numbering**
 2. Click **Edit Last Used Number**
 3. Enter the number you issued manually
 4. Click **Save**
 
-The next automation run will generate the number after the one you just entered.
+The next Create Invoice run will generate the number after the one you entered.
 
 ---
 
@@ -101,23 +123,24 @@ The Invoice Numbering page shows:
 
 ---
 
-## Using `{invoice_number}` in Automations
+## Using `{global_invoice_number}` in Automations
 
-The variable is available automatically — you don't need to add any step for it. Just use `{invoice_number}` in:
+The variable is generated by the Create Invoice step — you don't need to add a separate numbering step. Use `{global_invoice_number}` in any step that runs **after** Create Invoice:
 
-- Create Invoice step filename: `Invoice_{affiliate_name_1_stats_1}_{invoice_number}`
-- Create Invoice template HTML: `<p>Invoice #: {invoice_number}</p>`
-- Send Email subject: `Invoice {invoice_number} for {affiliate_name_1_stats_1}`
+- Create Invoice step filename: `Invoice_{affiliate_name_1_stats_1}_{global_invoice_number}`
+- Create Invoice template HTML: `<p>Invoice #: {global_invoice_number}</p>`
+- Send Email subject: `Invoice {global_invoice_number} for {affiliate_name_1_stats_1}`
+- Write to Google Sheets column
 - Any other variable-consuming field
 
 <Tip>
-  If you have multiple invoice sequences (e.g. one for affiliates and one for advertisers), you can still use the Generate Invoice Number step within specific automations for secondary sequences, while the global sequence handles your primary one.
+  If you need a second invoice sequence (e.g. one for affiliates and one for advertisers), add a **Generate Invoice Number** step to the automation that needs it. That step writes its result to `{invoice_number_local}` (or a custom name you choose), completely independent from `{global_invoice_number}`.
 </Tip>
 
 ---
 
 ## AI Calls
 
-Generating the next invoice number for each automation run consumes **one AI call**. This applies to the global sequence — every automation that runs and uses `{invoice_number}` counts as one call.
+For most invoice formats, AffZero uses a **deterministic algorithm** to compute the next number — no AI call required. AI is only used for complex or irregular patterns that cannot be predicted algorithmically.
 
 Check your usage on **Settings → Usage**.

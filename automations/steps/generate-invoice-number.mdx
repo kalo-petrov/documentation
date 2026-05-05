@@ -1,27 +1,38 @@
 ---
 title: Generate Invoice Number Step
-description: Use AI to automatically identify the next invoice number in your series.
+description: Generate a local, per-automation invoice number sequence that is independent from the global sequence.
 ---
 
 ## What it does
 
-The **Generate Invoice Number** step uses AI to analyze your existing invoice number pattern and generate the next number in the sequence. It understands common formats — sequential numbers, year-based prefixes, zero-padded series, alphanumeric formats — and continues the pattern automatically.
+The **Generate Invoice Number** step uses AI to analyze your invoice number pattern and generate the next number in a **local, per-automation sequence**. It understands common formats — sequential numbers, year-based prefixes, zero-padded series, alphanumeric formats — and continues the pattern automatically.
 
-This step produces **one variable** (the next invoice number) that you can use in Create Invoice steps, email bodies, or any downstream step.
-
-Each run of this step consumes **one AI call**.
+The step produces **one variable** (the next invoice number) that you can use in Create Invoice steps, email bodies, or any downstream step.
 
 <Info>
-  **Global sequence available.** For most users, the better option is to configure the [global Invoice Numbering setting](/invoices/invoice-numbering) under Invoices → Invoice Numbering. That makes `{invoice_number}` available automatically in **every** automation without needing this step. Use this step when you need a **secondary** or **automation-specific** sequence alongside the global one.
+  **Using the global sequence instead?** For most users the better option is to configure the [global Invoice Numbering setting](/invoices/invoice-numbering) under Invoices → Invoice Numbering. That makes `{global_invoice_number}` available automatically inside every **Create Invoice** step — no separate numbering step needed. Use this step when you need a **secondary** or **automation-specific** sequence alongside the global one.
 </Info>
+
+---
+
+## Global vs Local — What's the difference?
+
+| | This step (local) | Global sequence |
+|---|---|---|
+| **Variable** | `{invoice_number_local}` (default, customisable) | `{global_invoice_number}` |
+| **Scope** | This automation only | All automations |
+| **Configured in** | This step's config | Invoices → Invoice Numbering |
+| **When generated** | When this step runs | Inside the Create Invoice step |
+
+The two sequences are **completely independent** — both can be active in the same automation without interfering with each other.
 
 ---
 
 ## When to use it
 
-- You need a **separate** invoice sequence for a specific automation (e.g. a different prefix for different advertisers)
-- You want the sequence to be self-contained within one automation, independent of the global sequence
-- You haven't configured the global Invoice Numbering setting yet
+- You need a **separate** invoice sequence for a specific automation (e.g. a different prefix for advertiser billing vs affiliate billing)
+- You want the sequence to be entirely self-contained within one automation
+- You already have a global sequence configured but need an additional series for this workflow
 
 ---
 
@@ -60,9 +71,9 @@ The AI will ensure its output matches this regex.
 
 ### Variable Name
 
-The name to use for the generated number variable. Defaults to `invoice_number`. You can customize it if you have multiple Generate Invoice Number steps in one automation (e.g. `invoice_number_a`, `invoice_number_b`).
+The name used for the generated number variable. Defaults to `invoice_number_local`. You can change it if you have multiple Generate Invoice Number steps in one automation (e.g. `invoice_number_affiliate`, `invoice_number_advertiser`).
 
-The variable will be available as `{invoice_number}` (or your custom name) in all subsequent steps.
+The variable will be available as `{invoice_number_local}` (or your custom name) in all subsequent steps.
 
 ---
 
@@ -71,7 +82,7 @@ The variable will be available as `{invoice_number}` (or your custom name) in al
 Given examples `INV-2026-044`, `INV-2026-045`, `INV-2026-046`:
 
 ```
-{invoice_number} → "INV-2026-047"
+{invoice_number_local} → "INV-2026-047"
 ```
 
 ---
@@ -84,5 +95,9 @@ Given examples `INV-2026-044`, `INV-2026-045`, `INV-2026-046`:
 - If you have an existing "last used" invoice number that isn't in the examples, mention it in the Pattern Description: "Last used number was INV-2026-046"
 
 <Note>
-  The AI generates the *next logical* number based on the pattern — it doesn't check your records or database to ensure uniqueness. Make sure you're feeding it the most recent example numbers each time, or that your automation runs sequentially (not in parallel) to avoid duplicate numbers.
+  Each run of this step consumes **one AI call** for complex patterns. Simple numeric formats (e.g. `INV-001 → INV-002`) are handled deterministically without an AI call.
+</Note>
+
+<Note>
+  This step generates the *next logical* number based on the pattern — it does not check your records to guarantee uniqueness. Make sure you're providing the most recent example numbers, and that automations using the same local sequence do not run in parallel.
 </Note>
