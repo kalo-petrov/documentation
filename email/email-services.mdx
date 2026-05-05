@@ -1,17 +1,23 @@
 ---
 title: Email Services
-description: Configure how AffZero sends emails — via Gmail SMTP using an App Password.
+description: Configure how AffZero sends emails — via Gmail, Outlook, Yahoo, or any SMTP provider.
 ---
 
 ## Overview
 
-AffZero sends outbound emails using **Gmail SMTP** — Google's mail-sending service authenticated with an App Password. This works with both personal Gmail (`@gmail.com`) and Google Workspace accounts (`@yourcompany.com`).
+AffZero sends outbound emails using **SMTP** — you connect any email account that supports SMTP sending: Gmail, Google Workspace, Outlook, Yahoo, iCloud, or a custom mail server.
 
 Go to **Providers → Email** to add or manage your email accounts.
 
 <Note>
-  If you also want to save files to Google Drive, use Google Doc invoice templates, or write to Google Sheets, connect your Google account via the **Gmail & GDrive** integration instead. See [Gmail & Google Drive](/providers/gmail-drive) for details.
+  **Gmail users:** if you also want to save files to Google Drive, use Google Doc invoice templates, or write to Google Sheets, connect via **Gmail & GDrive** instead. That one OAuth connection covers sending + all Google integrations at once. See [Gmail & Google Drive](/providers/gmail-drive).
 </Note>
+
+---
+
+## Quick Setup — Pick Your Provider
+
+In the **Providers → Email** form, click your provider's button to pre-fill the SMTP host and port and reveal step-by-step instructions.
 
 ---
 
@@ -62,6 +68,89 @@ Your Gmail address is now available as a **Send From** option in every Send Emai
 
 ---
 
+---
+
+## Setting Up Outlook / Hotmail SMTP
+
+| Field | Value |
+|-------|-------|
+| **SMTP Host** | `smtp-mail.outlook.com` |
+| **SMTP Port** | `587` |
+| **Username** | Your full Outlook address (e.g. `you@outlook.com`) |
+| **Password** | Your Microsoft account password, or an App Password if 2FA is enabled |
+
+<Steps>
+  <Step title="Check SMTP AUTH is enabled">
+    Sign in to [Outlook.com](https://outlook.live.com) → **Settings → Mail → Sync email** → confirm SMTP is allowed. Most accounts have it on by default.
+  </Step>
+  <Step title="Generate an App Password (if you use 2FA)">
+    Go to [account.microsoft.com/security](https://account.microsoft.com/security) → **Advanced security options → App passwords → Create a new app password**. Copy the generated password and use it in the SMTP Password field.
+  </Step>
+  <Step title="Add in AffZero">
+    In **Providers → Email**, click **Outlook**, fill in your email and password, and click **Save**.
+  </Step>
+</Steps>
+
+Works for `@outlook.com`, `@hotmail.com`, and `@live.com` accounts.
+
+---
+
+## Setting Up Yahoo Mail SMTP
+
+| Field | Value |
+|-------|-------|
+| **SMTP Host** | `smtp.mail.yahoo.com` |
+| **SMTP Port** | `587` |
+| **Username** | Your full Yahoo address (e.g. `you@yahoo.com`) |
+| **Password** | A Yahoo App Password — your regular password will not work |
+
+<Steps>
+  <Step title="Enable two-step verification">
+    Go to [login.yahoo.com/account/security](https://login.yahoo.com/account/security) and enable two-step verification if it isn't already on.
+  </Step>
+  <Step title="Generate an App Password">
+    On the same Security page, scroll to **Generate app password**, choose **Other app**, type `AffZero`, and click **Generate**. Copy the password shown.
+  </Step>
+  <Step title="Add in AffZero">
+    In **Providers → Email**, click **Yahoo**, enter your Yahoo address and the App Password, and click **Save**.
+  </Step>
+</Steps>
+
+---
+
+## Setting Up iCloud Mail SMTP
+
+| Field | Value |
+|-------|-------|
+| **SMTP Host** | `smtp.mail.me.com` |
+| **SMTP Port** | `587` |
+| **Username** | Your Apple ID email (e.g. `you@icloud.com`) |
+| **Password** | An app-specific password — your regular Apple ID password will not work |
+
+<Steps>
+  <Step title="Generate an app-specific password">
+    Go to [appleid.apple.com](https://appleid.apple.com) → sign in → **Sign-In and Security → App-Specific Passwords → Generate an app-specific password**. Name it `AffZero` and copy the password shown.
+  </Step>
+  <Step title="Add in AffZero">
+    In **Providers → Email**, click **iCloud**, enter your iCloud address and the app-specific password, and click **Save**.
+  </Step>
+</Steps>
+
+---
+
+## Custom SMTP Provider
+
+For any other mail provider, select **Custom** and enter the details from your provider's documentation:
+
+| Field | What to enter |
+|-------|--------------|
+| **SMTP Host** | Your provider's outbound SMTP server (e.g. `mail.yourdomain.com`) |
+| **SMTP Port** | `587` for TLS/STARTTLS (recommended) or `465` for SSL |
+| **Username** | Usually your full email address |
+| **Password** | Your account password or an app-specific password if required |
+
+---
+
 ## Multiple Accounts
 
 You can connect multiple Gmail accounts and choose which one to send from in each automation. This is useful when you want to send affiliate emails from one address and billing emails from another.
@@ -77,13 +166,6 @@ If you have multiple accounts, one is marked **Primary** — this is the default
 
 ---
 
-## Outlook, Yahoo, and other providers
-
-AffZero's current SMTP integration is built specifically for Gmail and Google Workspace App Passwords. Outlook, Yahoo, and other SMTP providers are not supported at this time.
-
-If you need to send from a custom domain address, the recommended path is to set up a free **Google Workspace** account for that domain and connect it here using the same App Password flow.
-
----
 
 ## Email Forwarding (Receiving Emails)
 
@@ -103,33 +185,35 @@ See [Email Received Trigger](/automations/triggers/inbound-email) for full setup
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="'Authentication failed' when adding the account">
-    The App Password was typed or pasted incorrectly. Make sure you:
-    - Removed all spaces from the 16-character code
-    - Used the correct Gmail address (the one the App Password belongs to)
-    - Have 2-Step Verification enabled on that account
+  <Accordion title="'Authentication failed' when saving the account">
+    The most common causes:
 
-    If in doubt, go back to [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords), delete the old password, and generate a new one.
+    - **Gmail / Yahoo / iCloud**: you used your regular account password instead of an App Password. These providers require an App Password for SMTP. Generate one and try again.
+    - **Outlook**: if 2FA is enabled, you need an App Password. If 2FA is off, your regular password should work — but make sure SMTP AUTH is enabled in your Outlook settings.
+    - **Typo**: re-paste the password carefully, removing any spaces.
+    - **Wrong username**: make sure the username is your full email address, not just the part before `@`.
   </Accordion>
 
-  <Accordion title="Email not delivered">
-    Check that your Google account hasn't revoked AffZero's app access. Go to **Google Account → Security → How you sign in → App Passwords** and verify the AffZero entry is still listed. If it's missing, generate a new one and update it in AffZero.
-
-    Also check Gmail's daily sending limits: personal Gmail accounts allow roughly **500 emails/day**; Google Workspace accounts allow up to **2,000/day**.
+  <Accordion title="Email not delivered after saving">
+    - **Gmail**: check that the App Password hasn't been revoked. Go to **Google Account → Security → App Passwords** and verify the AffZero entry is still there.
+    - **Outlook**: verify SMTP AUTH is still enabled in Outlook settings.
+    - **All providers**: check your sending limits. Gmail personal accounts allow ~500 emails/day; Google Workspace up to 2,000/day. Yahoo and Outlook have similar per-day limits.
   </Accordion>
 
-  <Accordion title="I don't see the App Passwords option in my Google account">
-    App Passwords only appear when **2-Step Verification is enabled**. If the option is missing even after enabling 2-Step Verification, your Google Workspace admin may have restricted App Passwords. Contact your admin and ask them to allow App Passwords for your account.
+  <Accordion title="I don't see the App Passwords option in Gmail">
+    App Passwords only appear when **2-Step Verification is enabled** on your Google account. If the option is missing even after enabling it, your Google Workspace admin may have restricted App Passwords — contact them and ask to enable it for your account.
   </Accordion>
 
   <Accordion title="Emails landing in spam">
-    Gmail SMTP sends through Google's own infrastructure, so spam rates are generally low. If emails are landing in spam:
-    - Ask recipients to mark your emails as "Not spam" and add your address to contacts
+    SMTP via Gmail, Outlook, or Yahoo sends through those providers' own infrastructure, so spam rates are generally low. If emails are landing in spam:
+    - Ask recipients to mark as "Not spam" and add your address to contacts
     - Avoid spam trigger words in subject lines
-    - Make sure the sender name is recognisable to recipients
+    - Make sure the sender name is recognisable
   </Accordion>
 
-  <Accordion title="I changed my Google password — does AffZero stop working?">
-    No — App Passwords are independent of your main Google password. Changing your password does not invalidate App Passwords. However, if you **revoke** the App Password from Google's security settings, you'll need to generate a new one and re-add the account in AffZero.
+  <Accordion title="Does changing my account password break the connection?">
+    For Gmail, Yahoo, and iCloud — **no**, because you connected with an App Password which is independent of your main account password. If you *revoke* the App Password, you'll need to generate a new one and update it in AffZero.
+
+    For Outlook (without 2FA) — **yes**, if you use your regular password and change it, you'll need to update the password in AffZero.
   </Accordion>
 </AccordionGroup>
