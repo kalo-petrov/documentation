@@ -38,8 +38,8 @@ description: Answers to common questions about AffZero.
     Yes — each connection is independent. If you manage two Affise networks, add two separate connections with different names. Each counts toward your plan's connection limit.
   </Accordion>
 
-  <Accordion title="Does AffZero store my API keys securely?">
-    Yes. Gmail SMTP credentials are encrypted at rest using AES-256-GCM encryption. Resend and SendGrid API keys are stored in encrypted form in the database. No credentials are ever shown in the application interface after they are saved.
+  <Accordion title="Does AffZero store my credentials securely?">
+    Yes. Gmail SMTP App Passwords are encrypted at rest using AES-256-GCM encryption. No credentials are ever shown in the application interface after they are saved.
   </Accordion>
 
   <Accordion title="Does the Demo connection count against my connection limit?">
@@ -106,22 +106,17 @@ description: Answers to common questions about AffZero.
 ## Email
 
 <AccordionGroup>
-  <Accordion title="Which email service should I use?">
-    - **Just starting out or sending low volumes**: Gmail SMTP — no external account needed, sends from your real Gmail address
-    - **Custom branded from address or growing team**: Resend — clean API, good deliverability, free tier available
-    - **High volume or detailed analytics needed**: SendGrid — enterprise-grade, scales to millions of emails
+  <Accordion title="How do I set up email sending?">
+    AffZero sends emails via **Gmail SMTP** using a Google App Password. Go to **Providers → Email**, click **Add Gmail Account**, and follow the setup steps. You'll need to enable 2-Step Verification on your Google account first and generate an App Password at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords).
 
-    See [Email Services](/email/email-services) for a full comparison and setup instructions.
+    See [Email Services](/email/email-services) for a full step-by-step walkthrough.
   </Accordion>
 
   <Accordion title="Why are my emails going to spam?">
-    The most common causes:
-
-    1. **Missing DNS records** — SPF, DKIM, and DMARC records not configured on your sending domain. Set these up in Resend or SendGrid's domain verification flow.
-    2. **Spam trigger words** in subject or body.
-    3. **Low domain reputation** — new domains sending immediately may be flagged. Warm up gradually.
-
-    Gmail SMTP sends from Google's infrastructure, so spam rates are generally low with Gmail SMTP.
+    Gmail SMTP sends through Google's own infrastructure, so spam rates are generally low. If emails are landing in spam:
+    - Ask recipients to mark your emails as "Not spam" and add your address to their contacts
+    - Avoid spam trigger words in subject lines
+    - Make sure the sender name is recognisable to recipients
   </Accordion>
 
   <Accordion title="Can I send to multiple recipients in one step?">

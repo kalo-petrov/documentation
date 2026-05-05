@@ -5,7 +5,7 @@ description: Send a personalized email with live data inserted automatically via
 
 ## What it does
 
-The **Send Email** step sends an email via your configured email service — Gmail SMTP, Resend, or SendGrid. It supports full HTML formatting, variable substitution from previous steps, and optional invoice attachments.
+The **Send Email** step sends an email via your configured Gmail SMTP account. It supports full HTML formatting, variable substitution from previous steps, and optional invoice attachments.
 
 ---
 
@@ -22,11 +22,7 @@ The **Send Email** step sends an email via your configured email service — Gma
 
 ### Send From
 
-Select which email account to send from. The dropdown shows all configured email accounts:
-
-- Gmail SMTP accounts (labeled with the Gmail address)
-- Resend (if configured in Providers → Email)
-- SendGrid (if configured in Providers → Email)
+Select which Gmail account to send from. The dropdown shows all Gmail SMTP accounts you've connected in **Providers → Email** (labeled with the Gmail address). If you have multiple accounts, pick the one appropriate for this automation.
 
 If you haven't set up an email service yet, go to [Providers → Email](/email/email-services) first.
 
