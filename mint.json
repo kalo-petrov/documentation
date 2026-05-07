@@ -37,6 +37,7 @@
         "connections/affise",
         "connections/binom",
         "connections/cake",
+        "connections/voluum",
         "connections/everflow",
         "connections/demo"
       ]
@@ -57,7 +58,8 @@
         "actions/add-actions",
         "actions/edit-actions",
         "actions/bulk-offer-upload",
-        "actions/binom-actions"
+        "actions/binom-actions",
+        "actions/voluum-actions"
       ]
     },
     {

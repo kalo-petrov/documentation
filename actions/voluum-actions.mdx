@@ -1,0 +1,134 @@
+---
+title: Voluum Actions
+description: Read and update campaigns, offers, and costs in your Voluum account directly from AffZero automations.
+---
+
+## Overview
+
+AffZero provides a set of Tracker Actions for **Voluum** that let you query and update your account without logging into the Voluum UI. All actions run against the Voluum REST API (`api.voluum.com`) and require a configured [Voluum connection](/connections/voluum).
+
+Voluum uses **UUID strings** for all entity IDs (campaigns, offers, etc.) — they look like `3fa85f64-5717-4562-b3fc-2c963f66afa6`. Use a **Get All** action first to discover the IDs you need.
+
+---
+
+## Campaign Actions
+
+### Get All Campaigns
+
+Retrieve the complete list of campaigns in your Voluum account.
+
+**Returns:** All campaigns with their IDs, names, traffic types, cost models, traffic sources, tags, and status.
+
+**Parameters:** None required. Optionally pass `includeDeleted: true` to include archived campaigns.
+
+**Use this to:** Look up a campaign UUID before using it in Get Campaign or Edit Campaign.
+
+---
+
+### Get Campaign
+
+Retrieve full details for a single Voluum campaign by its UUID.
+
+**Returns:** Complete campaign configuration — cost model, postback URL, redirect target, traffic type, traffic source, tags, workspace, and all tracking URLs.
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| **Campaign ID** | Yes | The Voluum campaign UUID |
+
+---
+
+### Edit Campaign
+
+Update a campaign's configuration in Voluum. AffZero fetches the current campaign state before writing, so only the fields you specify are changed — everything else is preserved.
+
+**Editable fields:**
+
+| Field | Description |
+|---|---|
+| **Name** | Campaign display name (`namePostfix`) |
+| **Postback URL** | Global postback URL for the campaign |
+| **Cost Model Type** | `CPC`, `CPM`, `CPV`, `CPA`, `REVSHARE`, or `NONE` |
+| **Cost Value** | Fixed cost per event (depends on cost model type) |
+| **Tags** | Comma-separated tags to assign to the campaign |
+| **Traffic Type** | `POP`, `DOMAIN`, `NATIVE`, `PUSH`, `BANNER`, `SEARCH`, `SOCIAL`, `VIDEO`, `EMAIL`, `SMS`, or `OTHER` |
+
+**Parameters:** Campaign ID (required) + any fields to update.
+
+<Tip>
+  Use **Get Campaign** first to see the campaign's current configuration before editing it.
+</Tip>
+
+---
+
+## Offer Actions
+
+### Get All Offers
+
+Retrieve the complete list of offers in your Voluum account.
+
+**Returns:** All offers with their IDs, names, URLs, payout settings, affiliate networks, tags, and verticals.
+
+**Parameters:** None required. Optionally pass `includeDeleted: true` to include deleted offers.
+
+**Use this to:** Find the UUID of an offer before using Get Offer or Edit Offer.
+
+---
+
+### Get Offer
+
+Retrieve full details for a single Voluum offer by its UUID.
+
+**Returns:** Complete offer configuration — URL, payout model, affiliate network, cap configuration, country, tags, vertical, and tracking domain.
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| **Offer ID** | Yes | The Voluum offer UUID |
+
+---
+
+### Edit Offer
+
+Update an offer's configuration in Voluum. AffZero fetches the current offer state before writing, so only the fields you specify are changed.
+
+**Editable fields:**
+
+| Field | Description |
+|---|---|
+| **Name** | Offer display name (`namePostfix`) |
+| **Offer URL** | The tracking/destination URL for the offer |
+| **Payout Type** | `AUTO` (payout from postback) or `MANUAL` (fixed value) |
+| **Payout Value** | Fixed payout per conversion — used when Payout Type is `MANUAL` |
+| **Tags** | Comma-separated tags to assign |
+| **Vertical** | Offer category / vertical |
+
+**Parameters:** Offer ID (required) + any fields to update.
+
+---
+
+## Cost Actions
+
+### Update Campaign Costs
+
+Post cost data for a Voluum campaign over a specific date range. Useful for keeping ROI calculations accurate after reconciling ad spend from a traffic source.
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| **Campaign ID** | Yes | The Voluum campaign UUID |
+| **Cost** | Yes | Total cost amount to record |
+| **Date From** | Yes | Start of the period (ISO 8601, e.g. `2026-03-01T00:00:00Z`) |
+| **Date To** | Yes | End of the period, exclusive (e.g. `2026-04-01T00:00:00Z`) |
+
+---
+
+## Tips for Voluum Users
+
+- **UUIDs, not numbers** — Voluum entity IDs are UUID strings, not short integers like Binom. Use the **Get All** actions to look up the correct UUID before referencing it in edit or get actions.
+- **Get before Edit** — AffZero automatically fetches the current state before a PUT, but running a Get action first in the same automation lets you use the retrieved data as variables in the edit step.
+- **Cost model updates** — when editing the cost model, specify both `Cost Model Type` and `Cost Value` together. Setting only the type without a value may leave the rate at zero.
+- **Rate limits** — Voluum limits API requests per minute. If you're running multiple automations against the same Voluum connection, stagger their schedules to avoid hitting the limit.

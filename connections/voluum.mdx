@@ -1,0 +1,105 @@
+---
+title: Voluum
+description: Connect your Voluum account to AffZero using an Access Key for secure, password-free API access.
+---
+
+## Overview
+
+Voluum is a cloud-based affiliate tracking platform. AffZero connects to Voluum's REST API (`api.voluum.com`) using an **Access Key** — a permanent credential you generate once in your Voluum account, so you never have to hard-code your password anywhere.
+
+---
+
+## What You Need
+
+- A **Voluum Access Key ID** and **Secret Access Key** — generated in your Voluum account's Security settings
+
+<Note>
+  The Access Key is shown **only once** when you create it. Copy and save both the ID and the secret before closing the dialog.
+</Note>
+
+---
+
+## How to Generate a Voluum Access Key
+
+1. Log in to your Voluum account
+2. Click the **profile icon** in the top-right corner — your account data view opens
+3. Go to the **Security** tab and scroll down to the **ACCESS KEYS** section
+4. Click **Add new key**
+5. Enter a name for the key (e.g. "AffZero")
+6. Enter your Voluum **account password** to confirm
+7. Click **Save**
+8. The **Access Key ID** and **Secret Access Key** are displayed — **copy both immediately**
+9. Click **Close**
+
+<Warning>
+  The Secret Access Key is shown only once. If you close the dialog without copying it, you will need to delete the key and generate a new one.
+</Warning>
+
+---
+
+## What to Enter in AffZero
+
+| Field | What to enter |
+|---|---|
+| **Platform** | Voluum |
+| **Access Key ID** | The Access Key ID from Voluum → Security → ACCESS KEYS |
+| **Secret Access Key** | The Secret Access Key shown once when you created the key |
+
+<Note>
+  AffZero connects to Voluum's fixed API gateway (`https://api.voluum.com`) automatically — you don't need to enter a base URL.
+</Note>
+
+Both credentials are encrypted with AES-256-GCM before being stored. AffZero exchanges them for a session token at runtime and never logs the raw values.
+
+---
+
+## What Stats Can You Pull?
+
+With a Voluum connection, AffZero can fetch:
+
+| Stat Type | groupBy dimension | What it shows |
+|---|---|---|
+| **By Campaign** | `campaignId` | Visits, clicks, conversions, revenue, cost, profit, ROI grouped by campaign |
+| **By Offer** | `offerId` | Offer-level performance breakdown |
+| **By Traffic Source** | `trafficSourceId` | Performance grouped by traffic source |
+| **By Country** | `countryCode` | GEO breakdown |
+| **By Day** | `day` | Daily performance timeline |
+
+All stat types return the standard metrics: **visits, clicks, conversions, revenue, cost, profit, ROI, CR, CV**.
+
+---
+
+## What Tracker Actions Are Available?
+
+In addition to pulling stats, AffZero can perform API actions on your Voluum account:
+
+| Action | Type | Description |
+|---|---|---|
+| Get All Campaigns | Read | Retrieve the full list of campaigns |
+| Get Campaign | Read | Retrieve details for a single campaign by ID |
+| Edit Campaign | Write | Update cost model, postback URL, traffic type, or tags |
+| Get All Offers | Read | Retrieve the full list of offers |
+| Get Offer | Read | Retrieve details for a single offer by ID |
+| Edit Offer | Write | Update offer URL, payout, tags, or vertical |
+| Update Campaign Costs | Write | Post cost data for a campaign and date range |
+
+See [Voluum Actions](/actions/voluum-actions) for full parameter details.
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication fails — 'Voluum authentication failed'">
+    Double-check that you copied both the **Access Key ID** and the **Secret Access Key** exactly as shown in Voluum. They are case-sensitive. If you're unsure, delete the key in Voluum → Security → ACCESS KEYS and generate a new one — the new secret will be displayed again.
+  </Accordion>
+  <Accordion title="Access Key endpoint is restricted">
+    Some Voluum API endpoints are not accessible when using an Access Key (e.g. password changes, billing, MFA settings). For the endpoints AffZero uses — `/report`, `/campaign`, `/offer` — Access Keys are fully supported.
+  </Accordion>
+  <Accordion title="Stats return zero rows">
+    Verify the date range contains data in Voluum's own reporting UI. Also check the **Include** parameter in your Pull Stats step — the default `TRAFFIC` mode only returns rows with non-zero traffic, which is correct for most uses. Switch to `ALL` or `ACTIVE` if you want to see campaigns with no traffic in the period.
+  </Accordion>
+  <Accordion title="Rate limiting">
+    Voluum limits the number of API requests per minute. If you have many automations pulling stats from the same connection simultaneously, some may fail with a rate-limit error. Space out your automations or reduce the frequency of parallel runs.
+  </Accordion>
+</AccordionGroup>
