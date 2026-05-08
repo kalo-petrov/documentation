@@ -182,9 +182,35 @@ Update the traffic costs for a Binom campaign by time period.
 
 ---
 
+## Bulk Cost Update
+
+Update costs for **multiple campaigns at once** in a single action. Internally, AffZero runs the full three-step cost update sequence for each campaign and returns a per-campaign result summary.
+
+**Useful for:**
+- Reconciling ad spend across many campaigns after a traffic run
+- Running cost updates as part of an automated workflow driven by AI analysis
+- Updating costs for a batch of campaigns without manually repeating the single Update Costs action
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| **Cost Entries** | Yes | Campaign costs as `id:cost` pairs, comma-separated (e.g. `101:50.00,102:25.50`) |
+| **Update Type** | No | `1` = Full cost (default), `2` = CPC |
+| **Date Period** | No | The period to apply costs to (Today, Yesterday, Last 7 days, etc.) |
+
+**Response:** A summary with `total`, `updated`, `failed`, and a `results` array showing each campaign's outcome and job ID.
+
+<Tip>
+  In automations, set **Cost Entries** to a variable like `{ai_cost_updates}` produced by an AI Analyze step. Instruct the AI to output campaign costs in `"id:cost,id:cost,..."` format — for example: *"For each campaign, output its ID and total spend as comma-separated `id:cost` pairs."*
+</Tip>
+
+---
+
 ## Tips for Binom Users
 
 - **Get before Edit** — always retrieve the current state of a campaign, landing, or rotation before editing to confirm the ID and current values
 - **Get All Landing Pages / Get All Offers** are useful reference actions — run them first to build a mental map of your tracker's contents
 - **Manage Rotation** is best used during active traffic periods when you want to optimize without pausing the campaign — changes take effect immediately in Binom
 - **Update Costs** integrates with Binom's ROI reporting — keep costs updated to get accurate profit/loss data in your Binom stats
+- **Bulk Cost Update** is the automation-friendly version of Update Costs — pair it with an AI Analyze step to automatically compute and post costs across all active campaigns in one run

@@ -53,7 +53,7 @@ Select the invoice template to use. All templates you've created under [Invoices
 Enter a filename for the generated PDF. You can use variables to create dynamic filenames:
 
 ```
-Invoice_{affiliate_name_1_stats_1}_{global_invoice_number}
+Invoice_{affiliate_name_1_stats_1}_{invoice_number_global}
 ```
 
 This produces a file like `Invoice_Acme Media_INV-2026-047.pdf`.
@@ -72,13 +72,13 @@ Any variable available at the point the Create Invoice step runs can be used ins
 
 - Pull Stats variables: `{affiliate_name_1_stats_1}`, `{revenue_1_stats_1}`, etc.
 - AI Analyze variables: `{top_affiliate}`, `{total_payout}`, etc.
-- Global invoice number: `{global_invoice_number}` — generated automatically by this step if you have configured [Invoice Numbering](/invoices/invoice-numbering)
+- Global invoice number: `{invoice_number_global}` — generated automatically by this step if you have configured [Invoice Numbering](/invoices/invoice-numbering)
 - Local invoice number: `{invoice_number_local}` — from an upstream [Generate Invoice Number](/automations/steps/generate-invoice-number) step
 
 Place the variable exactly as written (with curly braces) in your HTML or Google Doc template, and AffZero will substitute it at generation time.
 
 <Tip>
-  After the Create Invoice step runs, `{global_invoice_number}` and `{latest_invoice_number}` are available in all subsequent steps — use them in Send Email subjects, Google Sheets columns, and condition checks.
+  After the Create Invoice step runs, `{invoice_number_global}` and `{latest_invoice_number}` are available in all subsequent steps — use them in Send Email subjects, Google Sheets columns, and condition checks.
 </Tip>
 
 ---

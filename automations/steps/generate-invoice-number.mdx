@@ -10,7 +10,7 @@ The **Generate Invoice Number** step uses AI to analyze your invoice number patt
 The step produces **one variable** (the next invoice number) that you can use in Create Invoice steps, email bodies, or any downstream step.
 
 <Info>
-  **Using the global sequence instead?** For most users the better option is to configure the [global Invoice Numbering setting](/invoices/invoice-numbering) under Invoices → Invoice Numbering. That makes `{global_invoice_number}` available automatically inside every **Create Invoice** step — no separate numbering step needed. Use this step when you need a **secondary** or **automation-specific** sequence alongside the global one.
+  **Using the global sequence instead?** For most users the better option is to configure the [global Invoice Numbering setting](/invoices/invoice-numbering) under Invoices → Invoice Numbering. That makes `{invoice_number_global}` available automatically inside every **Create Invoice** step — no separate numbering step needed. Use this step when you need a **secondary** or **automation-specific** sequence alongside the global one.
 </Info>
 
 ---
@@ -19,7 +19,7 @@ The step produces **one variable** (the next invoice number) that you can use in
 
 | | This step (local) | Global sequence |
 |---|---|---|
-| **Variable** | `{invoice_number_local}` (default, customisable) | `{global_invoice_number}` |
+| **Variable** | `{invoice_number_local}` (default, customisable) | `{invoice_number_global}` |
 | **Scope** | This automation only | All automations |
 | **Configured in** | This step's config | Invoices → Invoice Numbering |
 | **When generated** | When this step runs | Inside the Create Invoice step |

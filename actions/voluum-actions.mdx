@@ -124,6 +124,29 @@ Post cost data for a Voluum campaign over a specific date range. Useful for keep
 | **Date From** | Yes | Start of the period (ISO 8601, e.g. `2026-03-01T00:00:00Z`) |
 | **Date To** | Yes | End of the period, exclusive (e.g. `2026-04-01T00:00:00Z`) |
 
+### Bulk Cost Update
+
+Update costs for **multiple campaigns at once** in a single action. AffZero posts to the Voluum `/report/cost` endpoint for each campaign and returns a per-campaign result summary.
+
+**Useful for:**
+- Reconciling ad spend across many campaigns after a traffic run
+- Running cost updates as part of an automated workflow driven by AI analysis
+- Applying the same date range to a batch of campaigns without repeating the single Update Costs action
+
+**Parameters:**
+
+| Field | Required | Description |
+|---|---|---|
+| **Cost Entries** | Yes | Campaign costs as `id:cost` pairs, comma-separated (e.g. `3fa85f64-...:50.00,abc12345-...:25.50`) |
+| **Date From** | Yes | Start of the period for all campaigns (ISO 8601, e.g. `2026-05-01T00:00:00Z`) |
+| **Date To** | Yes | End of the period, exclusive (e.g. `2026-05-02T00:00:00Z`) |
+
+**Response:** A summary with `total`, `updated`, `failed`, and a `results` array showing each campaign's outcome.
+
+<Tip>
+  In automations, set **Cost Entries** to a variable like `{ai_cost_updates}` produced by an AI Analyze step. Instruct the AI to output campaign costs in `"id:cost,id:cost,..."` format — for example: *"For each campaign, output its UUID and total spend as comma-separated `id:cost` pairs."*
+</Tip>
+
 ---
 
 ## Tips for Voluum Users

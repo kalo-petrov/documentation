@@ -31,6 +31,23 @@ More stat types may be added to the Demo connection as new platform integrations
 
 ---
 
+## Available Demo Actions
+
+The Demo connection also supports a set of write actions that return realistic simulated responses — no actual data is changed, but the response shape is identical to what a live tracker would return.
+
+| Action | What it simulates |
+|---|---|
+| **Update Campaign Cost** | Records a cost update for a single campaign |
+| **Bulk Cost Update** | Updates costs for multiple campaigns at once — returns a per-campaign result summary |
+| **Edit Conversions** | Updates conversion status, payout, or comment |
+| **Edit Campaign** | Updates campaign name, payout, or targeting settings |
+| **Start / Pause Campaign** | Activates or pauses a campaign |
+| **Bulk Offer Upload** | Creates multiple offers at once |
+
+Use these actions to build and test automations (including bulk cost workflows driven by AI Analyze) before connecting to a live tracker.
+
+---
+
 ## How to Add the Demo Connection
 
 1. Go to **Connections** in the left sidebar
