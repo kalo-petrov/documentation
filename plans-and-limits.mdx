@@ -5,21 +5,21 @@ description: A full breakdown of what's included in each AffZero plan.
 
 ## Plan Comparison
 
-| Feature | Starter | Pro | Pro+ | Business |
+| Feature | Free | Starter | Pro | Scale |
 |---|---|---|---|---|
-| **Monthly price** | $19 | $49 | $129 | $269 |
-| **Connections** | 1 | 3 | 8 | 10 |
-| **Automations** | 3 | 10 | 30 | 100 |
-| **Gmail SMTP accounts** | 1 | 2 | 3 | 3 |
-| **Inbound email addresses** | 1 | 2 | 5 | 10 |
-| **AI calls / month** | 20 | 100 | 500 | Unlimited |
-| **Schedules** | Monthly, Once | Weekly, Monthly, Once | Daily, Weekly, Monthly, Once | All |
-| **Describe It (AI builder)** | — | ✓ | ✓ | ✓ |
-| **Stats page** | ✓ | ✓ | ✓ | ✓ |
-| **Email templates** | ✓ | ✓ | ✓ | ✓ |
-| **Invoice templates** | ✓ | ✓ | ✓ | ✓ |
-| **Runs & Logs** | ✓ | ✓ | ✓ | ✓ |
-| **AI chatbot** | ✓ | ✓ | ✓ | ✓ |
+| **Price (monthly)** | Free | $29/month | $99/month | $149/month |
+| **Automations** | 10 | 50 | 500 | 2,000 |
+| **Steps executed (per period)** | 500 | 5,000 | 20,000 | 60,000 |
+| **Tracker connections** | 3 | 10 | 30 | 50 |
+| **Email templates** | 5 | 20 | 80 | 200 |
+| **Invoice templates** | 5 | 20 | 80 | 200 |
+| **Forwarding addresses** | 0 | 1 | 5 | 10 |
+| **Google accounts** | 1 | 1 | 3 | 5 |
+| **SMTP Email Accounts** | 1 | 1 | 2 | 5 |
+| **AI calls / month** | 50 | 200 | 1,000 | 3,000 |
+| **Custom API** | No | No | Yes | Yes |
+| **API price** | — | — | $20/mo/api | $20/mo/api |
+| **Allowed run frequencies** | Daily, weekly, monthly | Hourly, daily, weekly, monthly | Hourly, daily, weekly, monthly | Hourly, daily, weekly, monthly |
 
 ---
 
@@ -35,24 +35,24 @@ A **connection** is a saved API credential for one external tracking platform. E
 
 Any saved automation — enabled or disabled — counts toward the limit. Deleting an automation frees up the slot.
 
+## Steps Executed
+
+Each time an automation runs, every step in its workflow counts toward the period-based steps-executed limit. The counter resets at the start of each billing period.
+
 ## Gmail SMTP Accounts
 
 The number of Gmail accounts you can connect simultaneously. All accounts are available as "Send From" options in any Send Email step.
 
-## Inbound Email Addresses
+## Forwarding Addresses
 
 Forwarding addresses (e.g. `auto-7gk2p9xr@inbox.affzero.com`) used by the **Email Received** trigger. Each address can be shared across multiple automations. Manage them in **Providers → Email Forwarding**.
 
 | Plan | Addresses |
 |---|---|
+| Free | 0 |
 | Starter | 1 |
-| Pro | 2 |
-| Pro+ | 5 |
-| Business | 10 |
-
-## Describe It (AI Automation Builder)
-
-The **Describe It** feature lets you describe an automation in plain English and have AI generate the full workflow. Available on **Pro and above** plans. See [Describe It](/automations/describe-it) for details.
+| Pro | 5 |
+| Scale | 10 |
 
 ## AI Calls
 
@@ -64,16 +64,17 @@ Consumed by:
 - Generate with AI buttons in email/invoice editor (1 call per use)
 - AffZero AI chatbot (1 call per message)
 
-Calls reset on the **1st of each month**.
+Calls reset at the start of each billing period.
 
 ## Schedules
 
-| Plan | Available Schedules |
-|---|---|
-| Starter | Run Once, Monthly |
-| Pro | Run Once, Monthly, Weekly |
-| Pro+ | Run Once, Monthly, Weekly, Daily |
-| Business | Run Once, Monthly, Weekly, Daily |
+| Schedule | Free | Starter | Pro | Scale |
+|---|---|---|---|---|
+| Run Once | ✓ | ✓ | ✓ | ✓ |
+| Monthly | ✓ | ✓ | ✓ | ✓ |
+| Weekly | ✓ | ✓ | ✓ | ✓ |
+| Daily | ✓ | ✓ | ✓ | ✓ |
+| Hourly | — | ✓ | ✓ | ✓ |
 
 ---
 
@@ -82,7 +83,8 @@ Calls reset on the **1st of each month**.
 Go to **Settings → Usage** to see:
 - Connections used vs. limit
 - Automations used vs. limit
-- AI calls this month vs. limit
+- Steps executed this period vs. limit
+- AI calls this period vs. limit
 
 ---
 
@@ -94,7 +96,7 @@ Go to **Settings → Billing** to change your plan at any time.
 - **Downgrades** take effect at the end of the current billing period
 
 <Warning>
-  If you downgrade and your current usage exceeds the new plan's limits (e.g. you have 5 connections on Pro+ and downgrade to Starter which allows 1), existing resources are **not deleted** — but automations may fail to run until you bring your usage within the new limits.
+  If you downgrade and your current usage exceeds the new plan's limits (e.g. you have 30 connections on Pro and downgrade to Starter which allows 10), existing resources are **not deleted** — but automations may fail to run until you bring your usage within the new limits.
 </Warning>
 
 ---
@@ -104,8 +106,8 @@ Go to **Settings → Billing** to change your plan at any time.
 **Can I have multiple users on one account?**
 AffZero currently operates on a single-user-per-account model. Team access is on the roadmap.
 
-**Do unused AI calls roll over to the next month?**
-No — AI calls reset on the 1st of each month and do not accumulate.
+**Do unused AI calls roll over to the next period?**
+No — AI calls reset at the start of each billing period and do not accumulate.
 
 **What happens if I hit my automation limit?**
 You can still edit existing automations, but you won't be able to create new ones until you delete an existing one or upgrade your plan.
